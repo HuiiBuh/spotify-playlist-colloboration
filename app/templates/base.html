@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %} {% endblock %}</title>
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Import CSS-->
+    <link type="text/css" rel="stylesheet" href="../static/css/libraries/materialize.min.css"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/own/main.css"
+          media="screen,projection"/>
+
+    {% block css %}
+    {% endblock %}
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+
+
+{% block main %}
+
+{% endblock %}
+
+{% block footer %}
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Playlist Editor</h5>
+                    <p class="grey-text text-lighten-4">
+                        A simple Webapp that allows you to edit a playlist together.
+                    </p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul class="footer-links">
+                        <li class="valign-wrapper">
+                            <img class="footer-image" alt="" src="../static/icons/GitHub-Mark-120px-plus.png">
+                            <a class="grey-text text-lighten-3"
+                               href="https://github.com/HuiiBuh/spotify-playlist-colloboration">
+                                Fork on Github
+                            </a>
+                        </li>
+                        <li class="valign-wrapper">
+                            <img class="footer-image" alt="" src="../static/icons/GitHub-Mark-120px-plus.png">
+                            <a class="grey-text text-lighten-3" href="https://github.com/HuiiBuh/">HuiiBuh</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container" id="copyright">
+                © 2019 HuiBuh
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}
+
+
+<script type="text/javascript" src="../static/js/libraries/materialize.min.js"></script>
+{% block javascript %}
+
+{% endblock %}
+
+<script type="text/javascript">
+    window.onload = function () {
+        document.getElementById("copyright").innerText = "© " + new Date().getFullYear() + " HuiiBuh"
+    }
+</script>
+</body>
+</html>

@@ -4,7 +4,9 @@ import os
 from pyfy import Spotify
 
 
-def get_settings(path: str):
+def get_settings():
+
+    path = "./settings/settings_production.json"
     if not os.path.isfile(path):
         return None
 
@@ -20,7 +22,7 @@ def get_settings(path: str):
 
 
 def add_tracks(id_list: str):
-    settings = get_settings("settings_production.json")
+    settings = get_settings()
 
     auth_token = settings["OAuth-Token"]
     playlist_id = settings["playlist-id"]

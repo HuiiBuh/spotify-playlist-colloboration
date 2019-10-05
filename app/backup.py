@@ -20,7 +20,7 @@ def backup_job():
 
 
 def backup():
-    settings = get_settings("settings_production.json")
+    settings = get_settings()
 
     auth_token = settings["OAuth-Token"]
     playlist_id = settings["playlist-id"]

@@ -7,4 +7,4 @@ if __name__ == "__main__":
     backup_thread.setName("backup_playlist")
     backup_thread.start()
 
-    app.run()
+    app.run(debug=True)

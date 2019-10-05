@@ -1,14 +1,18 @@
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request, Response, render_template
 from pyfy import Spotify
 
 from app.functions import get_settings, add_tracks
 
 app = Flask(__name__)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 
 @app.route("/api/v1/spotify/playlist")
 def get_playlist():
-    settings = get_settings("settings_production.json")
+    settings = get_settings()
 
     auth_token = settings["OAuth-Token"]
     playlist_id = settings["playlist-id"]
@@ -21,7 +25,7 @@ def get_playlist():
 
 @app.route("/api/v1/spotify/playlist/tracks")
 def get_playlist_tracks():
-    settings = get_settings("settings_production.json")
+    settings = get_settings()
 
     auth_token = settings["OAuth-Token"]
     playlist_id = settings["playlist-id"]
@@ -43,6 +47,3 @@ def add_track_to_playlist():
     else:
         return Response(status=400)
 
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='8080', debug=True)

@@ -1,0 +1,14 @@
+.footer-image {
+    height: 1em;
+    margin-right: 5px;
+}
+
+.footer-links > li > a:hover {
+    text-decoration: underline;
+    transition: text-decoration .1s ease-in;
+}
+
+.footer-links > li > a {
+    text-decoration: underline solid transparent;
+    transition: text-decoration .1s ease-in;
+}

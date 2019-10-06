@@ -2,5 +2,5 @@ venv/
 .idea/
 .vscode/
 *.pyc
-app/backup/
-app/settings_production.json
+server/backup/
+server/settings_production.json

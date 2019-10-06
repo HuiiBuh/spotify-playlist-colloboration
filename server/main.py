@@ -1,12 +1,21 @@
 from flask import Flask, jsonify, request, Response, render_template, flash, redirect
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 from pyfy import Spotify
 
-from app.functions import get_settings, add_tracks
-from app.login import LoginForm
+from server.functions import get_settings, add_tracks
+from server.login import LoginForm
 
 app = Flask(__name__)
-
 app.config["SECRET_KEY"] = "HuiBuh"
+
+# Add the db
+db = SQLAlchemy(app)
+# ToDo Add the database
+
+# Add the login manager
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 @app.errorhandler(404)
@@ -32,7 +41,9 @@ def login_user():
     form = LoginForm()
 
     if form.validate_on_submit():
-        flash(f'Login requested for user {form.username.data} with password {form.password.data}, remember_me={form.remember_me.data}')
+        flash(
+            f'Login requested for user {form.username.data} with password {form.password.data}, '
+            f'remember_me={form.remember_me.data}')
         return redirect('/')
 
     if request.method == "POST":

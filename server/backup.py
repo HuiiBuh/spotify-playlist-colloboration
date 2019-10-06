@@ -8,7 +8,7 @@ import threading
 
 from pyfy import Spotify
 
-from app.functions import get_settings
+from server.functions import get_settings
 
 
 def backup_job():

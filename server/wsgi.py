@@ -1,5 +1,5 @@
-from app.backup import backup_job
-from app.main import app
+from server.backup import backup_job
+from server.main import app
 from threading import Thread
 
 if __name__ == "__main__":

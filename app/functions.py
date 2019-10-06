@@ -4,9 +4,7 @@ import os
 from pyfy import Spotify
 
 
-def get_settings():
-
-    path = "./settings/settings_production.json"
+def get_settings(path="./settings/settings_production.json"):
     if not os.path.isfile(path):
         return None
 

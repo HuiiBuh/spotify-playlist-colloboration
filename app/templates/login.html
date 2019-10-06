@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <form action="" method="post">
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <h4>Login</h4>
+
+                {{ form.hidden_tag() }}
+                {{ form.csrf_token }}
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        {{ form.username(size=32) }}
+                        {{ form.username.label }}
+                    </div>
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">lock</i>
+                        {{ form.password(size=32) }}
+                        {{ form.password.label }}
+                    </div>
+
+                    <div class="col s12">
+                        <label style="float: right;">
+                            {{ form.remember_me() }}
+                            {{ form.remember_me.label() }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {{ form.submit(class='btn-flat') }}
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let modal = document.getElementById("login-modal");
+            let instance = M.Modal.init(modal, {"dismissible": false});
+            instance.open();
+
+            document.getElementById("remember_me").checked = "checked"
+        });
+    </script>
+
+{% endblock %}

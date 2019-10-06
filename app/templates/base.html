@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %} {% endblock %}</title>
+    <title>{{ title }}</title>
 
     <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../static/css/libraries/materiel-icons.css" rel="stylesheet">
+    <link rel="icon" href="../static/icons/Spotify-64-Green.png">
 
     <!--Import CSS-->
     <link type="text/css" rel="stylesheet" href="../static/css/libraries/materialize.min.css"
@@ -22,6 +23,15 @@
 </head>
 <body>
 
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
 
 {% block main %}
 
@@ -41,14 +51,14 @@
                     <h5 class="white-text">Links</h5>
                     <ul class="footer-links">
                         <li class="valign-wrapper">
-                            <img class="footer-image" alt="" src="../static/icons/GitHub-Mark-120px-plus.png">
+                            <img class="footer-image" alt="" src="../static/icons/GitHub-120px-dark.png">
                             <a class="grey-text text-lighten-3"
                                href="https://github.com/HuiiBuh/spotify-playlist-colloboration">
                                 Fork on Github
                             </a>
                         </li>
                         <li class="valign-wrapper">
-                            <img class="footer-image" alt="" src="../static/icons/GitHub-Mark-120px-plus.png">
+                            <img class="footer-image" alt="" src="../static/icons/GitHub-120px-dark.png">
                             <a class="grey-text text-lighten-3" href="https://github.com/HuiiBuh/">HuiiBuh</a>
                         </li>
                     </ul>
@@ -62,6 +72,11 @@
         </div>
     </footer>
 
+    <script type="text/javascript">
+        window.onload = function () {
+            document.getElementById("copyright").innerText = "© " + new Date().getFullYear() + " HuiiBuh"
+        }
+    </script>
 {% endblock %}
 
 
@@ -70,10 +85,5 @@
 
 {% endblock %}
 
-<script type="text/javascript">
-    window.onload = function () {
-        document.getElementById("copyright").innerText = "© " + new Date().getFullYear() + " HuiiBuh"
-    }
-</script>
 </body>
 </html>

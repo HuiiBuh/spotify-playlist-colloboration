@@ -1,6 +1,16 @@
 Flask==1.1.1
-uwsgi
-pyfy
-schedule==0.6.0
+flask-wtf==0.14.2
+# database
 flask-sqlalchemy==2.4.1
-flask-login==0.4.1
+# login
+flask-login
+
+# password hashing
+flask-argon2
+
+# backup
+schedule==0.6.0
+# spotify api
+pyfy
+# production server
+uwsgi

@@ -1,6 +1,6 @@
 # Spotify PLaylist Editor
 
-This webapp lets users add tracks to a spotify playlist.
+This Webapplication lets users add tracks to a spotify playlist. 
 
 ## Installation
 
@@ -9,6 +9,6 @@ This webapp lets users add tracks to a spotify playlist.
 ```bash
 sudo apt-get install nginx
 # Allow some kind of traffic
-sudo ufw allow 'Nginx HTTP'
+sudo ufw allow 'Nginx HTTPS'
 sudo /etc/init.d/nginx start
 ```

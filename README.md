@@ -2,6 +2,13 @@
 
 This Webapplication lets users add tracks to a spotify playlist. 
 
+# Set env Varaiables
+
+```bash
+FLASK_APP=main.py
+```
+
+
 ## Installation
 
 + Install and configure Nginx

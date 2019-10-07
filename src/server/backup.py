@@ -12,8 +12,8 @@ from server.functions import get_settings
 
 
 def backup_job():
-    # schedule.every().day.at("01:00").do(backup)
-    schedule.every(10).minutes.do(backup)
+    schedule.every().day.at("01:00").do(backup)
+    # schedule.every(10).second.do(backup)
     while threading.main_thread().is_alive():
         schedule.run_pending()
         time.sleep(1)

@@ -1,21 +1,9 @@
-from flask import Flask, jsonify, request, Response, render_template, flash, redirect
-from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, flash, redirect, request
 from pyfy import Spotify
 
-from server.functions import get_settings, add_tracks
+from server import app
+from server.functions import get_settings
 from server.login import LoginForm
-
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "HuiBuh"
-
-# Add the db
-db = SQLAlchemy(app)
-# ToDo Add the database
-
-# Add the login manager
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 
 @app.errorhandler(404)

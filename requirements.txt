@@ -1,5 +1,8 @@
-
 Flask==1.1.1
+
+# To use the .flaskenv file
+python-dotenv==0.10.3
+
 
 # Input forms
 wtforms==2.2.1

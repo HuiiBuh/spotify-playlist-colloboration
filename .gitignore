@@ -3,5 +3,7 @@ venv/
 .vscode/
 *.pyc
 *.db
+
 src/backup/
 src/settings_production.json
+src/migrations/

@@ -18,4 +18,10 @@ login_manager.init_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app=app, db=db)
 
+# add the login
+login = LoginManager(app=app)
+login.login_message = ""
+login.login_view = 'login'
+
+# import the modal at the end so the db the modals depend on are already created
 from server import routes, modals

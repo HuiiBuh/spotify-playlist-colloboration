@@ -3,11 +3,12 @@
 {% block main %}
 
     <div id="main-box">
+        <div class="container margin-top z-depth-3 rounded" id="playlist-box">
 
-        <div class="center">
-            <h1>Muay Thai</h1>
-        </div>
-        <div class="container margin-top z-depth-3" id="playlist-box">
+            <div class="center small-padding-top">
+                <h1>Muay Thai</h1>
+            </div>
+
             <!-- Playlist information -->
             <div class="row flex-v-center">
                 <div class="col s9">
@@ -22,7 +23,7 @@
                             <td>22h</td>
                         </tr>
                         <tr>
-                            <td>Songcount</td>
+                            <td>Song Count</td>
                             <td>500</td>
                         </tr>
                         <tr style="border-bottom:none!important;">
@@ -33,23 +34,40 @@
                     </table>
                 </div>
                 <div class="col s3 center">
-                    <img alt="Cover image" class="cover-image materialboxed cover-image col s12 no-padding"
+                    <img alt="Cover image" class="cover-image cover-image col s12 no-padding"
                          src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
                 </div>
             </div>
-
+            <ul>
+                <li class="divider"></li>
+            </ul>
             <!-- Song heading -->
-            <div class="row margin-top">
+            <div class="row">
                 <h4 class="col s12 no-margin-bottom">Songs</h4>
             </div>
 
             <!-- All songs -->
             <div>
-                <div class="row flex-v-center song"
-                     onclick="window.open('https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown')">
-                    <div class="col xs3 s2 l1">
-                        <img alt="cover" class="materialboxed song-image no-padding"
-                             src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
+                <div class="row flex-v-center song rounded">
+                    <div class="col xs3 s2 l1 flex-v-center">
+                        <img alt="cover" class="song-image no-padding"
+                             src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg"
+                             onclick="window.open('https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown')">
+                    </div>
+                    <div class="col xs8 s9 l10">
+                        <div class="col s12">Title</div>
+                        <div class="col s12">Interpret &middot; Album</div>
+                    </div>
+                    <div class="col xs1 s1">
+                        <p>5:50 min</p>
+                    </div>
+                </div>
+
+                <div class="row flex-v-center song rounded">
+                    <div class="col xs3 s2 l1 flex-v-center">
+                        <img alt="cover" class="song-image no-padding"
+                             src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg"
+                             onclick="window.open('https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown')">
                     </div>
                     <div class="col xs8 s9 l10">
                         <div class="col s12">Title</div>
@@ -66,10 +84,114 @@
 
     <!-- Action button -->
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large">
-            <i class="very-large material-icons">add</i>
+        <a class="btn-floating btn-large modal-trigger" href="#song-modal">
+            <i class="very-large material-icons pointer">add</i>
         </a>
     </div>
 
 
+
+
+    <div id="song-modal" class="modal">
+        <div class="modal-content">
+            <h4>Search for Songs</h4>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix" id="search-song-icon">search</i>
+                    <input id="song-search" type="text" class="validate">
+                    <label for="song-search">Song search</label>
+
+                    <ul class="show-autocomplete dropdown-content" tabindex="0">
+
+                        <li class="search-song">
+                            <div class="flex-v-center small-padding-bottom small-padding-top">
+                                <div class="col xs3 s2 l1 flex-v-center">
+                                    <img alt="cover" class="search-song-image no-padding"
+                                         src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
+                                </div>
+                                <div class="col xs8 s9 m9 l10">
+                                    <div class="col s12">Title</div>
+                                    <div class="col s12">Interpret &middot; Album</div>
+                                </div>
+                                <div class="col xs1 s2 m2 l1 flex-end  flex-v-center">
+                                    <i class="material-icons pointer">playlist_add</i>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="search-song">
+                            <div class="flex-v-center small-padding-bottom small-padding-top">
+                                <div class="col xs3 s2 l1 flex-v-center">
+                                    <img alt="cover" class="search-song-image no-padding"
+                                         src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
+                                </div>
+                                <div class="col xs8 s9 m9 l10">
+                                    <div class="col s12">Title</div>
+                                    <div class="col s12">Interpret &middot; Album</div>
+                                </div>
+                                <div class="col xs1 s2 m2 l1 flex-end  flex-v-center">
+                                    <i class="material-icons pointer">playlist_add</i>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <h5>Your songs</h5>
+
+            <div id="add-song-list">
+                <div class="row flex-v-center song rounded add-song-list "
+                     onclick="window.open('https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown')">
+                    <div class="col xs3 s2 l1 flex-v-center">
+                        <img alt="cover" class="song-image no-padding"
+                             src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
+                    </div>
+                    <div class="col xs8 s9 l9">
+                        <div class="col s12">Title</div>
+                        <div class="col s12">Interpret &middot; Album</div>
+                    </div>
+                    <div class="col xs1 s2 flex-v-center flex-end">
+                        <i class="material-icons pointer">delete</i>
+                    </div>
+                </div>
+
+
+                <div class="row flex-v-center song rounded add-song-list "
+                     onclick="window.open('https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown')">
+                    <div class="col xs3 s2 l1 flex-v-center">
+                        <img alt="cover" class="song-image no-padding"
+                             src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
+                    </div>
+                    <div class="col xs8 s9 l9">
+                        <div class="col s12">Title</div>
+                        <div class="col s12">Interpret &middot; Album</div>
+                    </div>
+                    <div class="col xs1 s2 flex-v-center flex-end">
+                        <i class="material-icons pointer">delete</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer" id="add-song-footer">
+            <a class="modal-close waves-effect waves-green btn-flat">Add Songs</a>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        M.AutoInit();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let modal = document.getElementById("song-modal");
+            let instance = M.Modal.init(modal, {"dismissible": false});
+            instance.open();
+        });
+
+    </script>
 {% endblock %}

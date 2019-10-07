@@ -55,6 +55,12 @@ def logout():
     return redirect(url_for('home'))
 
 
+@app.route("/admin")
+@login_required
+def admin_page():
+    return "Under construction"
+
+
 @app.route("/api/v1/spotify/playlist")
 def get_playlist():
     settings = get_settings()

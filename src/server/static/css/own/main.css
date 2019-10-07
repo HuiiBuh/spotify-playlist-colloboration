@@ -32,7 +32,16 @@
     max-width: 100px;
     max-height: 60px;
 
-    cursor: default;
+    cursor: pointer;
+    height: auto;
+    width: auto;
+}
+
+.search-song-image {
+    max-width: 40px;
+    max-height: 40px;
+
+    cursor: pointer;
     height: auto;
     width: auto;
 }
@@ -46,7 +55,6 @@
 
 .song {
     transition: box-shadow 0.2s ease-in-out;
-    cursor: pointer;
 }
 
 i.very-large {
@@ -58,19 +66,91 @@ i.very-large {
     transition: box-shadow 0.2s ease-in-out;
 }
 
+.dropdown-content li {
+    cursor: default;
+}
+
+img {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.show-autocomplete {
+    display: block;
+    width: calc(100% - 4.5rem);
+    left: 3.76rem;
+    top: 43px;
+    transform-origin: 0 0 0;
+    opacity: 1;
+    transform: scaleX(1) scaleY(1);
+}
+
+#add-song-footer {
+    padding-right: 34px;
+}
+
+#song-modal .modal-content {
+    height: 63vh;
+}
+
+@media (max-width: 460px) {
+
+    .modal .modal-content {
+        padding: 10px;
+    }
+
+    #search-song-icon {
+        display: none;
+    }
+
+    #song-search {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #song-search + label {
+        width: 99%;
+        margin-left: 0;
+    }
+
+    .show-autocomplete {
+        width: calc(100% - 1.5rem);
+        left: .76rem;
+    }
+
+    #add-song-footer {
+        padding-right: 20px;
+    }
+}
+
+.add-song-list {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+
 /*Helpers**************************************************************************************************************/
+
+.pointer {
+    cursor: pointer;
+}
+
 .flex-v-center {
     display: flex;
     align-items: center;
 }
 
-.flex-v-center > * {
-    flex-basis: auto;
-    flex-grow: 1;
+.flex-end {
+    justify-content: flex-end;
 }
 
 .no-padding {
     padding: 0 !important;
+}
+
+.small-padding-top {
+    padding-top: .5em;
 }
 
 .margin-top {
@@ -87,6 +167,12 @@ i.very-large {
 
 .no-margin-bottom {
     margin-bottom: 0;
+}
+
+.rounded {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
 

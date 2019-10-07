@@ -17,6 +17,120 @@
     padding: 0 .75rem;
 }
 
+#main-box {
+    min-height: calc(100vh - 2.8rem);
+}
+
+#playlist-box {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 1px;
+    margin-bottom: 1.5rem;
+}
+
+.song-image {
+    max-width: 100px;
+    max-height: 60px;
+
+    cursor: default;
+    height: auto;
+    width: auto;
+}
+
+.cover-image {
+    background-color: gray;
+    max-width: 200px;
+    cursor: default;
+    height: auto;
+}
+
+.song {
+    transition: box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+i.very-large {
+    font-size: 3rem;
+}
+
+.song:hover {
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+/*Helpers**************************************************************************************************************/
+.flex-v-center {
+    display: flex;
+    align-items: center;
+}
+
+.flex-v-center > * {
+    flex-basis: auto;
+    flex-grow: 1;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.margin-top {
+    margin-top: 1em;
+}
+
+.margin-bottom {
+    margin-bottom: 1em;
+}
+
+.small-padding-bottom {
+    padding-bottom: .5em;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+
+/*Container************************************************************************************************************/
+
+
+@media only screen and (max-width: 415px) {
+    .xs1 {
+        width: calc(100% / 12)
+    }
+
+    .xs3 {
+        width: calc(100% / 12);
+    }
+
+    .xs8 {
+        width: calc(100% / 12 * 8);
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 95%;
+    }
+}
+
+@media only screen and (min-width: 601px) {
+    .container {
+        width: 90%
+    }
+}
+
+@media only screen and (min-width: 993px) {
+    .container {
+        width: 80%
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .container {
+        width: 80%
+    }
+}
+
 
 /*Label checkbox*******************************************************************************************************/
 [type="checkbox"]:not(.filled-in) + label:not(.lever)::after {

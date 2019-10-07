@@ -16,7 +16,7 @@ def page_not_found(*args):
 @app.route("/")
 @login_required
 def home():
-    return "HOME"
+    return render_template("index.html", title="Home")
 
 
 @app.route("/login", methods=["GET", "POST"])

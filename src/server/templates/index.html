@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+    <div id="main-box">
+
+        <div class="center">
+            <h1>Muay Thai</h1>
+        </div>
+        <div class="container margin-top z-depth-3" id="playlist-box">
+            <!-- Playlist information -->
+            <div class="row flex-v-center">
+                <div class="col s9">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>Author</td>
+                            <td>HuiiBuh</td>
+                        </tr>
+                        <tr>
+                            <td>Duration</td>
+                            <td>22h</td>
+                        </tr>
+                        <tr>
+                            <td>Songcount</td>
+                            <td>500</td>
+                        </tr>
+                        <tr style="border-bottom:none!important;">
+                            <td>URL</td>
+                            <td><a href="https://spotify.com">Go to Spotify</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col s3 center">
+                    <img alt="Cover image" class="cover-image materialboxed cover-image col s12 no-padding"
+                         src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
+                </div>
+            </div>
+
+            <!-- Song heading -->
+            <div class="row margin-top">
+                <h4 class="col s12 no-margin-bottom">Songs</h4>
+            </div>
+
+            <!-- All songs -->
+            <div>
+                <div class="row flex-v-center song"
+                     onclick="window.open('https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown')">
+                    <div class="col xs3 s2 l1">
+                        <img alt="cover" class="materialboxed song-image no-padding"
+                             src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
+                    </div>
+                    <div class="col xs8 s9 l10">
+                        <div class="col s12">Title</div>
+                        <div class="col s12">Interpret &middot; Album</div>
+                    </div>
+                    <div class="col xs1 s1">
+                        <p>5:50 min</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Action button -->
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large">
+            <i class="very-large material-icons">add</i>
+        </a>
+    </div>
+
+
+{% endblock %}

@@ -186,12 +186,5 @@
 {% block javascript %}
     <script>
         M.AutoInit();
-
-        document.addEventListener('DOMContentLoaded', function () {
-            let modal = document.getElementById("song-modal");
-            let instance = M.Modal.init(modal, {"dismissible": false});
-            instance.open();
-        });
-
     </script>
 {% endblock %}

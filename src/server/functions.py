@@ -28,8 +28,13 @@ def modify_json(track_list):
         track = track["track"]
         return_track_list[track["id"]] = {}
         return_track_list[track["id"]]["title"] = track["name"]
-        return_track_list[track["id"]]["album"] = track["album"]["name"]
+
+        return_track_list[track["id"]]["album"] = {}
+        return_track_list[track["id"]]["album"]["name"] = track["album"]["name"]
+        return_track_list[track["id"]]["album"]["url"] = track["album"]["external_url"]["spotify"]
+
         return_track_list[track["id"]]["image_url"] = track["album"]["images"][1]["url"]
+        return_track_list[track["id"]]["url"] = track["external_urls"]["spotify"]
         duration: int = track["duration_ms"]
 
         seconds = str(int((duration / 1000) % 60)).zfill(2)
@@ -48,10 +53,15 @@ def modify_json(track_list):
         return_track_list[track["id"]]["duration"] = return_duration
 
         artist_list = track["artists"]
-        return_track_list[track["id"]]["artists"] = {}
+        return_track_list[track["id"]]["artists"] = []
 
         for artist in artist_list:
-            return_track_list[track["id"]]["artists"][artist["id"]] = artist["name"]
+            artist_json = {
+                "name": (artist["name"],),
+                "url": artist["external_url"]["spotify"]
+            }
+
+            return_track_list[track["id"]]["artists"].append(artist)
 
     return return_track_list
 

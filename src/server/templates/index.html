@@ -6,7 +6,7 @@
         <div class="container margin-top z-depth-3 rounded" id="playlist-box">
 
             <div class="center small-padding-top">
-                <h1>Muay Thai</h1>
+                <h1 id="playlist-title">Muay Thai</h1>
             </div>
 
             <!-- Playlist information -->
@@ -47,7 +47,7 @@
             </div>
 
             <!-- All songs -->
-            <div>
+            <div id="playlist-songs">
                 <div class="row flex-v-center song rounded">
                     <div class="col xs3 s2 l1 flex-v-center">
                         <img alt="cover" class="song-image no-padding"
@@ -184,7 +184,5 @@
 {% endblock %}
 
 {% block javascript %}
-    <script>
-        M.AutoInit();
-    </script>
+    <script src="../static/js/own/main.js"></script>
 {% endblock %}

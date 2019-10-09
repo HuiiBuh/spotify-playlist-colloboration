@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, login_required, logout_user
 from pyfy import Spotify
 
 from server import app
-from server.functions import get_settings, add_tracks
+from server.functions import get_settings, add_tracks, modify_json
 from server.forms import LoginForm
 from server.modals import User
 
@@ -35,7 +35,7 @@ def login():
         # if the user does not exist or has the wrong password
         if user is None or not user.check_password(form.password.data):
             flash("Invalid username or password")
-            return redirect(url_for("login_user"))
+            return redirect(url_for("login"))
 
         # login the user
         login_user(user, remember=form.remember_me.data)
@@ -84,11 +84,13 @@ def get_playlist_tracks():
     spo = Spotify(auth_token)
     tracks = spo.playlist_tracks(playlist_id=playlist_id)
 
-    return jsonify(tracks)
+    modified_tracks = modify_json(tracks)
+
+    return jsonify(modified_tracks)
 
 
 # curl -d '{"track-list":"[2c5Isyd07hWsl7AQia2Dig,5a3rLTbh7L7lBj5cflW3sf]"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/v1/spotify/playlist/add
-@app.route("/api/v1/spotify/playlist/add", methods=['POST'])
+@app.route("/api/v1/spotify/playlist/add", methods=['POST', 'GET'])
 def add_track_to_playlist():
     json = request.get_json()
 

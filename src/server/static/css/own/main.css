@@ -132,6 +132,10 @@ img {
 
 /*Helpers**************************************************************************************************************/
 
+.underline:hover {
+    text-decoration: underline;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -151,6 +155,14 @@ img {
 
 .small-padding-top {
     padding-top: .5em;
+}
+
+.small-padding-right {
+    padding-right: .5em;
+}
+
+.small-padding-left {
+    padding-left: .5em;
 }
 
 .margin-top {

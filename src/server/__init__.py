@@ -1,13 +1,15 @@
+import os
+
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from pyfy import Spotify, ClientCreds
 
 import server.admin
 import server.api
 
-from server.admin.routes import mod
-from server.api.routes import mod
+from server.api.key_template_production import KEYS
 
 from server.config import Config
 
@@ -29,9 +31,22 @@ login = LoginManager(app=app)
 login.login_message = ""
 login.login_view = 'main.login'
 
+spotify = Spotify()
+spotify_client = ClientCreds()
+spotify_scopes = ["playlist-modify-private", "playlist-modify-public"]
+
+for key, value in KEYS.items():
+    if value:
+        os.environ[key] = value
+
+state = "HuiiBuh"
+
 # import the modal at the end so the db the modals depend on are already created
 from server.main.routes import mod
 from server.main import modals
+from server.admin.routes import mod
+from server.api.routes import mod
+
 
 app.register_blueprint(admin.routes.mod, url_prefix="/admin")
 app.register_blueprint(api.routes.mod, url_prefix="/api")

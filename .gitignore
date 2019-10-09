@@ -7,3 +7,6 @@ venv/
 src/backup/
 src/settings_production.json
 src/migrations/
+src/server/spotify/key_template_production.py
+src/server/spotify/
+src/server/api/key_template_production.py

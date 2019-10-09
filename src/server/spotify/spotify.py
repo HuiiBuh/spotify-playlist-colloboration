@@ -1,5 +1,6 @@
 import os
 
+import pyfy
 from flask import Flask, redirect, abort, request, jsonify, url_for
 
 from pyfy import Spotify, ClientCreds, AuthError
@@ -10,6 +11,9 @@ app = Flask(__name__)
 spt = Spotify()
 client = ClientCreds()
 state = "123"
+scopes = ["playlist-modify-private", "playlist-modify-public"]
+
+au = ""
 
 
 @app.route("/authorize")
@@ -18,7 +22,7 @@ def authorize():
     client.load_from_env()
     spt.client_creds = client
     if spt.is_oauth_ready:
-        return redirect(spt.auth_uri(state="123", scopes=["playlist-modify-private"]))
+        return redirect(spt.auth_uri(state="123", scopes=scopes))
     else:
         return (
             jsonify(
@@ -43,28 +47,11 @@ def spotify_callback():
         except AuthError as e:
             return jsonify(dict(error_description=e.msg)), e.code
         else:
-            return (
-                jsonify(
-                    dict(
-                        user_creds=user_creds.__dict__,
-                        check_if_active=url_for("is_active", _external=True),
-                    )
-                ),
-                200,
-            )
+            au = user_creds.__dict__["access_token"]
+            return user_creds.__dict__["access_token"]
+
     else:
         return abort(500)
-
-
-@app.route("/is_active")
-def is_active():
-    return jsonify(
-        dict(
-            is_active=spt.is_active,
-            your_tracks=url_for("tracks", _external=True),
-            your_playlists=url_for("playlists", _external=True),
-        )
-    )
 
 
 @app.route("/dump_creds")
@@ -74,7 +61,15 @@ def dump_creds():
 
 @app.route("/")
 def index():
-    return "OK"
+    try:
+        return spt.playlist_tracks(playlist_id="2w8QXdDhuMc3lfcUsdfgX9J1Bca")
+    except pyfy.excs.ApiError:
+        export_keys()
+        client.load_from_env()
+        spt.client_creds = client
+        spt.authorize_client_creds(client_creds=client)
+
+    return spt.playlist_tracks(playlist_id="2w8QXdDhuMc3lcUX9J1Bca")
 
 
 @app.route("/tracks")
@@ -84,7 +79,7 @@ def tracks():
 
 @app.route("/playlists")
 def playlists():
-    return jsonify(spt.user_playlists())
+    return jsonify(spt.playlist_tracks())
 
 
 def export_keys():

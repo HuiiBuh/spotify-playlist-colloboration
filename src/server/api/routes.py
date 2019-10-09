@@ -1,9 +1,45 @@
-from flask import Blueprint, jsonify, request, Response
+import pyfy
+from flask import Blueprint, jsonify, request, Response, redirect, abort
+from pyfy import AuthError
 
-from server.api.api_functions import modify_playlist_json, modify_track_json, add_tracks
+from server import spotify_client, spotify, state, spotify_scopes
+from server.api.api_functions import modify_playlist_json, modify_track_json, add_tracks, update_oauth
 from server.functions import get_settings
 
 mod = Blueprint("api", __name__)
+
+
+@mod.route("/authorize")
+def authorize():
+    spotify_client.load_from_env()
+    spotify.client_creds = spotify_client
+    if spotify.is_oauth_ready:
+        return redirect(spotify.auth_uri(state=state, scopes=spotify_scopes))
+    else:
+        return (jsonify(
+            {"error": "Client needs client_id, client_secret and a redirect uri in order to handle OAauth properly"}
+        ), 500)
+
+
+@mod.route("/callback/")
+def callback():
+    if request.args.get("error"):
+        return jsonify(dict(error=request.args.get("error_description")))
+    elif request.args.get("code"):
+        grant = request.args.get("code")
+        callback_state = request.args.get("state")
+
+        if callback_state != state:
+            return abort(401)
+
+        try:
+            user_creds = spotify_client.build_user_creds(grant=grant)
+        except AuthError as e:
+            return jsonify(dict(error_description=e.msg)), e.code
+
+        return user_creds.__dict__
+    else:
+        return abort(500)
 
 
 @mod.route("/spotify/playlist")
@@ -11,7 +47,12 @@ def get_playlist():
     settings = get_settings()
     playlist_id = settings["playlist-id"]
 
-    playlist = spotify.playlist(playlist_id=playlist_id)
+    try:
+        playlist = spotify.playlist(playlist_id=playlist_id)
+    except pyfy.excs.ApiError:
+        update_oauth()
+
+        playlist = spotify.playlist(playlist_id=playlist_id)
 
     modified_playlist = modify_playlist_json(playlist)
 
@@ -20,19 +61,19 @@ def get_playlist():
 
 @mod.route("/spotify/playlist/tracks")
 def get_playlist_tracks():
-    settings = get_settings()
+    playlist_id = get_settings()["playlist-id"]
 
-    auth_token = settings["OAuth-Token"]
-    playlist_id = settings["playlist-id"]
-
-    tracks = spotify.playlist_tracks(playlist_id=playlist_id)
+    try:
+        tracks = spotify.playlist_tracks(playlist_id=playlist_id)
+    except pyfy.excs.ApiError:
+        update_oauth()
+        tracks = spotify.playlist_tracks(playlist_id=playlist_id)
 
     modified_tracks = modify_track_json(tracks)
 
     return jsonify(modified_tracks)
 
 
-# curl -d '{"track-list":"[2c5Isyd07hWsl7AQia2Dig,5a3rLTbh7L7lBj5cflW3sf]"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/v1/spotify/playlist/add
 @mod.route("/spotify/playlist/add", methods=['POST', 'GET'])
 def add_track_to_playlist():
     json = request.get_json()

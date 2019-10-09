@@ -3,7 +3,6 @@ Flask==1.1.1
 # To use the .flaskenv file
 python-dotenv==0.10.3
 
-
 # Input forms
 wtforms==2.2.1
 flask-wtf==0.14.2
@@ -15,7 +14,7 @@ flask-migrate==2.5.2
 
 # login and passwords
 flask-login
-flask-argon2
+argon2-cffi
 
 # backup
 schedule==0.6.0

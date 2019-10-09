@@ -1,3 +1,9 @@
+import pyfy
+
+from server import spotify_client, spotify
+from server.functions import get_settings
+
+
 def modify_track_json(track_list):
     track_list = track_list["items"]
 
@@ -61,13 +67,19 @@ def modify_playlist_json(playlist_json):
 
 
 def add_tracks(id_list: str):
-    settings = get_settings()
-
-    auth_token = settings["OAuth-Token"]
-    playlist_id = settings["playlist-id"]
-    sp = Spotify(auth_token)
+    playlist_id = get_settings()["playlist-id"]
 
     id_list = id_list[1:id_list.__len__() - 1]
     id_list = id_list.split(",")
 
-    sp.add_playlist_tracks(playlist_id=playlist_id, track_ids=id_list)
+    try:
+        spotify_client.add_playlist_tracks(playlist_id=playlist_id, track_ids=id_list)
+    except pyfy.excs.ApiError:
+        update_oauth()
+        spotify_client.add_playlist_tracks(playlist_id=playlist_id, track_ids=id_list)
+
+
+def update_oauth():
+    spotify_client.load_from_env()
+    spotify.client_creds = spotify_client
+    spotify.authorize_client_creds(client_creds=spotify_client)

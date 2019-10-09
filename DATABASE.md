@@ -28,7 +28,7 @@ Go into your python3 shell with `python3` (execute in the src folder with active
 
 ```python
 from server import db
-from server.modals import User
+from server.main.modals import User
 
 user = User(username="root")
 db.session.add(user)

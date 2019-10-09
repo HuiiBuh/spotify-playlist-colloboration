@@ -1,5 +1,5 @@
 from server import db
-from server.modals import User
+from server.main.modals import User
 from argon2 import PasswordHasher, Type
 
 password = "default"

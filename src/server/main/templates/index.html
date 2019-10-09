@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="../static/css/own/loading.css"
+          media="screen,projection"/>
+{% endblock %}
+
 {% block main %}
 
     <div id="main-box">
         <div class="container margin-top z-depth-3 rounded" id="playlist-box">
 
             <div class="center small-padding-top">
-                <h1 id="playlist-title">Muay Thai</h1>
+                <h1 id="playlist-name">Muay Thai</h1>
             </div>
 
             <!-- Playlist information -->
@@ -16,26 +21,30 @@
                         <tbody>
                         <tr>
                             <td>Author</td>
-                            <td>HuiiBuh</td>
+                            <td><a id="author">HuiiBuh</a></td>
                         </tr>
                         <tr>
                             <td>Duration</td>
-                            <td>22h</td>
+                            <td id="duration">22h</td>
                         </tr>
                         <tr>
                             <td>Song Count</td>
-                            <td>500</td>
+                            <td id="song-count">500</td>
                         </tr>
                         <tr style="border-bottom:none!important;">
                             <td>URL</td>
-                            <td><a href="https://spotify.com">Go to Spotify</a></td>
+                            <td><a id="playlist-url">Go to Spotify</a></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col s3 center">
-                    <img alt="Cover image" class="cover-image cover-image col s12 no-padding"
-                         src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
+                    <div class="card">
+                        <div class="image loading">
+                            <img alt="Cover image" id="playlist-cover"
+                                 class="cover-image cover-image col s12 no-padding image loading">
+                        </div>
+                    </div>
                 </div>
             </div>
             <ul>

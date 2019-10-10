@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request, Response, redirect, abort
 from pyfy import AuthError
 
 from server import spotify_client, spotify, state, spotify_scopes
-from server.api.api_functions import modify_playlist_json, modify_track_json, add_tracks, update_oauth
+from server.api.api_functions import modify_playlist_json, modify_track_json, add_tracks, update_oauth, collect_tracks
 from server.functions import get_settings
 
 mod = Blueprint("api", __name__)
@@ -33,7 +33,7 @@ def callback():
             return abort(401)
 
         try:
-            user_creds = spotify_client.build_user_creds(grant=grant)
+            user_creds = spotify.build_user_creds(grant=grant)
         except AuthError as e:
             return jsonify(dict(error_description=e.msg)), e.code
 
@@ -63,13 +63,7 @@ def get_playlist():
 def get_playlist_tracks():
     playlist_id = get_settings()["playlist-id"]
 
-    try:
-        tracks = spotify.playlist_tracks(playlist_id=playlist_id)
-    except pyfy.excs.ApiError:
-        update_oauth()
-        tracks = spotify.playlist_tracks(playlist_id=playlist_id)
-
-    modified_tracks = modify_track_json(tracks)
+    modified_tracks = collect_tracks(playlist_id)
 
     return jsonify(modified_tracks)
 

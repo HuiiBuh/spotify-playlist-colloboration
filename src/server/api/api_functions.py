@@ -4,10 +4,29 @@ from server import spotify_client, spotify
 from server.functions import get_settings
 
 
-def modify_track_json(track_list):
-    track_list = track_list["items"]
+def collect_tracks(playlist_id, count=0, offset=0, modified_tracks=None):
+    if modified_tracks is None:
+        modified_tracks = {}
+    try:
+        tracks = spotify.playlist_tracks(playlist_id=playlist_id, offset=offset)
+    except pyfy.excs.ApiError:
+        update_oauth()
+        tracks = spotify.playlist_tracks(playlist_id=playlist_id, offset=offset)
 
-    return_track_list = {}
+    count += len(tracks["items"])
+
+    modified_tracks = modify_track_json(tracks, return_track_list=modified_tracks)
+
+    if tracks["total"] > count:
+        collect_tracks(playlist_id, count=count, offset=(count - 1), modified_tracks=modified_tracks)
+
+    return modified_tracks
+
+
+def modify_track_json(track_list, return_track_list=None):
+    if return_track_list is None:
+        return_track_list = {}
+    track_list = track_list["items"]
 
     for track in track_list:
         track = track["track"]

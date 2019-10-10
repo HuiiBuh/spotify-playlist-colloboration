@@ -13,6 +13,11 @@
     transition: text-decoration .1s ease-in;
 }
 
+.song-cover-div {
+    padding-left: 5px !important;
+    padding-right: 0 !important;
+}
+
 #copyright {
     padding: 0 .75rem;
 }

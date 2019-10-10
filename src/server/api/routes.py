@@ -1,5 +1,6 @@
 import pyfy
 from flask import Blueprint, jsonify, request, Response, redirect, abort
+from flask_login import login_required
 from pyfy import AuthError
 
 from server import spotify_client, spotify, state, spotify_scopes
@@ -10,6 +11,7 @@ mod = Blueprint("api", __name__)
 
 
 @mod.route("/authorize")
+@login_required
 def authorize():
     spotify_client.load_from_env()
     spotify.client_creds = spotify_client
@@ -22,6 +24,7 @@ def authorize():
 
 
 @mod.route("/callback/")
+@login_required
 def callback():
     if request.args.get("error"):
         return jsonify(dict(error=request.args.get("error_description")))
@@ -43,6 +46,7 @@ def callback():
 
 
 @mod.route("/spotify/playlist")
+@login_required
 def get_playlist():
     settings = get_settings()
     playlist_id = settings["playlist-id"]
@@ -60,6 +64,7 @@ def get_playlist():
 
 
 @mod.route("/spotify/playlist/tracks")
+@login_required
 def get_playlist_tracks():
     playlist_id = get_settings()["playlist-id"]
 
@@ -69,6 +74,7 @@ def get_playlist_tracks():
 
 
 @mod.route("/spotify/playlist/add", methods=['POST', 'GET'])
+@login_required
 def add_track_to_playlist():
     json = request.get_json()
 

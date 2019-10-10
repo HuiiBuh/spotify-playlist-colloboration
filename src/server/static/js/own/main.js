@@ -1,8 +1,11 @@
+document.getElementById("loading-playlist-description").style.height = document.getElementById("playlist-cover").offsetHeight + "px";
+
 M.AutoInit();
 
 //ToDo Noch jede api schnittstellt mit globaler variable mit flask deklarieren
 
 window.onload = function () {
+
     getPlaylistInfo("/api/spotify/playlist");
     getPlaylistSongInfo("/api/spotify/playlist/tracks");
 };
@@ -77,7 +80,7 @@ function displayPlaylistSongs(songList) {
         root.appendChild(song);
 
         let imageDiv = document.createElement("div");
-        imageDiv.setAttribute("class", "col xs3 s2 l1 flex-v-center");
+        imageDiv.setAttribute("class", "col xs3 s2 l1 center flex-v-center song-cover-div");
         song.appendChild(imageDiv);
 
         let image = document.createElement("img");

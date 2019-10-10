@@ -45,17 +45,29 @@ function displayPlaylistInfo(playlistJson) {
     document.getElementById("playlist-url").onclick = function () {
         window.open(playlistJson["url"])
     };
-    document.getElementById("playlist-cover").src = playlistJson["image_url"];
+
+    document.getElementById("playlist-cover").style.background = 'url(' + playlistJson["image_url"] + ')';
+
+
+    let trash = document.createElement("img");
+    trash.src = playlistJson["image_url"];
+    trash.style.display = "none";
+    document.getElementById("playlist-cover").appendChild(trash);
+    trash.onload = function () {
+        this.remove();
+        document.getElementById("playlist-cover").classList.remove("loading");
+    }
+
+
 }
 
 function displayPlaylistSongs(songList) {
 
     let root = document.getElementById("playlist-songs");
-    root.innerText = "";
 
     for (let songId in songList) {
         let song = document.createElement("div");
-        song.setAttribute("class", "row flex-v-center song rounded");
+        song.setAttribute("class", "row flex-v-center song rounded add-song-list");
         root.appendChild(song);
 
         let imageDiv = document.createElement("div");

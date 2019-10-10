@@ -76,6 +76,10 @@ img {
     border-radius: 2px;
 }
 
+.song img {
+    width: 100%;
+}
+
 .show-autocomplete {
     display: block;
     width: calc(100% - 4.5rem);
@@ -202,6 +206,11 @@ img {
 
     .xs8 {
         width: calc(100% / 12 * 8);
+    }
+
+    #playlist-box {
+        padding-right: 1em;
+        padding-left: 1em;
     }
 }
 

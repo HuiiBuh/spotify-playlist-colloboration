@@ -1,16 +1,36 @@
-.card {
+.loading-card {
     border: 1px solid #ddd;
-    margin-right: 10px;
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
 }
-.card .image {
+
+.loading-card > .image {
+    position: absolute;
     background: #e9ebee;
+    background-position: center !important;
+    background-size: contain !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
+
+.absolute-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
 
 .loading {
     position: relative;
     overflow: hidden;
 }
-.loading ::after {
+
+.loading::after {
     content: "";
     display: block;
     background-color: #dddfe2;

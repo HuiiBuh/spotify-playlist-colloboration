@@ -38,12 +38,9 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col s3 center">
-                    <div class="card">
-                        <div class="image loading">
-                            <img alt="Cover image" id="playlist-cover"
-                                 class="cover-image cover-image col s12 no-padding image loading">
-                        </div>
+                <div class="col s3 center no-padding">
+                    <div class="loading-card">
+                        <div class="image loading" id="playlist-cover"></div>
                     </div>
                 </div>
             </div>
@@ -54,6 +51,20 @@
             <div class="row">
                 <h4 class="col s12 no-margin-bottom">Songs</h4>
             </div>
+
+
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="email" type="text" class="validate">
+                            <label for="email">Search</label>
+                            <span class="helper-text" data-error="wrong" data-success="right">Search for songs in the playlist</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
 
             <!-- All songs -->
             <div id="playlist-songs"></div>

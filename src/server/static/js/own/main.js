@@ -56,6 +56,12 @@ function displayPlaylistInfo(playlistJson) {
     trash.onload = function () {
         this.remove();
         document.getElementById("playlist-cover").classList.remove("loading");
+
+        document.getElementById("loading-playlist-description").style.display = "none";
+        document.getElementById("playlist-description").style.display = "table";
+
+        document.getElementById("loading-heading").style.display = "none";
+        document.getElementById("playlist-name").style.display = "block";
     }
 
 
@@ -135,4 +141,7 @@ function displayPlaylistSongs(songList) {
         durationP.innerText = songList[songId]["duration"];
         durationDiv.appendChild(durationP)
     }
+
+    root.style.display = "block";
+    document.getElementById("song-placeholder").style.display = "none"
 }

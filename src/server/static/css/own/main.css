@@ -136,6 +136,24 @@ img {
 
 /*Helpers**************************************************************************************************************/
 
+.inline {
+    display: inline-block;
+}
+
+.margin-auto {
+    margin: auto !important;
+}
+
+.small-margin-bottom {
+    margin-bottom: .5em;
+}
+
+.rectangle {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+}
+
 .underline:hover {
     text-decoration: underline;
 }
@@ -179,6 +197,10 @@ img {
 
 .small-padding-bottom {
     padding-bottom: .5em;
+}
+
+.small-margin-top {
+    margin-top: .5em;
 }
 
 .no-margin-bottom {

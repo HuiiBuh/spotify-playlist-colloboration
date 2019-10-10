@@ -11,13 +11,17 @@
         <div class="container margin-top z-depth-3 rounded" id="playlist-box">
 
             <div class="center small-padding-top">
-                <h1 id="playlist-name">Muay Thai</h1>
+                <h1 id="playlist-name" style="display: none"></h1>
+                <div class="loading-card small-padding-top small-padding-bottom small-margin-bottom"
+                     style="border: none; margin: 2.8rem 0 1.68rem 0;" id="loading-heading">
+                    <div class="loading-bar big-loading-bar loading first-loading-bar margin-auto"></div>
+                </div>
             </div>
 
             <!-- Playlist information -->
             <div class="row flex-v-center">
                 <div class="col s9">
-                    <table>
+                    <table style="display: none" id="playlist-description">
                         <tbody>
                         <tr>
                             <td>Author</td>
@@ -37,9 +41,22 @@
                         </tr>
                         </tbody>
                     </table>
+
+                    <div class="loading-card" id="loading-playlist-description">
+                        <div class="loading-bar loading-bar-2 loading first-loading-bar"></div>
+                        <div class="loading-bar loading-bar-1 loading "></div>
+                        <div class="loading-bar loading-bar-3 loading "></div>
+                        <div class="loading-bar loading-bar-1 loading "></div>
+                        <div class="loading-bar loading-bar-2 loading "></div>
+                        <div class="loading-bar loading-bar-1 loading "></div>
+                        <div class="loading-bar loading-bar-2 loading "></div>
+                        <div class="loading-bar loading-bar-3 loading "></div>
+                        <div class="loading-bar loading-bar-2 loading "></div>
+                    </div>
+
                 </div>
                 <div class="col s3 center no-padding">
-                    <div class="loading-card">
+                    <div class="loading-card rectangle">
                         <div class="image loading" id="playlist-cover"></div>
                     </div>
                 </div>
@@ -51,7 +68,6 @@
             <div class="row">
                 <h4 class="col s12 no-margin-bottom">Songs</h4>
             </div>
-
 
             <div class="row">
                 <form class="col s12">
@@ -66,8 +82,60 @@
             </div>
 
 
+            <div class="loading-card" id="song-placeholder">
+                <div class="contend-loader">
+                    <div class="loading-bar loading-bar-2 loading first-loading-bar"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-3 loading"></div>
+                    <div class="loading-bar loading-bar-2 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading"></div>
+                    <div class="loading-bar loading-bar-1 loading last-loading-bar"></div>
+                </div>
+            </div>
+
             <!-- All songs -->
-            <div id="playlist-songs"></div>
+            <div id="playlist-songs" style="display: none"></div>
         </div>
     </div>
 
@@ -78,8 +146,6 @@
             <i class="very-large material-icons pointer">add</i>
         </a>
     </div>
-
-
 
 
     <div id="song-modal" class="modal">

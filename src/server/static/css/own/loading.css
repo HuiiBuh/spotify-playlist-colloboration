@@ -1,8 +1,5 @@
 .loading-card {
     border: 1px solid #ddd;
-    position: relative;
-    width: 100%;
-    padding-top: 100%;
 }
 
 .loading-card > .image {
@@ -15,6 +12,39 @@
     bottom: 0;
     right: 0;
 }
+
+.contend-loader {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.loading-bar {
+    background: #e9ebee;
+    margin: 0 13px 13px;
+    height: 19px;
+}
+
+.first-loading-bar {
+    margin-top: 13px;
+}
+
+.big-loading-bar {
+    height: 50px;
+    width: 40%;
+}
+
+.loading-bar-1 {
+    width: 80%;
+}
+
+.loading-bar-2 {
+    width: 30%;
+}
+
+.loading-bar-3 {
+    width: 90%;
+}
+
 
 .absolute-image {
     position: absolute;

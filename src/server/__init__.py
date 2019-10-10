@@ -42,11 +42,11 @@ for key, value in KEYS.items():
 state = "HuiiBuh"
 
 # import the modal at the end so the db the modals depend on are already created
+import server.routes
 from server.main.routes import mod
 from server.main import modals
 from server.admin.routes import mod
 from server.api.routes import mod
-
 
 app.register_blueprint(admin.routes.mod, url_prefix="/admin")
 app.register_blueprint(api.routes.mod, url_prefix="/api")

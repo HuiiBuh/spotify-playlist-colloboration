@@ -84,28 +84,34 @@ function displayPlaylistSongs(songList) {
         song.appendChild(informationDiv);
 
         let titleDiv = document.createElement("div");
-        titleDiv.onclick = function () {
-            window.open(songList[songId]["url"])
-        };
-        titleDiv.setAttribute("class", "s12 pointer underline");
-        titleDiv.innerText = songList[songId]["title"];
+        titleDiv.setAttribute("class", "s12");
         informationDiv.appendChild(titleDiv);
 
+        let titleA = document.createElement("a");
+        titleA.setAttribute("class", " pointer underline black-text");
+        titleA.innerText = songList[songId]["title"];
+        titleA.onclick = function () {
+            window.open(songList[songId]["url"])
+        };
+        titleDiv.appendChild(titleA);
 
         for (let artist in songList[songId]["artists"]) {
             let interpretA = document.createElement("a");
             interpretA.setAttribute("class", "black-text pointer underline");
             interpretA.innerText = songList[songId]["artists"][artist]["name"];
+
             interpretA.onclick = function () {
                 window.open(songList[songId]["artists"][artist]["url"])
             };
 
+            informationDiv.appendChild(interpretA);
+
             if (songList[songId]["artists"].length > parseInt(artist) + 1) {
                 let artistSeparationA = document.createElement("a");
-                artistSeparationA.setAttribute("class", "black-text small-padding-right small-padding-left");
-                artistSeparationA.innerText = "-";
+                artistSeparationA.setAttribute("class", "black-text small-padding-right");
+                artistSeparationA.innerText = ",";
+                informationDiv.appendChild(artistSeparationA)
             }
-            informationDiv.appendChild(interpretA)
         }
 
         let separationA = document.createElement("a");

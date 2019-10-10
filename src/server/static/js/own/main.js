@@ -1,14 +1,77 @@
-document.getElementById("loading-playlist-description").style.height = document.getElementById("playlist-cover").offsetHeight + "px";
+let mainPlaylist = null;
 
+
+document.getElementById("loading-playlist-description").style.height = document.getElementById("playlist-cover").offsetHeight + "px";
 M.AutoInit();
 
-//ToDo Noch jede api schnittstellt mit globaler variable mit flask deklarieren
 
 window.onload = function () {
-
     getPlaylistInfo("/api/spotify/playlist");
     getPlaylistSongInfo("/api/spotify/playlist/tracks");
 };
+
+
+function getPlaylistInfo(url) {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            createPlaylistFromJSON(JSON.parse(this.responseText));
+            displayPlaylistInfo(true);
+        }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+
+function createPlaylistFromJSON(json) {
+    let playlistName = json["name"];
+    let author = [json["author"]["name"], json["author"]["url"]];
+    let songCount = json["track_count"];
+    let url = json["url"];
+    let cover = json["image_url"];
+
+    mainPlaylist = new Playlist(playlistName, author, songCount, url, cover)
+}
+
+
+function displayPlaylistInfo(first) {
+
+    document.getElementById("playlist-name").innerText = mainPlaylist.name;
+    document.getElementById("author").innerText = mainPlaylist.author[0];
+    document.getElementById("author").onclick = function () {
+        window.open(mainPlaylist.author[1])
+    };
+    document.getElementById("duration").innerText = mainPlaylist.duration;
+    document.getElementById("song-count").innerText = mainPlaylist.songCount;
+    document.getElementById("playlist-url").onclick = function () {
+        window.open(mainPlaylist.url)
+    };
+
+    document.getElementById("playlist-cover").style.background = 'url(' + mainPlaylist.picture + ')';
+
+    function updatePlaceholder() {
+        let trash = document.createElement("img");
+        trash.src = mainPlaylist.picture;
+        trash.style.display = "none";
+        document.getElementById("playlist-cover").appendChild(trash);
+        trash.onload = function () {
+            this.remove();
+            document.getElementById("playlist-cover").classList.remove("loading");
+
+            document.getElementById("loading-playlist-description").style.display = "none";
+            document.getElementById("playlist-description").style.display = "table";
+
+            document.getElementById("loading-heading").style.display = "none";
+            document.getElementById("playlist-name").style.display = "block";
+        }
+    }
+
+    if (first) {
+        updatePlaceholder()
+    }
+}
 
 
 function getPlaylistSongInfo(url) {
@@ -16,7 +79,7 @@ function getPlaylistSongInfo(url) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            displayPlaylistSongs(JSON.parse(this.responseText))
+            createSongs(JSON.parse(this.responseText))
         }
     };
 
@@ -24,51 +87,18 @@ function getPlaylistSongInfo(url) {
     xhttp.send();
 }
 
-function getPlaylistInfo(url) {
-    let xhttp = new XMLHttpRequest();
+function createSongs(json) {
 
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            displayPlaylistInfo(JSON.parse(this.responseText))
-        }
-    };
-    xhttp.open("GET", url, true);
-    xhttp.send();
-}
+    for (let songId in json) {
+        if (json.hasOwnProperty(songId))
+            var songJSON = json[songId];
 
-function displayPlaylistInfo(playlistJson) {
-
-    document.getElementById("playlist-name").innerText = playlistJson["name"];
-    document.getElementById("author").innerText = playlistJson["author"]["name"];
-    document.getElementById("author").onclick = function () {
-        window.open(playlistJson["author"]["url"])
-    };
-    document.getElementById("duration").innerText = "Not implemented yet.";
-    document.getElementById("song-count").innerText = playlistJson["track_count"];
-    document.getElementById("playlist-url").onclick = function () {
-        window.open(playlistJson["url"])
-    };
-
-    document.getElementById("playlist-cover").style.background = 'url(' + playlistJson["image_url"] + ')';
+        let name = songJSON["name"]
 
 
-    let trash = document.createElement("img");
-    trash.src = playlistJson["image_url"];
-    trash.style.display = "none";
-    document.getElementById("playlist-cover").appendChild(trash);
-    trash.onload = function () {
-        this.remove();
-        document.getElementById("playlist-cover").classList.remove("loading");
-
-        document.getElementById("loading-playlist-description").style.display = "none";
-        document.getElementById("playlist-description").style.display = "table";
-
-        document.getElementById("loading-heading").style.display = "none";
-        document.getElementById("playlist-name").style.display = "block";
     }
-
-
 }
+
 
 function displayPlaylistSongs(songList) {
 

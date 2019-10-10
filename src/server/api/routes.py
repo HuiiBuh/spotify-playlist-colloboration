@@ -45,6 +45,23 @@ def callback():
         return abort(500)
 
 
+@mod.route("spotify/search")
+@login_required
+def search_for_songs():
+    search_term = request.args.get('search')
+
+    if search_term is None or search_term is "":
+        return abort(400)
+
+    try:
+        search_results = spotify.search(search_term, limit=10, types="track")
+    except pyfy.excs.ApiError:
+        update_oauth()
+        search_results = spotify.search(search_term, limit=10, types="track")
+
+    return search_results
+
+
 @mod.route("/spotify/playlist")
 @login_required
 def get_playlist():

@@ -93,4 +93,14 @@ class Song {
     get title() {
         return this._title;
     }
+
+    get searchString() {
+
+        let artists = "";
+        for (let artistNumber in this.artist) {
+            artists += this.artist[artistNumber]["name"];
+        }
+
+        return this._title + " " + artists + " " + this._album;
+    }
 }

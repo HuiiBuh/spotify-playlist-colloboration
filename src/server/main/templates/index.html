@@ -77,14 +77,23 @@
                 <form class="col s12">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="email" type="text" class="validate">
-                            <label for="email">Search</label>
+                            <input id="search-playlist-song" type="text">
+                            <label for="search-playlist-song">Search</label>
                             <span class="helper-text" data-error="wrong" data-success="right">Search for songs in the playlist</span>
                         </div>
                     </div>
                 </form>
             </div>
 
+            <div id="search-results-block" style="display: none">
+                <h5>Search Results</h5>
+                <div id="search-results">
+
+                </div>
+            </div>
+
+            <!-- All songs -->
+            <div id="playlist-songs" style="display: none"></div>
 
             <div class="loading-card" id="song-placeholder">
                 <div class="contend-loader">
@@ -138,8 +147,6 @@
                 </div>
             </div>
 
-            <!-- All songs -->
-            <div id="playlist-songs" style="display: none"></div>
         </div>
     </div>
 
@@ -159,8 +166,8 @@
             <div class="row">
                 <div class="input-field col s12">
                     <i class="material-icons prefix" id="search-song-icon">search</i>
-                    <input id="song-search" type="text" class="validate">
-                    <label for="song-search">Song search</label>
+                    <input id="new-song-search" type="text" class="validate">
+                    <label for="new-song-search">Song search</label>
 
                     <ul class="show-autocomplete dropdown-content" tabindex="0">
 
@@ -248,4 +255,7 @@
     <script src="../static/js/own/Playlist.js"></script>
     <script src="../static/js/own/Song.js"></script>
     <script src="../static/js/own/functions.js"></script>
+    <script src="../static/js/own/playlist_functions.js"></script>
+    <script src="../static/js/own/song_functions.js"></script>
+    <script src="../static/js/own/search.js"></script>
 {% endblock %}

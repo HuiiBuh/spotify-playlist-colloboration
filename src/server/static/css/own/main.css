@@ -113,12 +113,12 @@ img {
         display: none;
     }
 
-    #song-search {
+    #new-song-search {
         width: 100%;
         margin-left: 0;
     }
 
-    #song-search + label {
+    #new-song-search + label {
         width: 99%;
         margin-left: 0;
     }

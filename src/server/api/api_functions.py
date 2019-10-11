@@ -32,30 +32,12 @@ def modify_track_json(track_list, return_track_list=None):
         track = track["track"]
         return_track_list[track["id"]] = {}
         return_track_list[track["id"]]["title"] = track["name"]
-
         return_track_list[track["id"]]["album"] = {}
         return_track_list[track["id"]]["album"]["name"] = track["album"]["name"]
         return_track_list[track["id"]]["album"]["url"] = track["album"]["external_urls"]["spotify"]
-
-        return_track_list[track["id"]]["image_url"] = track["album"]["images"][1]["url"]
+        return_track_list[track["id"]]["cover"] = track["album"]["images"][1]["url"]
         return_track_list[track["id"]]["url"] = track["external_urls"]["spotify"]
-        duration: int = track["duration_ms"]
-
-        seconds = str(int((duration / 1000) % 60)).zfill(2)
-        minutes = str(int((duration / (1000 * 60)) % 60)).zfill(2)
-        hours = str(int((duration / (1000 * 60 * 60)) % 60))
-        return_duration = ""
-
-        if hours != "0":
-            return_duration += hours + ":"
-
-        if hours != "0" or minutes != "0":
-            return_duration += minutes + ":"
-
-        return_duration += seconds
-
-        return_track_list[track["id"]]["duration"] = return_duration
-
+        return_track_list[track["id"]]["duration"] = track["duration_ms"]
         artist_list = track["artists"]
         return_track_list[track["id"]]["artists"] = []
 

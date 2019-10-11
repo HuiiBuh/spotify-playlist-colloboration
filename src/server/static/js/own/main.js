@@ -7,7 +7,7 @@ M.AutoInit();
 
 window.onload = function () {
     getPlaylistInfo("/api/spotify/playlist");
-    getPlaylistSongInfo("/api/spotify/playlist/tracks");
+    getPlaylistSongs("/api/spotify/playlist/tracks");
 };
 
 
@@ -32,7 +32,7 @@ function createPlaylistFromJSON(json) {
     let url = json["url"];
     let cover = json["image_url"];
 
-    mainPlaylist = new Playlist(playlistName, author, songCount, url, cover)
+    mainPlaylist = new Playlist(playlistName, author, songCount, url, cover, "main")
 }
 
 
@@ -74,7 +74,7 @@ function displayPlaylistInfo(first) {
 }
 
 
-function getPlaylistSongInfo(url) {
+function getPlaylistSongs(url) {
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -88,23 +88,35 @@ function getPlaylistSongInfo(url) {
 }
 
 function createSongs(json) {
-
     for (let songId in json) {
         if (json.hasOwnProperty(songId))
             var songJSON = json[songId];
 
-        let name = songJSON["name"]
+        let title = songJSON["title"];
+        let cover = songJSON["cover"];
+        let url = songJSON["url"];
+        let album = songJSON["album"];
+        let artists = songJSON["artists"];
+        let duration = songJSON["duration"];
 
+        let song = new Song(songId, album, url, artists, duration, cover, title);
 
+        mainPlaylist.addSong(song)
     }
+    displayPlaylistSongs()
 }
 
 
-function displayPlaylistSongs(songList) {
+function displayPlaylistSongs() {
 
     let root = document.getElementById("playlist-songs");
 
-    for (let songId in songList) {
+
+    for (let songNumber in mainPlaylist.songList) {
+        if (mainPlaylist.songList.hasOwnProperty(songNumber)) {
+            var {cover, title, url, artist, album, durationHumanReadable} = mainPlaylist.songList[songNumber];
+        }
+
         let song = document.createElement("div");
         song.setAttribute("class", "row flex-v-center song rounded add-song-list");
         root.appendChild(song);
@@ -115,7 +127,7 @@ function displayPlaylistSongs(songList) {
 
         let image = document.createElement("img");
         image.setAttribute("alt", "cover");
-        image.src = songList[songId]["image_url"];
+        image.src = cover;
         imageDiv.appendChild(image);
 
         let informationDiv = document.createElement("div");
@@ -128,24 +140,23 @@ function displayPlaylistSongs(songList) {
 
         let titleA = document.createElement("a");
         titleA.setAttribute("class", " pointer underline black-text");
-        titleA.innerText = songList[songId]["title"];
-        titleA.onclick = function () {
-            window.open(songList[songId]["url"])
-        };
+        titleA.innerText = title;
+        titleA.onclick = addOnclick(url);
         titleDiv.appendChild(titleA);
 
-        for (let artist in songList[songId]["artists"]) {
+        for (let singleArtist in artist) {
+            if (artist.hasOwnProperty(singleArtist)) {
+                var singleArtistObject = artist[singleArtist];
+            }
             let interpretA = document.createElement("a");
             interpretA.setAttribute("class", "black-text pointer underline");
-            interpretA.innerText = songList[songId]["artists"][artist]["name"];
+            interpretA.innerText = singleArtistObject["name"];
 
-            interpretA.onclick = function () {
-                window.open(songList[songId]["artists"][artist]["url"])
-            };
+            interpretA.onclick = addOnclick(singleArtistObject["url"]);
 
             informationDiv.appendChild(interpretA);
 
-            if (songList[songId]["artists"].length > parseInt(artist) + 1) {
+            if (artist.length > parseInt(singleArtist) + 1) {
                 let artistSeparationA = document.createElement("a");
                 artistSeparationA.setAttribute("class", "black-text small-padding-right");
                 artistSeparationA.innerText = ",";
@@ -160,10 +171,9 @@ function displayPlaylistSongs(songList) {
 
         let albumA = document.createElement("a");
         albumA.setAttribute("class", "black-text pointer underline");
-        albumA.innerText = songList[songId]["album"]["name"];
-        albumA.onclick = function () {
-            window.open(songList[songId]["album"]["url"])
-        };
+        albumA.innerText = album["name"];
+        albumA.onclick = addOnclick(album["url"]);
+
         informationDiv.appendChild(albumA);
 
         let durationDiv = document.createElement("div");
@@ -171,10 +181,22 @@ function displayPlaylistSongs(songList) {
         song.appendChild(durationDiv);
 
         let durationP = document.createElement("p");
-        durationP.innerText = songList[songId]["duration"];
-        durationDiv.appendChild(durationP)
+        durationP.innerText = durationHumanReadable;
+        durationDiv.appendChild(durationP);
+
+        function addOnclick(onclick_url) {
+            let url = onclick_url;
+            return function () {
+                window.open(url)
+            }
+        }
     }
 
     root.style.display = "block";
     document.getElementById("song-placeholder").style.display = "none"
+}
+
+function updatePlaylistInfo() {
+    document.getElementById("song-count").innerText = mainPlaylist.songCount;
+    document.getElementById("duration").innerText = mainPlaylist.durationHumanReadable;
 }

@@ -1,20 +1,40 @@
 class Playlist {
 
-    constructor(name, author, songCount, url, picture) {
+    constructor(name, author, songCount, url, picture, type) {
         this._duration = 0;
         this._name = name;
         this._author = author;
         this._songCount = songCount;
         this._url = url;
         this._picture = picture;
+        this._songList = [];
+        this._type = type;
+        this._durationHumanReadable = "";
     }
 
     addSong(song) {
+        this._songList.push(song);
+        this._calculateDuration();
+
+        if (this.type === "main") {
+            updatePlaylistInfo();
+        }
 
     }
 
-    removeSong(song) {
+    _calculateDuration() {
+        let duration = 0;
+        for (let songNumber in this._songList) {
+            if (this._songList.hasOwnProperty(songNumber)) {
+                var song = this._songList[songNumber];
+            }
+            duration += song.duration;
+        }
+        this.duration = duration;
+    }
 
+    removeSong(song) {
+        // ToDo
     }
 
     set name(value) {
@@ -39,6 +59,32 @@ class Playlist {
 
     set duration(value) {
         this._duration = value;
+        this.durationHumanReadable = value;
+    }
+
+    set durationHumanReadable(value) {
+        let hDuration = "";
+
+        let seconds = parseInt((value / 1000) % 60).toString();
+        seconds = pad(seconds, 2);
+        let minutes = (parseInt((value / (1000 * 60) % 60))).toString();
+        let hours = (parseInt((value / (1000 * 60 * 60)) % 60)).toString();
+
+        if (hours !== "0") {
+            hours = pad(hours, 2);
+            hDuration += hours + ":"
+        }
+        if (hours !== "0" || minutes !== "0") {
+            minutes = pad(minutes, 2);
+            hDuration += minutes + ":"
+        }
+        hDuration += seconds;
+
+        this._durationHumanReadable = hDuration;
+    }
+
+    get songList() {
+        return this._songList;
     }
 
     get name() {
@@ -63,6 +109,14 @@ class Playlist {
 
     get duration() {
         return this._duration;
+    }
+
+    get durationHumanReadable() {
+        return this._durationHumanReadable;
+    }
+
+    get type() {
+        return this._type;
     }
 
 }

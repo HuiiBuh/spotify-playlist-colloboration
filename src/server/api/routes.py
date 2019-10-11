@@ -48,7 +48,7 @@ def callback():
 @mod.route("spotify/search")
 @login_required
 def search_for_songs():
-    search_term = request.args.get('search')
+    search_term = request.args.get('searchterm')
 
     if search_term is None or search_term is "":
         return abort(400)
@@ -59,7 +59,9 @@ def search_for_songs():
         update_oauth()
         search_results = spotify.search(search_term, limit=10, types="track")
 
-    return search_results
+    print(search_results)
+    return_search_results = modify_track_json(search_results["tracks"])
+    return return_search_results
 
 
 @mod.route("/spotify/playlist")

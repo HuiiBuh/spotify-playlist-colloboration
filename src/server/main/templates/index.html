@@ -87,9 +87,7 @@
 
             <div id="search-results-block" style="display: none">
                 <h5>Search Results</h5>
-                <div id="search-results">
-
-                </div>
+                <div id="search-results"></div>
             </div>
 
             <!-- All songs -->
@@ -169,37 +167,19 @@
                     <input id="new-song-search" type="text" class="validate">
                     <label for="new-song-search">Song search</label>
 
-                    <ul class="show-autocomplete dropdown-content" tabindex="0">
+                    <ul class="show-autocomplete dropdown-content" id="search-preview" tabindex="0">
 
-                        <li class="search-song">
-                            <div class="flex-v-center small-padding-bottom small-padding-top">
-                                <div class="col xs3 s2 l1 flex-v-center">
-                                    <img alt="cover" class="search-song-image no-padding"
-                                         src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
-                                </div>
-                                <div class="col xs8 s9 m9 l10">
-                                    <div class="col s12">Title</div>
-                                    <div class="col s12">Interpret &middot; Album</div>
-                                </div>
-                                <div class="col xs1 s2 m2 l1 flex-end  flex-v-center">
-                                    <i class="material-icons pointer">playlist_add</i>
-                                </div>
+                        <li class="search-song flex-v-center small-padding-bottom small-padding-top">
+                            <div class="col xs3 s2 l1 flex-v-center">
+                                <img alt="cover" class="search-song-image no-padding"
+                                     src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
                             </div>
-                        </li>
-
-                        <li class="search-song">
-                            <div class="flex-v-center small-padding-bottom small-padding-top">
-                                <div class="col xs3 s2 l1 flex-v-center">
-                                    <img alt="cover" class="search-song-image no-padding"
-                                         src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
-                                </div>
-                                <div class="col xs8 s9 m9 l10">
-                                    <div class="col s12">Title</div>
-                                    <div class="col s12">Interpret &middot; Album</div>
-                                </div>
-                                <div class="col xs1 s2 m2 l1 flex-end  flex-v-center">
-                                    <i class="material-icons pointer">playlist_add</i>
-                                </div>
+                            <div class="col xs8 s9 m9 l10">
+                                <div class="col s12">Title</div>
+                                <div class="col s12">Interpret &middot; Album</div>
+                            </div>
+                            <div class="col xs1 s2 m2 l1 flex-end  flex-v-center">
+                                <i class="material-icons pointer">playlist_add</i>
                             </div>
                         </li>
 
@@ -251,11 +231,12 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="../static/js/own/main.js"></script>
-    <script src="../static/js/own/Playlist.js"></script>
-    <script src="../static/js/own/Song.js"></script>
-    <script src="../static/js/own/functions.js"></script>
-    <script src="../static/js/own/playlist_functions.js"></script>
-    <script src="../static/js/own/song_functions.js"></script>
-    <script src="../static/js/own/search.js"></script>
+    <script type="text/javascript" src="../static/js/own/main.js"></script>
+    <script type="text/javascript" src="../static/js/own/Playlist.js"></script>
+    <script type="text/javascript" src="../static/js/own/Song.js"></script>
+    <script type="text/javascript" src="../static/js/own/functions.js"></script>
+    <script type="text/javascript" src="../static/js/own/playlist_functions.js"></script>
+    <script type="text/javascript" src="../static/js/own/song_functions.js"></script>
+    <script type="text/javascript" src="../static/js/own/search_playlist.js"></script>
+    <script type="text/javascript" src="../static/js/own/song_search.js"></script>
 {% endblock %}

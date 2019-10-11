@@ -3,7 +3,7 @@ function getPlaylistSongs(url) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            createSongs(JSON.parse(this.responseText))
+            createSongs(JSON.parse(this.responseText), "main")
         }
     };
 
@@ -11,7 +11,8 @@ function getPlaylistSongs(url) {
     xhttp.send();
 }
 
-function createSongs(json) {
+function createSongs(json, type = "HuiiBuh") {
+    let searchSongList = [];
     for (let songId in json) {
         if (json.hasOwnProperty(songId))
             var songJSON = json[songId];
@@ -25,16 +26,21 @@ function createSongs(json) {
 
         let song = new Song(songId, album, url, artists, duration, cover, title);
 
-        mainPlaylist.addSong(song)
+        if (type === "main")
+            mainPlaylist.addSong(song);
+        else
+            searchSongList.push(song);
     }
-    displayPlaylistSongs()
+    if (type === "main")
+        displayPlaylistSongs();
+    else
+        return searchSongList
 }
 
 
 function displayPlaylistSongs() {
 
     let root = document.getElementById("playlist-songs");
-
 
     for (let songNumber in mainPlaylist.songList) {
         if (mainPlaylist.songList.hasOwnProperty(songNumber)) {

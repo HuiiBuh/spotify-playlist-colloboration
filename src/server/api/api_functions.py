@@ -29,7 +29,10 @@ def modify_track_json(track_list, return_track_list=None):
     track_list = track_list["items"]
 
     for track in track_list:
-        track = track["track"]
+
+        if "track" in track:
+            track = track["track"]
+
         return_track_list[track["id"]] = {}
         return_track_list[track["id"]]["title"] = track["name"]
         return_track_list[track["id"]]["album"] = {}

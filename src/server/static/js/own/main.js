@@ -1,4 +1,9 @@
+/*Parameters*/
+let searchAPIUrl = "/api/spotify/search?searchterm=";
+
+
 let mainPlaylist = null;
+let searchPreviewPlaylist = null;
 
 smallStyleChanges();
 
@@ -18,5 +23,6 @@ function smallStyleChanges() {
 
 
 function addEventHandler() {
-    document.getElementById("search-playlist-song").onkeyup = search;
+    document.getElementById("search-playlist-song").onkeyup = search_playlist;
+    document.getElementById("new-song-search").onkeyup = songSearch;
 }

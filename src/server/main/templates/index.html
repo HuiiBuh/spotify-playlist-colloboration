@@ -44,18 +44,12 @@
 
                     <div class="loading-card" id="loading-playlist-description" style="overflow: hidden">
                         <div class="loading-bar loading-bar-2 loading first-loading-bar"></div>
-                        <div class="loading-bar loading-bar-1 loading "></div>
-                        <div class="loading-bar loading-bar-3 loading "></div>
-                        <div class="loading-bar loading-bar-1 loading "></div>
-                        <div class="loading-bar loading-bar-1 loading "></div>
-                        <div class="loading-bar loading-bar-1 loading "></div>
-                        <div class="loading-bar loading-bar-2 loading "></div>
-                        <div class="loading-bar loading-bar-1 loading "></div>
-                        <div class="loading-bar loading-bar-1 loading "></div>
-                        <div class="loading-bar loading-bar-2 loading "></div>
-                        <div class="loading-bar loading-bar-2 loading "></div>
-                        <div class="loading-bar loading-bar-3 loading "></div>
-                        <div class="loading-bar loading-bar-2 loading "></div>
+                        {% for i in range(1, 3) %}
+                            <div class="loading-bar loading-bar-3 loading "></div>
+                            <div class="loading-bar loading-bar-1 loading "></div>
+                            <div class="loading-bar loading-bar-2 loading "></div>
+                            <div class="loading-bar loading-bar-1 loading "></div>
+                        {% endfor %}
                     </div>
 
                 </div>
@@ -96,51 +90,14 @@
             <div class="loading-card" id="song-placeholder">
                 <div class="contend-loader">
                     <div class="loading-bar loading-bar-2 loading first-loading-bar"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-3 loading"></div>
-                    <div class="loading-bar loading-bar-2 loading"></div>
-                    <div class="loading-bar loading-bar-1 loading"></div>
+
+                    {% for i in range(1, 20) %}
+                        <div class="loading-bar loading-bar-1 loading"></div>
+                        <div class="loading-bar loading-bar-3 loading"></div>
+                        <div class="loading-bar loading-bar-2 loading"></div>
+                        <div class="loading-bar loading-bar-1 loading"></div>
+                    {% endfor %}
+
                     <div class="loading-bar loading-bar-1 loading last-loading-bar"></div>
                 </div>
             </div>
@@ -164,62 +121,18 @@
             <div class="row">
                 <div class="input-field col s12">
                     <i class="material-icons prefix" id="search-song-icon">search</i>
-                    <input id="new-song-search" type="text" class="validate">
                     <label for="new-song-search">Song search</label>
+                    <input id="new-song-search" type="text">
 
                     <ul class="show-autocomplete dropdown-content" id="search-preview" tabindex="0">
-
-                        <li class="search-song flex-v-center small-padding-bottom small-padding-top">
-                            <div class="col xs3 s2 l1 flex-v-center">
-                                <img alt="cover" class="search-song-image no-padding"
-                                     src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
-                            </div>
-                            <div class="col xs8 s9 m9 l10">
-                                <div class="col s12">Title</div>
-                                <div class="col s12">Interpret &middot; Album</div>
-                            </div>
-                            <div class="col xs1 s2 m2 l1 flex-end  flex-v-center">
-                                <i class="material-icons pointer">playlist_add</i>
-                            </div>
-                        </li>
 
                     </ul>
                 </div>
             </div>
             <h5>Your songs</h5>
 
-            <div id="add-song-list">
-                <div class="row flex-v-center song rounded add-song-list "
-                     onclick="window.open('https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown')">
-                    <div class="col xs3 s2 l1 flex-v-center">
-                        <img alt="cover" class="song-image no-padding"
-                             src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
-                    </div>
-                    <div class="col xs8 s9 l9">
-                        <div class="col s12">Title</div>
-                        <div class="col s12">Interpret &middot; Album</div>
-                    </div>
-                    <div class="col xs1 s2 flex-v-center flex-end">
-                        <i class="material-icons pointer">delete</i>
-                    </div>
-                </div>
+            <div id="add-song-list"></div>
 
-
-                <div class="row flex-v-center song rounded add-song-list "
-                     onclick="window.open('https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown')">
-                    <div class="col xs3 s2 l1 flex-v-center">
-                        <img alt="cover" class="song-image no-padding"
-                             src="https://cdn.shopify.com/s/files/1/1040/6126/products/eminem-revival-uni-universal-music.jpg">
-                    </div>
-                    <div class="col xs8 s9 l9">
-                        <div class="col s12">Title</div>
-                        <div class="col s12">Interpret &middot; Album</div>
-                    </div>
-                    <div class="col xs1 s2 flex-v-center flex-end">
-                        <i class="material-icons pointer">delete</i>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="modal-footer" id="add-song-footer">

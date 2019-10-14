@@ -22,6 +22,21 @@
     padding: 0 .75rem;
 }
 
+#toast-container {
+    width: 100%;
+    right: 0;
+    top: auto;
+    max-width: 100% !important;
+    bottom: 5% !important;
+}
+
+.toast {
+    width: max-content;
+    text-align: center;
+    margin: 1em auto auto;
+    max-width: 70%;
+}
+
 #main-box {
     min-height: calc(100vh - 14px);
 }
@@ -81,10 +96,6 @@ img {
     border-radius: 2px;
 }
 
-.song img {
-    width: 100%;
-}
-
 .show-autocomplete {
     display: block;
     width: calc(100% - 4.5rem);
@@ -100,7 +111,7 @@ img {
 }
 
 #song-modal .modal-content {
-    height: 63vh;
+    min-height: 63vh;
 }
 
 @media (max-width: 460px) {

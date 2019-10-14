@@ -1,4 +1,5 @@
 let addTimeouts = null;
+let songAddList = [];
 
 function songSearch(evt) {
     if (addTimeouts) {
@@ -9,6 +10,7 @@ function songSearch(evt) {
     searchValue = searchValue.replace(/[\\^$*+?.()|[\]{}]/g, '');
 
     if (/^\s*$/g.test(searchValue) || searchValue === "") {
+        document.getElementById("search-preview").innerText = "";
         return
     }
 
@@ -17,8 +19,8 @@ function songSearch(evt) {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
-                let songList = createSongs(JSON.parse(this.responseText));
-                displaySearchPreview(songList);
+                let songList = createSongs(JSON.parse(this.responseText), type = "search");
+                displaySearchPreview(songList, "search-preview");
             }
         };
         let url = searchAPIUrl + searchValue;
@@ -29,14 +31,14 @@ function songSearch(evt) {
     }, 200);
 }
 
-function displaySearchPreview(searchSongList) {
-    let root = document.getElementById("search-preview");
+function displaySearchPreview(searchSongList, rootID) {
+    let root = document.getElementById(rootID);
     root.innerText = "";
 
     for (let songNumber in searchSongList) {
         let song = searchSongList[songNumber];
 
-        var {cover, title, url, artist, album, id} = searchSongList[songNumber];
+        let {cover, title, url, artist, album, id} = searchSongList[songNumber];
 
         let songLi = document.createElement("li");
         songLi.setAttribute("class", "search-song flex-v-center small-padding-bottom small-padding-top");
@@ -57,6 +59,7 @@ function displaySearchPreview(searchSongList) {
 
         let titleDiv = document.createElement("div");
         titleDiv.setAttribute("class", "s12");
+        titleDiv.onclick = addOnclick(url);
         infoDiv.appendChild(titleDiv);
 
         let titleA = document.createElement("a");
@@ -95,8 +98,109 @@ function displaySearchPreview(searchSongList) {
         songLi.appendChild(addPlaylistDiv);
 
         let addPlaylistIcon = document.createElement("i");
-        addPlaylistIcon.setAttribute("class", "material-icons poiter");
+        addPlaylistIcon.setAttribute("class", "material-icons pointer");
+        addPlaylistIcon.setAttribute("song-id", id);
+        addPlaylistIcon.onclick = addToAddPlaylist(searchSongList[songNumber]);
         addPlaylistIcon.innerText = "playlist_add";
         addPlaylistDiv.appendChild(addPlaylistIcon);
+    }
+
+    function addOnclick(onclick_url) {
+        let url = onclick_url;
+        return function () {
+            window.open(url)
+        }
+    }
+}
+
+function addToAddPlaylist(song) {
+
+    let songObject = song;
+    return function (evt) {
+
+        let songList = mainPlaylist.songList;
+        for (let song in songList) {
+
+            if (songList.hasOwnProperty(song))
+                song = songList[song];
+
+            let artists = songObject.artist;
+            let artistSearch = "";
+            for (let artistNumber in artists) {
+                if (artists.hasOwnProperty(artistNumber))
+                    artistSearch += artists[artistNumber]["name"];
+            }
+
+            let artistRegex = new RegExp(artistSearch, "gi");
+            let titleRegex = new RegExp(songObject.title, "gi");
+            let albumRegex = new RegExp(songObject.album, "gi");
+
+            if (artistRegex.test(song.searchString) && titleRegex.test(song.searchString) && albumRegex.test(song.searchString)) {
+                let toastHTML = '<p style="text-align: center; width:100%">The Song already exists in the playlist</p>';
+                M.toast({html: toastHTML});
+                return
+            }
+        }
+
+        songAddList.push(songObject);
+        displayAddSongPlaylist(songAddList, "add-song-list");
+
+    }
+}
+
+function displayAddSongPlaylist(songList, rootID) {
+    let root = document.getElementById(rootID);
+
+
+    for (let songId in songList) {
+        if (songList.hasOwnProperty(songId)) {
+            var songObject = songList[songId]
+        }
+
+        let songDiv = document.createElement('div');
+        songDiv.setAttribute("class", "row flex-v-center song rounded add-song-list");
+        root.appendChild(songDiv);
+
+        let imageDiv = document.createElement("div");
+        imageDiv.setAttribute("class", "col xs3 s2 l1 flex-v-center");
+        songDiv.appendChild(imageDiv);
+
+        let image = document.createElement("img");
+        image.setAttribute("class", "song-image no-padding");
+        image.src = songObject.cover;
+        imageDiv.appendChild(image);
+
+        let infoDiv = document.createElement("div");
+        infoDiv.setAttribute("class", "col xs8 s9 l9");
+        songDiv.appendChild(infoDiv);
+
+        let titleDiv = document.createElement("div");
+        titleDiv.setAttribute("class", "s12 black-text pointer underline");
+        titleDiv.innerText = songObject.title;
+        infoDiv.appendChild(titleDiv);
+
+
+        let interpretA = document.createElement("a");
+        interpretA.setAttribute("class", "black-text pointer underline");
+        infoDiv.appendChild(interpretA);
+
+        let dividerA = document.createElement("a");
+        dividerA.setAttribute("class", "black-text ");
+        dividerA.innerHTML = "&middot;";
+        infoDiv.appendChild(dividerA);
+
+        let albumA = document.createElement("a");
+        albumA.setAttribute("class", "black-text pointer underline");
+        albumA.innerText = songObject.title;
+        infoDiv.appendChild(albumA);
+
+        let iconDiv = document.createElement("div");
+        iconDiv.setAttribute("class", "col xs1 s2 flex-v-center flex-end");
+        songDiv.appendChild(iconDiv);
+
+        let icon = document.createElement("i");
+        icon.setAttribute("class", "material-icons pointer");
+        icon.innerText = "delete";
+        iconDiv.appendChild(icon);
     }
 }

@@ -11,7 +11,7 @@ function getPlaylistSongs(url) {
     xhttp.send();
 }
 
-function createSongs(json, type = "HuiiBuh") {
+function createSongs(json, type = "None", appendList = []) {
     let searchSongList = [];
     for (let songId in json) {
         if (json.hasOwnProperty(songId))
@@ -28,19 +28,23 @@ function createSongs(json, type = "HuiiBuh") {
 
         if (type === "main")
             mainPlaylist.addSong(song);
-        else
+        else if (type === "search")
             searchSongList.push(song);
+        else if (type === "append")
+            appendList.push(song);
     }
     if (type === "main")
-        displayPlaylistSongs();
-    else
-        return searchSongList
+        displayPlaylistSongs("playlist-songs");
+    else if (type === "search")
+        return searchSongList;
+    else if (type === "append")
+        return appendList
 }
 
 
-function displayPlaylistSongs() {
+function displayPlaylistSongs(rootID) {
 
-    let root = document.getElementById("playlist-songs");
+    let root = document.getElementById(rootID);
 
     for (let songNumber in mainPlaylist.songList) {
         if (mainPlaylist.songList.hasOwnProperty(songNumber)) {

@@ -4,6 +4,7 @@ function getPlaylistInfo(url) {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             createPlaylistFromJSON(JSON.parse(this.responseText));
+            getPlaylistSongs("/api/spotify/playlist/tracks");
             displayPlaylistInfo(true);
         }
     };

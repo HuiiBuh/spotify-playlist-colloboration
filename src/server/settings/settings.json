@@ -1,5 +1,6 @@
 {
-  "playlist-id": [],
-  "OAuth-Token": "",
-  "backup_path": "./backup"
+  "playlist-id": "",
+  "backup_path": "./backup",
+  "client_id": "",
+  "client_secret": ""
 }

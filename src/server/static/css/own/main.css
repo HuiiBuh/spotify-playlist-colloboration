@@ -108,10 +108,13 @@ img {
 
 #add-song-footer {
     padding-right: 34px;
+    position: sticky;
+    bottom: 0;
 }
 
 #song-modal .modal-content {
     min-height: 63vh;
+    padding-bottom: 0;
 }
 
 @media (max-width: 460px) {
@@ -139,14 +142,11 @@ img {
         left: .76rem;
     }
 
-    #add-song-footer {
-        padding-right: 20px;
-    }
 }
 
-.add-song-list {
-    padding-bottom: 5px;
-    padding-top: 5px;
+#add-song-list {
+    overflow: auto;
+    padding: 5px;
 }
 
 

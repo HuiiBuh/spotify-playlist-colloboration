@@ -142,65 +142,104 @@ function addToAddPlaylist(song) {
             }
         }
 
+        evt.currentTarget.style.color = "green";
+
         songAddList.push(songObject);
-        displayAddSongPlaylist(songAddList, "add-song-list");
+        displayAddSongPlaylist(songObject, "add-song-list");
 
     }
 }
 
-function displayAddSongPlaylist(songList, rootID) {
+function displayAddSongPlaylist(songObject, rootID) {
     let root = document.getElementById(rootID);
 
+    let songDiv = document.createElement('div');
+    songDiv.setAttribute("class", "row flex-v-center song rounded add-song-list");
+    root.appendChild(songDiv);
 
-    for (let songId in songList) {
-        if (songList.hasOwnProperty(songId)) {
-            var songObject = songList[songId]
-        }
+    let imageDiv = document.createElement("div");
+    imageDiv.setAttribute("class", "col xs3 s2 l1 flex-v-center");
+    songDiv.appendChild(imageDiv);
 
-        let songDiv = document.createElement('div');
-        songDiv.setAttribute("class", "row flex-v-center song rounded add-song-list");
-        root.appendChild(songDiv);
+    let image = document.createElement("img");
+    image.setAttribute("class", "song-image no-padding");
+    image.src = songObject.cover;
+    imageDiv.appendChild(image);
 
-        let imageDiv = document.createElement("div");
-        imageDiv.setAttribute("class", "col xs3 s2 l1 flex-v-center");
-        songDiv.appendChild(imageDiv);
+    let infoDiv = document.createElement("div");
+    infoDiv.setAttribute("class", "col xs8 s9 l9");
+    songDiv.appendChild(infoDiv);
 
-        let image = document.createElement("img");
-        image.setAttribute("class", "song-image no-padding");
-        image.src = songObject.cover;
-        imageDiv.appendChild(image);
+    let titleDiv = document.createElement("div");
+    titleDiv.setAttribute("class", "s12 black-text pointer underline");
+    titleDiv.innerText = songObject.title;
+    titleDiv.onclick = addOnclick(songObject.url);
+    infoDiv.appendChild(titleDiv);
 
-        let infoDiv = document.createElement("div");
-        infoDiv.setAttribute("class", "col xs8 s9 l9");
-        songDiv.appendChild(infoDiv);
-
-        let titleDiv = document.createElement("div");
-        titleDiv.setAttribute("class", "s12 black-text pointer underline");
-        titleDiv.innerText = songObject.title;
-        infoDiv.appendChild(titleDiv);
-
+    for (let artistNumber in songObject.artist) {
+        let artist = songObject.artist[artistNumber];
 
         let interpretA = document.createElement("a");
         interpretA.setAttribute("class", "black-text pointer underline");
+        interpretA.innerText = artist["name"];
+        interpretA.onclick = addOnclick(artist["url"]);
         infoDiv.appendChild(interpretA);
 
-        let dividerA = document.createElement("a");
-        dividerA.setAttribute("class", "black-text ");
-        dividerA.innerHTML = "&middot;";
-        infoDiv.appendChild(dividerA);
-
-        let albumA = document.createElement("a");
-        albumA.setAttribute("class", "black-text pointer underline");
-        albumA.innerText = songObject.title;
-        infoDiv.appendChild(albumA);
-
-        let iconDiv = document.createElement("div");
-        iconDiv.setAttribute("class", "col xs1 s2 flex-v-center flex-end");
-        songDiv.appendChild(iconDiv);
-
-        let icon = document.createElement("i");
-        icon.setAttribute("class", "material-icons pointer");
-        icon.innerText = "delete";
-        iconDiv.appendChild(icon);
+        if (songObject.artist.length > parseInt(artistNumber) + 1) {
+            let artistSeparationA = document.createElement("a");
+            artistSeparationA.setAttribute("class", "black-text small-padding-right");
+            artistSeparationA.innerText = ",";
+            infoDiv.appendChild(artistSeparationA)
+        }
     }
+
+    let dividerA = document.createElement("a");
+    dividerA.setAttribute("class", "black-text small-padding-right small-padding-left");
+    dividerA.innerHTML = "&middot;";
+    infoDiv.appendChild(dividerA);
+
+    let albumA = document.createElement("a");
+    albumA.setAttribute("class", "black-text pointer underline");
+    albumA.innerText = songObject.album["name"];
+    albumA.onclick = addOnclick(songObject.album["url"]);
+    infoDiv.appendChild(albumA);
+
+    let iconDiv = document.createElement("div");
+    iconDiv.setAttribute("class", "col xs1 s2 flex-v-center flex-end");
+    songDiv.appendChild(iconDiv);
+
+    let icon = document.createElement("i");
+    icon.setAttribute("class", "material-icons pointer");
+    icon.innerText = "delete";
+    iconDiv.appendChild(icon);
+
+    function addOnclick(onclick_url) {
+        let url = onclick_url;
+        return function () {
+            window.open(url)
+        };
+    }
+}
+
+function addSongsToPlaylist() {
+    let url = "/api/spotify/playlist/add";
+
+    let songList = [];
+
+    for (let songId in songAddList) {
+        songList.push(songAddList[songId].id);
+    }
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", url, true);
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            songAddList = [];
+            alert("Worked");
+        }
+    };
+
+    // xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(songList));
 }

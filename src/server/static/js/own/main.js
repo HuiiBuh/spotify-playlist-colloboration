@@ -12,7 +12,6 @@ M.AutoInit();
 
 window.onload = function () {
     getPlaylistInfo("/api/spotify/playlist");
-    getPlaylistSongs("/api/spotify/playlist/tracks");
     addEventHandler()
 };
 
@@ -25,4 +24,5 @@ function smallStyleChanges() {
 function addEventHandler() {
     document.getElementById("search-playlist-song").onkeyup = search_playlist;
     document.getElementById("new-song-search").onkeyup = songSearch;
+    document.getElementById("add-song-button").onclick = addSongsToPlaylist;
 }

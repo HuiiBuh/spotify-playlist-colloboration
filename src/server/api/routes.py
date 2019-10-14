@@ -59,7 +59,6 @@ def search_for_songs():
         update_oauth()
         search_results = spotify.search(search_term, limit=10, types="track")
 
-    print(search_results)
     return_search_results = modify_track_json(search_results["tracks"])
     return return_search_results
 

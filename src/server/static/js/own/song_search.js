@@ -240,6 +240,9 @@ function addSongsToPlaylist() {
         }
     };
 
-    // xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify(songList));
+    let data = {};
+    data["track-list"] = songList;
+
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(data));
 }

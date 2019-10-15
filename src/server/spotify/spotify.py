@@ -16,6 +16,9 @@ class SpotifyUrls:
     """
     AUTHORIZE = "https://accounts.spotify.com/authorize"
     REFRESH = "https://accounts.spotify.com/api/token"
+    PLAYLIST_TRACKS = "https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
+    PLAYLIST = "https://api.spotify.com/v1/playlists/{playlist_id}"
+    SEARCH = "https://api.spotify.com/v1/search?q={query}"
 
 
 class SpotifyAppInfo:
@@ -42,9 +45,9 @@ class SpotifyAuthorisationToken:
         :param authorisation_token: The token
         """
         self._time: int = int(time.time())
-        self._token: str = authorisation_token
+        self.token: str = authorisation_token
 
-    def is_valid(self) -> bool:
+    def is_expired(self) -> bool:
         """
         Checks if the api token has expired
         :return: bool
@@ -52,9 +55,9 @@ class SpotifyAuthorisationToken:
         current_time: int = int(time.time())
 
         if current_time - self._time > 3600 * 59:
-            return False
+            return True
 
-        return True
+        return False
 
 
 class SpotifyError(Exception):
@@ -101,11 +104,11 @@ class Spotify:
                    f"&state={self.app_info.state}"
         return url
 
-    def reauthorize(self) -> bool:
+    def reauthorize(self) -> SpotifyAuthorisationToken:
         """
         Reauthorizes the app.
         Only works if the app has benn authorized before
-        :return: Success or Not
+        :return: None
         """
 
         if self.app_info is None:
@@ -118,7 +121,7 @@ class Spotify:
 
         body = {
             "grant_type": "authorization_code",
-            "code": self._authorization_token._token,
+            "code": self._authorization_token.token,
             "redirect_uri": self.app_info.redirect_url
         }
 
@@ -128,20 +131,19 @@ class Spotify:
 
         reauthorization_request = requests.post(url=url, data=body, headers=headers)
 
-        if reauthorization_request.status_code != 200:
-            return False
-
-        if not reauthorization_request.json():
-            return False
+        if "error" in reauthorization_request.json():
+            raise SpotifyError(f"There was an error: "
+                               f"{reauthorization_request.json()}")
 
         try:
             access_token: str = reauthorization_request.json()["access_token"]
         except KeyError:
-            return False
-
+            raise SpotifyError(f"No 'access_token' key was found in this json:"
+                               f"{reauthorization_request.json()}")
+        # Update the access token
         auth_token: SpotifyAuthorisationToken = SpotifyAuthorisationToken(access_token)
         self.auth_token = auth_token
-        return True
+        return auth_token
 
     @property
     def app_information(self) -> SpotifyAppInfo:
@@ -185,3 +187,104 @@ class Spotify:
         if not isinstance(value, SpotifyAuthorisationToken):
             raise TypeError("The value has to be a AuthorisationToken")
         self._authorization_token = value
+
+    def playlist_tracks(self, playlist_id, **kwargs) -> json:
+        """
+        Get the songs of a playlist
+        :param playlist_id: the id of the playlist
+        :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/
+        :return: playlist json
+        """
+
+        url: str = SpotifyUrls.PLAYLIST_TRACKS.replace("{playlist_id}", playlist_id)
+
+        # Add custom pararms to the url
+        url_parameters = {}
+        for kwarg in kwargs:
+            url_parameters[kwarg] = kwargs[kwarg]
+        url_parameters = urlencode(url_parameters)
+
+        if url_parameters != {}:
+            url += f"?{url_parameters}"
+
+        if self.auth_token is None:
+            raise SpotifyError("You have to provide a valid auth token")
+
+        if self.auth_token.is_expired():
+            self.reauthorize()
+
+        headers: dict = self._get_headers()
+        request = requests.get(url=url, headers=headers)
+
+        if "error" in request.json():
+            raise SpotifyError(request.json())
+
+        return request.json()
+
+    def playlist(self, playlist_id, **kwargs) -> json:
+
+        url: str = SpotifyUrls.PLAYLIST.replace("{playlist_id}", playlist_id)
+
+        # Add custom pararms to the url
+        url_parameters = {}
+        for kwarg in kwargs:
+            url_parameters[kwarg] = kwargs[kwarg]
+        url_parameters = urlencode(url_parameters)
+
+        if url_parameters != {}:
+            url += f"?{url_parameters}"
+
+        if self.auth_token is None:
+            raise SpotifyError("You have to provide a valid auth token")
+
+        if self.auth_token.is_expired():
+            self.reauthorize()
+
+        headers: dict = self._get_headers()
+        request = requests.get(url=url, headers=headers)
+
+        if "error" in request.json():
+            raise SpotifyError(request.json())
+
+        return request.json()
+
+    def search(self, query, **kwargs):
+
+        url: str = SpotifyUrls.SEARCH.replace("{query}", query)
+
+        # Add custom pararms to the url
+        url_parameters = {}
+        for kwarg in kwargs:
+            url_parameters[kwarg] = kwargs[kwarg]
+        url_parameters = urlencode(url_parameters)
+
+        if url_parameters != {}:
+            url += f"&{url_parameters}"
+
+        if self.auth_token is None:
+            raise SpotifyError("You have to provide a valid auth token")
+
+        if self.auth_token.is_expired():
+            self.reauthorize()
+
+        headers: dict = self._get_headers()
+        request = requests.get(url=url, headers=headers)
+
+        if "error" in request.json():
+            raise SpotifyError(request.json())
+
+        return request.json()
+
+    def _get_headers(self) -> dict:
+        """
+        Get the headers required for OAuth
+        :return: headers
+        """
+
+        if self.auth_token is None:
+            raise SpotifyError("You have to provide a valid auth token")
+
+        return {
+            "Authorization": f"Bearer {self.auth_token.token}",
+            "Content-Type": "application/json"
+        }

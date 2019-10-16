@@ -6,8 +6,7 @@ import schedule
 import time
 import threading
 
-from pyfy import Spotify
-
+from server import spotify
 from server.functions import get_settings
 
 
@@ -22,11 +21,9 @@ def backup_job():
 def backup():
     settings = get_settings()
 
-    auth_token = settings["OAuth-Token"]
     playlist_id = settings["playlist-id"]
-    sp = Spotify(auth_token)
 
-    raq_track_list = sp.playlist_tracks(playlist_id=playlist_id, fields="items(track(href))")["items"]
+    raq_track_list = spotify.playlist_tracks(playlist_id=playlist_id, fields="items(track(href))")["items"]
 
     track_list = []
 

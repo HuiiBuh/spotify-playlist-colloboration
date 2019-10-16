@@ -19,8 +19,5 @@ argon2-cffi
 # backup
 schedule==0.6.0
 
-# spotify api
-pyfy
-
 # production server
 uwsgi

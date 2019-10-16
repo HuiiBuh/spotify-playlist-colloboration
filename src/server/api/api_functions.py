@@ -1,17 +1,12 @@
-import pyfy
-
-from server import spotify_client, spotify
+from server import spotify
 from server.functions import get_settings
 
 
 def collect_tracks(playlist_id, count=0, offset=0, modified_tracks=None):
     if modified_tracks is None:
         modified_tracks = {}
-    try:
-        tracks = spotify.playlist_tracks(playlist_id=playlist_id, offset=offset)
-    except pyfy.excs.ApiError:
-        update_oauth()
-        tracks = spotify.playlist_tracks(playlist_id=playlist_id, offset=offset)
+
+    tracks = spotify.playlist_tracks(playlist_id=playlist_id, offset=offset)
 
     count += len(tracks["items"])
 
@@ -78,14 +73,4 @@ def modify_playlist_json(playlist_json):
 def add_tracks(id_list: list):
     playlist_id = get_settings()["playlist-id"]
 
-    try:
-        spotify.add_playlist_tracks(playlist_id=playlist_id, track_ids=id_list)
-    except pyfy.excs.ApiError:
-        update_oauth()
-        spotify.add_playlist_tracks(playlist_id=playlist_id, track_ids=id_list)
-
-
-def update_oauth():
-    spotify_client.load_from_env()
-    spotify.client_creds = spotify_client
-    spotify.authorize_client_creds(client_creds=spotify_client)
+    spotify.add_playlist_tracks(playlist_id, id_list)

@@ -27,11 +27,11 @@ class SpotifyAppInfo:
     """
 
     def __init__(self, application_id: str, application_secret: str, scopes: list, redirect_url: str, state: str):
-        self.application_id = application_id
-        self.application_secret = application_secret
-        self.scopes = scopes
-        self.redirect_url = redirect_url
-        self.state = state
+        self.application_id: str = application_id
+        self.application_secret: str = application_secret
+        self.scopes: list = scopes
+        self.redirect_url: str = redirect_url
+        self.state: str = state
 
 
 class SpotifyAuthorisationToken:
@@ -69,7 +69,7 @@ class SpotifyError(Exception):
 
 class Spotify:
     """
-    A Spotify API manager class
+    A Spotify API manager
     """
 
     def __init__(self):
@@ -254,15 +254,17 @@ class Spotify:
 
         return request.json()
 
-    def search(self, query, **kwargs) -> json:
+    def search(self, query, type, **kwargs) -> json:
         """
         Search for things on spotify
-        :param query: The search string
+        :param query: The search string4
+        :param type: The type of the search result (song, artist, playlist, album)
         :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/search/search/
         :return: The json response of the api
         """
 
         url: str = SpotifyUrls.SEARCH.replace("{query}", query)
+        url += f"&type={type}"
 
         # Add custom pararms to the url
         url_parameters = {}
@@ -287,7 +289,7 @@ class Spotify:
 
         return request.json()
 
-    def add_songs_to_playlist(self, playlist_id: str, song_list: list, **kwargs) -> json:
+    def add_playlist_tracks(self, playlist_id: str, song_list: list, **kwargs) -> json:
         """
         Add songs to a specific playlist
         :param playlist_id: The id of the playlist

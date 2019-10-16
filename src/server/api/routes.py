@@ -1,10 +1,10 @@
-import pyfy
 from flask import Blueprint, jsonify, request, Response, redirect, abort
 from flask_login import login_required
-from pyfy import AuthError
 
-from server import spotify_client, spotify, state, spotify_scopes
-from server.api.api_functions import modify_playlist_json, modify_track_json, add_tracks, update_oauth, collect_tracks
+from server import spotify, spotify_info
+from server.spotify import SpotifyAuthorisationToken
+from server.api.api_functions import modify_playlist_json, modify_track_json, add_tracks, \
+    collect_tracks
 from server.functions import get_settings
 
 mod = Blueprint("api", __name__)
@@ -13,14 +13,8 @@ mod = Blueprint("api", __name__)
 @mod.route("/authorize")
 @login_required
 def authorize():
-    spotify_client.load_from_env()
-    spotify.client_creds = spotify_client
-    if spotify.is_oauth_ready:
-        return redirect(spotify.auth_uri(state=state, scopes=spotify_scopes))
-    else:
-        return (jsonify(
-            {"error": "Client needs client_id, client_secret and a redirect uri in order to handle OAauth properly"}
-        ), 500)
+    url = spotify.build_authorize_url(show_dialog=False)
+    return redirect(url)
 
 
 @mod.route("/callback/")
@@ -28,21 +22,19 @@ def authorize():
 def callback():
     if request.args.get("error"):
         return jsonify(dict(error=request.args.get("error_description")))
-    elif request.args.get("code"):
-        grant = request.args.get("code")
+    else:
         callback_state = request.args.get("state")
 
-        if callback_state != state:
-            return abort(401)
+        if callback_state != spotify_info.state:
+            return f"The state was not the same." \
+                   f"The returned state was {callback_state}"
 
-        try:
-            user_creds = spotify.build_user_creds(grant=grant)
-        except AuthError as e:
-            return jsonify(dict(error_description=e.msg)), e.code
+    auth_code: str = request.args.get("code")
+    auth_token: SpotifyAuthorisationToken = SpotifyAuthorisationToken(auth_code)
+    spotify.auth_token = auth_token
+    spotify.reauthorize()
 
-        return user_creds.__dict__
-    else:
-        return abort(500)
+    return jsonify(OAuth_Token=auth_code)
 
 
 @mod.route("spotify/search")
@@ -53,12 +45,7 @@ def search_for_songs():
     if search_term is None or search_term is "":
         return abort(400)
 
-    try:
-        search_results = spotify.search(search_term, limit=10, types="track")
-    except pyfy.excs.ApiError:
-        update_oauth()
-        search_results = spotify.search(search_term, limit=10, types="track")
-
+    search_results = spotify.search(search_term, "track", limit=10)
     return_search_results = modify_track_json(search_results["tracks"])
     return return_search_results
 
@@ -69,13 +56,7 @@ def get_playlist():
     settings = get_settings()
     playlist_id = settings["playlist-id"]
 
-    try:
-        playlist = spotify.playlist(playlist_id=playlist_id)
-    except pyfy.excs.ApiError:
-        update_oauth()
-
-        playlist = spotify.playlist(playlist_id=playlist_id)
-
+    playlist = spotify.playlist(playlist_id=playlist_id)
     modified_playlist = modify_playlist_json(playlist)
 
     return modified_playlist

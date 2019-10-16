@@ -1,15 +1,11 @@
-import os
-
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from pyfy import Spotify, ClientCreds
+from server.spotify import Spotify, SpotifyAppInfo, SpotifyAuthorisationToken, KEYS
 
 import server.admin
 import server.api
-
-from server.api.key_template_production import KEYS
 
 from server.config import Config
 
@@ -32,12 +28,9 @@ login.login_message = ""
 login.login_view = 'main.login'
 
 spotify = Spotify()
-spotify_client = ClientCreds()
-spotify_scopes = ["playlist-modify-private", "playlist-modify-public"]
-
-for key, value in KEYS.items():
-    if value:
-        os.environ[key] = value
+spotify_info = SpotifyAppInfo(KEYS.SPOTIFY_CLIENT_ID, KEYS.SPOTIFY_CLIENT_SECRET, KEYS.SPOTIFY_SCOPES,
+                              KEYS.SPOTIFY_REDIRECT_URI, KEYS.SPOTIFY_STATE)
+spotify.app_information = spotify_info
 
 state = "HuiiBuh"
 

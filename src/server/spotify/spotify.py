@@ -119,7 +119,7 @@ class Spotify:
 
         url: str = SpotifyUrls.REFRESH
 
-        body = {
+        body: dict = {
             "grant_type": "authorization_code",
             "code": self._authorization_token.token,
             "redirect_uri": self.app_info.redirect_url
@@ -202,9 +202,9 @@ class Spotify:
         url_parameters = {}
         for kwarg in kwargs:
             url_parameters[kwarg] = kwargs[kwarg]
-        url_parameters = urlencode(url_parameters)
 
         if url_parameters != {}:
+            url_parameters = urlencode(url_parameters)
             url += f"?{url_parameters}"
 
         if self.auth_token is None:
@@ -222,6 +222,12 @@ class Spotify:
         return request.json()
 
     def playlist(self, playlist_id, **kwargs) -> json:
+        """
+        Get the playlist
+        :param playlist_id: The id of the playlist
+        :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist/
+        :return: The json of the playlist
+        """
 
         url: str = SpotifyUrls.PLAYLIST.replace("{playlist_id}", playlist_id)
 
@@ -229,9 +235,9 @@ class Spotify:
         url_parameters = {}
         for kwarg in kwargs:
             url_parameters[kwarg] = kwargs[kwarg]
-        url_parameters = urlencode(url_parameters)
 
         if url_parameters != {}:
+            url_parameters = urlencode(url_parameters)
             url += f"?{url_parameters}"
 
         if self.auth_token is None:
@@ -248,7 +254,13 @@ class Spotify:
 
         return request.json()
 
-    def search(self, query, **kwargs):
+    def search(self, query, **kwargs) -> json:
+        """
+        Search for things on spotify
+        :param query: The search string
+        :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/search/search/
+        :return: The json response of the api
+        """
 
         url: str = SpotifyUrls.SEARCH.replace("{query}", query)
 
@@ -256,9 +268,9 @@ class Spotify:
         url_parameters = {}
         for kwarg in kwargs:
             url_parameters[kwarg] = kwargs[kwarg]
-        url_parameters = urlencode(url_parameters)
 
         if url_parameters != {}:
+            url_parameters = urlencode(url_parameters)
             url += f"&{url_parameters}"
 
         if self.auth_token is None:
@@ -269,6 +281,51 @@ class Spotify:
 
         headers: dict = self._get_headers()
         request = requests.get(url=url, headers=headers)
+
+        if "error" in request.json():
+            raise SpotifyError(request.json())
+
+        return request.json()
+
+    def add_songs_to_playlist(self, playlist_id: str, song_list: list, **kwargs) -> json:
+        """
+        Add songs to a specific playlist
+        :param playlist_id: The id of the playlist
+        :param song_list: The ids of the songs that are supposed to be added
+        :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
+        :return: snapshot_id
+        """
+
+        url: str = SpotifyUrls.PLAYLIST_TRACKS.replace("{playlist_id}", playlist_id)
+
+        # Build post body
+        uris: str = ""
+        for song_id in song_list:
+            uris += f"spotify:track:{song_id},"
+
+            # Remove the last comma
+            if song_list.index(song_id) >= len(song_list) - 1:
+                uris = uris[:len(uris) - 1]
+
+        url += f"?uris={uris}"
+
+        # Add custom pararms to the url
+        url_parameters = {}
+        for kwarg in kwargs:
+            url_parameters[kwarg] = kwargs[kwarg]
+
+        if url_parameters != {}:
+            url_parameters = urlencode(url_parameters)
+            url += f"&{url_parameters}"
+
+        if self.auth_token is None:
+            raise SpotifyError("You have to provide a valid auth token")
+
+        if self.auth_token.is_expired():
+            self.reauthorize()
+
+        headers: dict = self._get_headers()
+        request = requests.post(url=url, headers=headers)
 
         if "error" in request.json():
             raise SpotifyError(request.json())

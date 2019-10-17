@@ -4,7 +4,7 @@ from flask_login import login_required
 from server import spotify, spotify_info
 from server.spotify import SpotifyAuthorisationToken
 from server.api.api_functions import modify_playlist_json, modify_track_json, add_tracks, \
-    collect_tracks
+    collect_tracks, update_user
 from server.functions import get_settings
 
 mod = Blueprint("api", __name__)
@@ -32,20 +32,31 @@ def callback():
     auth_code: str = request.args.get("code")
     auth_token: SpotifyAuthorisationToken = SpotifyAuthorisationToken(auth_code)
     spotify.auth_token = auth_token
-    spotify.reauthorize()
+
+    # Check if expired and update the user
+    auth_token = spotify.reauthorize()
+    user_id = spotify.me()["id"]
+    update_user(user_id, auth_token.token)
 
     return jsonify(OAuth_Token=auth_code)
 
 
-@mod.route("spotify/search")
+@mod.route("/spotify/search")
 @login_required
 def search_for_songs():
+    # Check if expired and update the user
+    if spotify.auth_token.is_expired():
+        auth_token = spotify.reauthorize()
+        user_id = spotify.me()["id"]
+        update_user(user_id, auth_token.token)
+
     search_term = request.args.get('searchterm')
 
     if search_term is None or search_term is "":
         return abort(400)
 
     search_results = spotify.search(search_term, "track", limit=10)
+
     return_search_results = modify_track_json(search_results["tracks"])
     return return_search_results
 
@@ -53,6 +64,12 @@ def search_for_songs():
 @mod.route("/spotify/playlist")
 @login_required
 def get_playlist():
+    # Check if expired and update the user
+    if spotify.auth_token.is_expired():
+        auth_token = spotify.reauthorize()
+        user_id = spotify.me()["id"]
+        update_user(user_id, auth_token.token)
+
     settings = get_settings()
     playlist_id = settings["playlist-id"]
 
@@ -65,7 +82,15 @@ def get_playlist():
 @mod.route("/spotify/playlist/tracks")
 @login_required
 def get_playlist_tracks():
-    playlist_id = get_settings()["playlist-id"]
+    # Check if expired and update the user
+    if spotify.auth_token.is_expired():
+        auth_token = spotify.reauthorize()
+        user_id = spotify.me()["id"]
+        update_user(user_id, auth_token.token)
+
+    playlist_id = request.args.get('playlist-id')
+    if not playlist_id:
+        return abort(200, "You did not give a playlist-id")
 
     modified_tracks = collect_tracks(playlist_id)
 
@@ -75,10 +100,32 @@ def get_playlist_tracks():
 @mod.route("/spotify/playlist/add", methods=['POST', 'GET'])
 @login_required
 def add_track_to_playlist():
+    # Check if expired and update the user
+    if spotify.auth_token.is_expired():
+        auth_token = spotify.reauthorize()
+        user_id = spotify.me()["id"]
+        update_user(user_id, auth_token.token)
+
     json = request.get_json()
 
+    playlist_id = request.args.get('playlist-id')
+    if not playlist_id:
+        return abort(200, "You did not give a playlist-id")
+
     if "track-list" in json:
-        add_tracks(json["track-list"])
+        add_tracks(json["track-list"], playlist_id)
         return Response(status=201)
     else:
         return Response(status=400)
+
+
+@mod.route("/spotify/me")
+@login_required
+def me():
+    # Check if expired and update the user
+    if spotify.auth_token.is_expired():
+        auth_token = spotify.reauthorize()
+        user_id = spotify.me()["id"]
+        update_user(user_id, auth_token.token)
+
+    return spotify.me()

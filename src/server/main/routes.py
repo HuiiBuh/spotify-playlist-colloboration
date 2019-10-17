@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user, logout_user, login_user
 
 from server.main.forms import LoginForm
-from server.main.modals import User
+from server.main.modals import User, Playlist
 
 mod = Blueprint("main", __name__, template_folder='templates')
 
@@ -10,6 +10,16 @@ mod = Blueprint("main", __name__, template_folder='templates')
 @mod.route("/")
 @login_required
 def home():
+    playlist_id = request.args.get('playlist-id')
+
+    if not playlist_id:
+        return redirect("/404")
+
+    spotify_playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+
+    if not spotify_playlist:
+        return redirect("404")
+
     return render_template("index.html", title="Home")
 
 

@@ -30,7 +30,7 @@ Go into your python3 shell with `python3` (execute in the src folder with active
 from server import db
 from server.main.modals import User
 
-user = User(username="root")
+user = User(username="root", password_hash="hash")
 db.session.add(user)
 db.session.commit()
 ```

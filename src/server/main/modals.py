@@ -51,7 +51,7 @@ class SpotifyUser(db.Model):
     Spotify user model, that stores the oauth key for every user
     """
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), nullable=False, unique=True)
+    spotify_user_id = db.Column(db.String(64), nullable=False, unique=True)
     oauth_token = db.Column(db.Text)
 
     db.relationship('Playlist', backref='SpotifyUser', lazy="joined")

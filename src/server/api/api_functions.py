@@ -1,5 +1,6 @@
-from server import spotify
+from server import spotify, db
 from server.functions import get_settings
+from server.main.modals import User, SpotifyUser
 
 
 def collect_tracks(playlist_id, count=0, offset=0, modified_tracks=None):
@@ -70,7 +71,24 @@ def modify_playlist_json(playlist_json):
     return return_playlist
 
 
-def add_tracks(id_list: list):
-    playlist_id = get_settings()["playlist-id"]
-
+def add_tracks(id_list: list, playlist_id):
     spotify.add_playlist_tracks(playlist_id, id_list)
+
+
+def update_user(user_id: str, auth_token: str):
+    """
+    Updates/creates the user with a token
+    :param user_id: The spotify user id
+    :param auth_token: The token of the user
+    :return: None
+    """
+    spotify_user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == user_id).first()
+
+    if not spotify_user:
+        spotify_user = SpotifyUser(spotify_user_id=user_id, oauth_token=auth_token)
+        db.session.add(spotify_user)
+        db.session.commit()
+        return
+
+    spotify_user.oauth_token = auth_token
+    db.session.commit()

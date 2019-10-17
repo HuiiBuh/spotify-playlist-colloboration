@@ -19,6 +19,7 @@ class SpotifyUrls:
     PLAYLIST_TRACKS = "https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     PLAYLIST = "https://api.spotify.com/v1/playlists/{playlist_id}"
     SEARCH = "https://api.spotify.com/v1/search?q={query}"
+    ME = "https://api.spotify.com/v1/me"
 
 
 class SpotifyAppInfo:
@@ -210,9 +211,6 @@ class Spotify:
         if self.auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
 
-        if self.auth_token.is_expired():
-            self.reauthorize()
-
         headers: dict = self._get_headers()
         request = requests.get(url=url, headers=headers)
 
@@ -242,9 +240,6 @@ class Spotify:
 
         if self.auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
-
-        if self.auth_token.is_expired():
-            self.reauthorize()
 
         headers: dict = self._get_headers()
         request = requests.get(url=url, headers=headers)
@@ -277,9 +272,6 @@ class Spotify:
 
         if self.auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
-
-        if self.auth_token.is_expired():
-            self.reauthorize()
 
         headers: dict = self._get_headers()
         request = requests.get(url=url, headers=headers)
@@ -323,9 +315,6 @@ class Spotify:
         if self.auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
 
-        if self.auth_token.is_expired():
-            self.reauthorize()
-
         headers: dict = self._get_headers()
         request = requests.post(url=url, headers=headers)
 
@@ -333,6 +322,30 @@ class Spotify:
             raise SpotifyError(request.json())
 
         return request.json()
+
+    def me(self, filter_email=True) -> json:
+        """
+        Get the user of the current token in use
+        :param filter_email: Removes the email from the json
+        :return: The json
+        """
+        url: str = SpotifyUrls.ME
+
+        if self.auth_token is None:
+            raise SpotifyError("You have to provide a valid auth token")
+
+        headers: dict = self._get_headers()
+        request = requests.get(url=url, headers=headers)
+
+        if "error" in request.json():
+            raise SpotifyError(request.json())
+
+        request_json = request.json()
+
+        if filter_email:
+            request_json["email"] = "***censored***"
+
+        return request_json
 
     def _get_headers(self) -> dict:
         """

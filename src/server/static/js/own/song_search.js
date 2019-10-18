@@ -2,28 +2,34 @@ let addTimeouts = null;
 let songAddList = [];
 
 function songSearch(evt) {
+    // Clear timeout
     if (addTimeouts) {
         clearTimeout(addTimeouts);
     }
 
+    // Get the search value
     let searchValue = evt.currentTarget.value;
-    searchValue = searchValue.replace(/[\\^$*+?.()|[\]{}]/g, '');
+    // Remove invalid singns
+    searchValue = cleanForRegex(searchValue);
 
+    // Check if the search value is valid
     if (/^\s*$/g.test(searchValue) || searchValue === "") {
         document.getElementById("search-preview").innerText = "";
         return
     }
 
+    // Get the search results with a api call
     addTimeouts = setTimeout(function () {
 
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
+
             if (this.readyState === 4 && this.status === 200) {
                 let songList = createSongs(JSON.parse(this.responseText), type = "search");
                 displaySearchPreview(songList, "search-preview");
             }
         };
-        let url = searchAPIUrl + searchValue;
+        let url = searchAPI + searchValue;
 
         xhttp.open("GET", url, true);
         xhttp.send();
@@ -31,13 +37,16 @@ function songSearch(evt) {
     }, 200);
 }
 
+/**
+ * Display the search results
+ * @param searchSongList The songs in json
+ * @param rootID The id the songs are supposed to be added to
+ */
 function displaySearchPreview(searchSongList, rootID) {
     let root = document.getElementById(rootID);
     root.innerText = "";
 
     for (let songNumber in searchSongList) {
-        let song = searchSongList[songNumber];
-
         let {cover, title, url, artist, album, id} = searchSongList[songNumber];
 
         let songLi = document.createElement("li");
@@ -59,11 +68,11 @@ function displaySearchPreview(searchSongList, rootID) {
 
         let titleDiv = document.createElement("div");
         titleDiv.setAttribute("class", "s12");
-        titleDiv.onclick = addOnclick(url);
         infoDiv.appendChild(titleDiv);
 
         let titleA = document.createElement("a");
         titleA.setAttribute("class", "pointer underline black-text");
+        titleA.onclick = addOnclick(url);
         titleA.innerText = title;
         titleDiv.appendChild(titleA);
 
@@ -113,6 +122,11 @@ function displaySearchPreview(searchSongList, rootID) {
     }
 }
 
+/**
+ * Create the songs and check if the song is already in the playlist
+ * @param song The song that is supposed to be added to the add playlist
+ * @returns {Function} The function that will be called if the add song to playlist button is pressed
+ */
 function addToAddPlaylist(song) {
 
     let songObject = song;
@@ -131,9 +145,9 @@ function addToAddPlaylist(song) {
                     artistSearch += artists[artistNumber]["name"];
             }
 
-            let artistRegex = new RegExp(artistSearch, "gi");
-            let titleRegex = new RegExp(songObject.title, "gi");
-            let albumRegex = new RegExp(songObject.album, "gi");
+            let artistRegex = new RegExp(cleanForRegex(artistSearch), "gi");
+            let titleRegex = new RegExp(cleanForRegex(songObject.title), "gi");
+            let albumRegex = new RegExp(cleanForRegex(songObject.album), "gi");
 
             if (artistRegex.test(song.searchString) && titleRegex.test(song.searchString) && albumRegex.test(song.searchString)) {
                 let toastHTML = '<p style="text-align: center; width:100%">The Song already exists in the playlist</p>';
@@ -150,6 +164,11 @@ function addToAddPlaylist(song) {
     }
 }
 
+/**
+ * Displays the songs that are supposed to be added
+ * @param songObject The song object that is added
+ * @param rootID The root ID the song is added to
+ */
 function displayAddSongPlaylist(songObject, rootID) {
     let root = document.getElementById(rootID);
 
@@ -221,28 +240,32 @@ function displayAddSongPlaylist(songObject, rootID) {
     }
 }
 
+/**
+ * Add the songs to the Spotify playlist with an api call
+ */
 function addSongsToPlaylist() {
-    let url = "/api/spotify/playlist/add";
 
     let songList = [];
 
+    // Create the id list
     for (let songId in songAddList) {
         songList.push(songAddList[songId].id);
     }
 
     let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", url, true);
+    xhttp.open("POST", playlistAddTracksAPI, true);
 
     xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
+        if (this.readyState === 4 && this.status === 201) {
+            document.getElementById("add-song-list").innerText = "";
             songAddList = [];
-            alert("Worked");
         }
     };
 
-    let data = {};
-    data["track-list"] = songList;
+    // Create the json for the request body
+    let bodyData = {};
+    bodyData["track-list"] = songList;
 
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify(data));
+    xhttp.send(JSON.stringify(bodyData));
 }

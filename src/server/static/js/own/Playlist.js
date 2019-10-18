@@ -17,9 +17,13 @@ class Playlist {
         this._calculateDuration();
 
         if (this.type === "main") {
-            updatePlaylistInfo();
+            this.updatePlaylistInfo();
         }
+    }
 
+    updatePlaylistInfo() {
+        document.getElementById("song-count").innerText = this._songCount;
+        document.getElementById("duration").innerText = this._durationHumanReadable;
     }
 
     _calculateDuration() {

@@ -1,18 +1,23 @@
-function getPlaylistInfo(url) {
+/**
+ * Make a api call to get the info of the playlist
+ */
+function getPlaylistInfo() {
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             createPlaylistFromJSON(JSON.parse(this.responseText));
-            getPlaylistSongs("/api/spotify/playlist/tracks");
             displayPlaylistInfo(true);
         }
     };
-    xhttp.open("GET", url, true);
+    xhttp.open("GET", playlistAPI, true);
     xhttp.send();
 }
 
-
+/**
+ * Update the mainPlaylist with the json from the api request
+ * @param json JSON form the api request
+ */
 function createPlaylistFromJSON(json) {
     let playlistName = json["name"];
     let author = [json["author"]["name"], json["author"]["url"]];
@@ -20,18 +25,23 @@ function createPlaylistFromJSON(json) {
     let url = json["url"];
     let cover = json["image_url"];
 
-    mainPlaylist = new Playlist(playlistName, author, songCount, url, cover, "main")
+    mainPlaylist.author = author;
+    mainPlaylist.songCount = songCount;
+    mainPlaylist.url = url;
+    mainPlaylist.picture = cover;
+    mainPlaylist.name = playlistName;
 }
 
-
-function displayPlaylistInfo(first) {
-
+/**
+ * Display the Playlist Info
+ */
+function displayPlaylistInfo() {
     document.getElementById("playlist-name").innerText = mainPlaylist.name;
     document.getElementById("author").innerText = mainPlaylist.author[0];
     document.getElementById("author").onclick = function () {
         window.open(mainPlaylist.author[1])
     };
-    document.getElementById("duration").innerText = mainPlaylist.duration;
+    document.getElementById("duration").innerText = mainPlaylist.durationHumanReadable;
     document.getElementById("song-count").innerText = mainPlaylist.songCount;
     document.getElementById("playlist-url").onclick = function () {
         window.open(mainPlaylist.url)
@@ -39,30 +49,20 @@ function displayPlaylistInfo(first) {
 
     document.getElementById("playlist-cover").style.background = 'url(' + mainPlaylist.picture + ')';
 
-    function updatePlaceholder() {
-        let trash = document.createElement("img");
-        trash.src = mainPlaylist.picture;
-        trash.style.display = "none";
-        document.getElementById("playlist-cover").appendChild(trash);
-        trash.onload = function () {
-            this.remove();
-            document.getElementById("playlist-cover").classList.remove("loading");
+    // Add a trash image and remove it as soon as it loads.
+    // This is also the indicator for the loading bars to disappear
+    let trash = document.createElement("img");
+    trash.src = mainPlaylist.picture;
+    trash.style.display = "none";
+    document.getElementById("playlist-cover").appendChild(trash);
+    trash.onload = function () {
+        this.remove();
+        document.getElementById("playlist-cover").classList.remove("loading");
 
-            document.getElementById("loading-playlist-description").style.display = "none";
-            document.getElementById("playlist-description").style.display = "table";
+        document.getElementById("loading-playlist-description").style.display = "none";
+        document.getElementById("playlist-description").style.display = "table";
 
-            document.getElementById("loading-heading").style.display = "none";
-            document.getElementById("playlist-name").style.display = "block";
-        }
+        document.getElementById("loading-heading").style.display = "none";
+        document.getElementById("playlist-name").style.display = "block";
     }
-
-    if (first) {
-        updatePlaceholder()
-    }
-}
-
-
-function updatePlaylistInfo() {
-    document.getElementById("song-count").innerText = mainPlaylist.songCount;
-    document.getElementById("duration").innerText = mainPlaylist.durationHumanReadable;
 }

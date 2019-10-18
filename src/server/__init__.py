@@ -2,6 +2,9 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 from server.spotify import Spotify, SpotifyAppInfo, SpotifyAuthorisationToken, KEYS
 
 import server.admin
@@ -21,6 +24,12 @@ login_manager.init_app(app)
 # add the db
 db = SQLAlchemy(app)
 migrate = Migrate(app=app, db=db)
+
+# engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
+# Session = sessionmaker()
+# Session.configure(bind=engine)
+# session = Session()
+
 
 # add the login
 login = LoginManager(app=app)

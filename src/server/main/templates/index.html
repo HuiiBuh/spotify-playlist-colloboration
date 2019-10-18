@@ -5,6 +5,15 @@
           media="screen,projection"/>
 {% endblock %}
 
+{% block javascript_variables %}
+    <script type="text/javascript">
+        let searchAPI = "/api/spotify/search?searchterm=";
+        let playlistAPI = "/api/spotify/playlist?playlist-id={{ playlist_id }}";
+        let playlistTracksAPI = "/api/spotify/playlist/tracks?playlist-id={{ playlist_id }}";
+        let playlistAddTracksAPI = "/api/spotify/playlist/add?playlist-id={{ playlist_id }}";
+    </script>
+{% endblock %}
+
 {% block main %}
 
     <div id="main-box">
@@ -71,9 +80,10 @@
                 <form class="col s12">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="search-playlist-song" type="text">
+                            <input id="search-playlist-song" class="postfix-input" type="text">
+                            <i class="material-icons postfix" id="clear-search-input">clear</i>
                             <label for="search-playlist-song">Search</label>
-                            <span class="helper-text" data-error="wrong" data-success="right">Search for songs in the playlist</span>
+                            <span class="helper-text postfix-input" data-error="wrong" data-success="right">Search for songs in the playlist</span>
                         </div>
                     </div>
                 </form>
@@ -118,7 +128,13 @@
         <div class="modal-content">
             <h4>Search for Songs</h4>
 
-            <div class="row">
+            <div class="row" id="click-exception">
+                <div class="col s12">
+                    <div class="chip">artist:Eminem<i class="close material-icons">close</i></div>
+                    <div class="chip">track:Lose Yourself<i class="close material-icons">close</i></div>
+                    <div class="chip">album:8 Mile<i class="close material-icons">close</i></div>
+                    <div class="chip">year:2002<i class="close material-icons">close</i></div>
+                </div>
                 <div class="input-field col s12">
                     <i class="material-icons prefix" id="search-song-icon">search</i>
                     <label for="new-song-search">Song search</label>
@@ -144,7 +160,6 @@
 {% endblock %}
 
 {% block javascript %}
-    <script type="text/javascript" src="../static/js/own/main.js"></script>
     <script type="text/javascript" src="../static/js/own/Playlist.js"></script>
     <script type="text/javascript" src="../static/js/own/Song.js"></script>
     <script type="text/javascript" src="../static/js/own/functions.js"></script>
@@ -152,4 +167,5 @@
     <script type="text/javascript" src="../static/js/own/song_functions.js"></script>
     <script type="text/javascript" src="../static/js/own/search_playlist.js"></script>
     <script type="text/javascript" src="../static/js/own/song_search.js"></script>
+    <script type="text/javascript" src="../static/js/own/main.js"></script>
 {% endblock %}

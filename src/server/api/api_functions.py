@@ -1,6 +1,5 @@
-from server import spotify, db
-from server.functions import get_settings
-from server.main.modals import User, SpotifyUser
+from server import spotify, db, SpotifyAuthorisationToken
+from server.main.modals import SpotifyUser, Playlist
 
 
 def collect_tracks(playlist_id, count=0, offset=0, modified_tracks=None):
@@ -71,8 +70,17 @@ def modify_playlist_json(playlist_json):
     return return_playlist
 
 
-def add_tracks(id_list: list, playlist_id):
+def add_tracks(id_list: list, playlist_id: str):
+    spotify_playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+
+    if not spotify_playlist:
+        return 400
+
+    user = SpotifyUser.query.filter(SpotifyUser.id == spotify_playlist.spotify_user).first()
+    spotify.auth_token = SpotifyAuthorisationToken(user.oauth_token)
+
     spotify.add_playlist_tracks(playlist_id, id_list)
+    return 201
 
 
 def update_user(user_id: str, auth_token: str):

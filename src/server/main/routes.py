@@ -20,7 +20,7 @@ def home():
     if not spotify_playlist:
         return redirect("404")
 
-    return render_template("index.html", title="Home")
+    return render_template("index.html", title="Home", playlist_id=playlist_id)
 
 
 @mod.route("/login", methods=["GET", "POST"])

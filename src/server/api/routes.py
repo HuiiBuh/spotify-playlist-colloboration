@@ -5,7 +5,6 @@ from server import spotify, spotify_info
 from server.spotify import SpotifyAuthorisationToken
 from server.api.api_functions import modify_playlist_json, modify_track_json, add_tracks, \
     collect_tracks, update_user
-from server.functions import get_settings
 
 mod = Blueprint("api", __name__)
 
@@ -70,8 +69,9 @@ def get_playlist():
         user_id = spotify.me()["id"]
         update_user(user_id, auth_token.token)
 
-    settings = get_settings()
-    playlist_id = settings["playlist-id"]
+    playlist_id = request.args.get('playlist-id')
+    if not playlist_id:
+        return abort(400, "You did not give a playlist-id")
 
     playlist = spotify.playlist(playlist_id=playlist_id)
     modified_playlist = modify_playlist_json(playlist)
@@ -90,7 +90,7 @@ def get_playlist_tracks():
 
     playlist_id = request.args.get('playlist-id')
     if not playlist_id:
-        return abort(200, "You did not give a playlist-id")
+        return abort(400, "You did not give a playlist-id")
 
     modified_tracks = collect_tracks(playlist_id)
 
@@ -110,13 +110,12 @@ def add_track_to_playlist():
 
     playlist_id = request.args.get('playlist-id')
     if not playlist_id:
-        return abort(200, "You did not give a playlist-id")
+        return abort(400, 'You did not provide a playlist-id')
 
     if "track-list" in json:
-        add_tracks(json["track-list"], playlist_id)
-        return Response(status=201)
+        return Response(status=add_tracks(json["track-list"], playlist_id))
     else:
-        return Response(status=400)
+        return abort(400, "Your request body has not track-list")
 
 
 @mod.route("/spotify/me")

@@ -1,4 +1,7 @@
-function getPlaylistSongs(url) {
+/**
+ * Get the playlist song JSON
+ */
+function getPlaylistSongs() {
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -7,12 +10,19 @@ function getPlaylistSongs(url) {
         }
     };
 
-    xhttp.open("GET", url, true);
+    xhttp.open("GET", playlistTracksAPI, true);
     xhttp.send();
 }
 
-function createSongs(json, type = "None", appendList = []) {
-    let searchSongList = [];
+/**
+ * Create song objects from json
+ * @param json The json with the song objects
+ * @param type "main" for the main playlist
+ * @param appendList The list the songs are supposed to be appended to
+ * @returns {[]|Array}
+ */
+function createSongs(json, type, appendList = []) {
+
     for (let songId in json) {
         if (json.hasOwnProperty(songId))
             var songJSON = json[songId];
@@ -28,24 +38,24 @@ function createSongs(json, type = "None", appendList = []) {
 
         if (type === "main")
             mainPlaylist.addSong(song);
-        else if (type === "search")
-            searchSongList.push(song);
-        else if (type === "append")
+        else
             appendList.push(song);
     }
+
     if (type === "main")
         displayPlaylistSongs("playlist-songs");
-    else if (type === "search")
-        return searchSongList;
-    else if (type === "append")
+    else
         return appendList
 }
 
-
+/**
+ * Display the songs in the main playlist
+ * @param rootID The root the songs get appended to
+ */
 function displayPlaylistSongs(rootID) {
-
     let root = document.getElementById(rootID);
 
+    // For every song in the playlist
     for (let songNumber in mainPlaylist.songList) {
         if (mainPlaylist.songList.hasOwnProperty(songNumber)) {
             var {cover, title, url, artist, album, durationHumanReadable, id} = mainPlaylist.songList[songNumber];
@@ -79,6 +89,7 @@ function displayPlaylistSongs(rootID) {
         titleA.onclick = addOnclick(url);
         titleDiv.appendChild(titleA);
 
+        // For every artist for one song
         for (let singleArtist in artist) {
             if (artist.hasOwnProperty(singleArtist)) {
                 var singleArtistObject = artist[singleArtist];
@@ -91,6 +102,7 @@ function displayPlaylistSongs(rootID) {
 
             informationDiv.appendChild(interpretA);
 
+            // Append a ", " between the artists if it is not the last artist
             if (artist.length > parseInt(singleArtist) + 1) {
                 let artistSeparationA = document.createElement("a");
                 artistSeparationA.setAttribute("class", "black-text small-padding-right");
@@ -119,6 +131,11 @@ function displayPlaylistSongs(rootID) {
         durationP.innerText = durationHumanReadable;
         durationDiv.appendChild(durationP);
 
+        /**
+         * Add return a onclick function with an independent url
+         * @param onclick_url The url that is supposed to be added to the url
+         * @returns {Function} The function that will be executed onclick
+         */
         function addOnclick(onclick_url) {
             let url = onclick_url;
             return function () {

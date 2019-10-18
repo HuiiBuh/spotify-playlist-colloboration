@@ -104,6 +104,17 @@ i.very-large {
     cursor: default;
 }
 
+.background-image {
+    position: absolute;
+    background-position: center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
 img {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;

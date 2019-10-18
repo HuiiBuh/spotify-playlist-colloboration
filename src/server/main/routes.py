@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_required, current_user, logout_user, login_user
 
+from server import spotify
+from server.api.api_functions import get_token_by_playlist, modify_playlist_json
 from server.main.forms import LoginForm
 from server.main.modals import User, Playlist
 
@@ -13,14 +15,23 @@ def home():
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
-        return redirect("/404")
+        user = current_user.id
+        playlist_list = Playlist.query.filter(Playlist.user == user).all()
+
+        playlist_list_json = {}
+        for playlist in playlist_list:
+            auth_token = get_token_by_playlist(playlist.spotify_id)
+            playlist_list_json[playlist.spotify_id] = \
+                modify_playlist_json(spotify.playlist(playlist.spotify_id, auth_token))
+
+        return render_template("select.html", title="Select Playlist", playlist_list_json=playlist_list_json)
 
     spotify_playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
 
     if not spotify_playlist:
         return redirect("404")
 
-    return render_template("index.html", title="Home", playlist_id=playlist_id)
+    return render_template("playlist.html", title="Home", playlist_id=playlist_id)
 
 
 @mod.route("/login", methods=["GET", "POST"])

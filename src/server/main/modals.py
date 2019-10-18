@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), nullable=False, index=True, unique=True)
     password_hash = db.Column(db.Text, nullable=False)
+    db.relationship('Playlist', backref='User')
 
     def set_password(self, password: str):
         """
@@ -52,6 +53,7 @@ class SpotifyUser(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     spotify_user_id = db.Column(db.String(64), nullable=False, unique=True)
+    original_token = db.Column(db.Text)
     oauth_token = db.Column(db.Text)
     activated_at = db.Column(db.BigInteger)
 
@@ -65,3 +67,4 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
     spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id), nullable=False)
+    user = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)

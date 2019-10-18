@@ -18,6 +18,22 @@ def authorize():
     return redirect(url)
 
 
+@mod.route("/reauthorize")
+@login_required
+def reauthorize():
+    playlist_id = request.args.get('playlist-id')
+
+    if not playlist_id:
+        return abort(400, "You did not give a playlist-id")
+
+    auth_token = get_token_by_playlist(playlist_id)
+
+    if not auth_token:
+        return abort(400, "No playlist with this id found")
+
+    return spotify.reauthorize(auth_token)
+
+
 @mod.route("/callback/")
 @login_required
 def callback():

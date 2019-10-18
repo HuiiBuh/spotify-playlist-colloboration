@@ -49,9 +49,12 @@ def create_spotify_user():
 
 def create_playlist():
     try:
-        users = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == "z0h3f10jgq7tokoy5pj6a6vsz").first()
-        spotify_playlist = Playlist(spotify_id="70QAcHhCzkvkGPIidSj4wC", spotify_user=users.id)
-        db.session.add(spotify_playlist)
+        spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == "z0h3f10jgq7tokoy5pj6a6vsz").first()
+        user = User.query.filter(User.username == "default").first()
+        spotify_playlist_1 = Playlist(spotify_id="70QAcHhCzkvkGPIidSj4wC", spotify_user=spotify_user.id, user=user.id)
+        spotify_playlist_2 = Playlist(spotify_id="5rhQjP3GA9xyTCpUTDlMD7", spotify_user=spotify_user.id, user=user.id)
+        db.session.add(spotify_playlist_1)
+        db.session.add(spotify_playlist_2)
         db.session.commit()
     except sqlalchemy.exc.IntegrityError:
         db.session.rollback()

@@ -55,8 +55,8 @@ class SpotifyAuthorisationToken:
         """
         current_time: int = int(time.time())
 
-        # Check if token is valid (60 would be correct, but a bit of time padding is always nice)
-        if current_time - self.activation_time > 3600 * 50:
+        # Check if token is valid (3600 would be correct, but a bit of time padding is always nice)
+        if current_time - self.activation_time > 3400:
             return True
 
         return False
@@ -130,17 +130,16 @@ class Spotify:
             six.text_type(self.app_info.application_id + ':' + self.app_info.application_secret).encode('ascii'))
         headers: dict = {'Authorization': 'Basic %s' % auth_header.decode('ascii')}
 
-        regularization_request = requests.post(url=url, data=body, headers=headers)
+        reauthorization_request = requests.post(url=url, data=body, headers=headers)
 
-        if "error" in regularization_request.json():
-            raise SpotifyError(f"There was an error: "
-                               f"{regularization_request.json()}")
+        if "error" in reauthorization_request.json():
+            raise SpotifyError(f"There was an error: {reauthorization_request.json()}")
 
         try:
-            access_token: str = regularization_request.json()["access_token"]
+            access_token: str = reauthorization_request.json()["access_token"]
         except KeyError:
             raise SpotifyError(f"No 'access_token' key was found in this json:"
-                               f"{regularization_request.json()}")
+                               f"{reauthorization_request.json()}")
         # Update the access token
         return SpotifyAuthorisationToken(access_token, int(time.time()))
 

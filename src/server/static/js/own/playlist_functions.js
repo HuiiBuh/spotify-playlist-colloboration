@@ -58,6 +58,7 @@ function displayPlaylistInfo() {
     trash.onload = function () {
         this.remove();
         document.getElementById("playlist-cover").classList.remove("loading");
+        document.getElementById("playlist-cover").parentElement.style.border = "none";
 
         document.getElementById("loading-playlist-description").style.display = "none";
         document.getElementById("playlist-description").style.display = "table";

@@ -1,8 +1,8 @@
 import sqlalchemy
+from argon2 import PasswordHasher, Type
 
 from server import db
 from server.main.modals import User, SpotifyUser, Playlist
-from argon2 import PasswordHasher, Type
 
 
 def clear_db():
@@ -40,7 +40,7 @@ def create_user():
         print("The user already exists")
 
 
-def create_playlist():
+def create_spotify_user():
     try:
         spotify_user = SpotifyUser(spotify_user_id="test", oauth_token="Kuchen")
         db.session.add(spotify_user)
@@ -49,9 +49,11 @@ def create_playlist():
         db.session.rollback()
         print("The spotify user already exists")
 
+
+def create_playlist():
     try:
-        users = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == "test").first()
-        spotify_playlist = Playlist(spotify_id="2w8QXdDhuMc3lcUX9J1Bca", spotify_user=users.id)
+        users = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == "z0h3f10jgq7tokoy5pj6a6vsz").first()
+        spotify_playlist = Playlist(spotify_id="70QAcHhCzkvkGPIidSj4wC", spotify_user=users.id)
         db.session.add(spotify_playlist)
         db.session.commit()
     except sqlalchemy.exc.IntegrityError:
@@ -59,4 +61,5 @@ def create_playlist():
         print("The playlist already exists")
 
 
-create_user()
+create_playlist()
+print("Success")

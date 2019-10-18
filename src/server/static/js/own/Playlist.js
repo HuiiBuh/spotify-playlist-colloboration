@@ -38,8 +38,10 @@ class Playlist {
     }
 
     removeSong(song) {
-        // ToDo
+        let index = this._songList.findIndex(playlist_song => playlist_song.id === song.id);
+        this._songList.splice(index, 1)
     }
+
 
     set name(value) {
         this._name = value;

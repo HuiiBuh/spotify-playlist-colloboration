@@ -1,5 +1,5 @@
 let addTimeouts = null;
-let songAddList = [];
+let addPlaylist = new Playlist("main", "web", 0, null, null, "add")
 
 function songSearch(evt) {
     // Clear timeout
@@ -158,7 +158,7 @@ function addToAddPlaylist(song) {
 
         evt.currentTarget.style.color = "green";
 
-        songAddList.push(songObject);
+        addPlaylist.addSong(songObject);
         displayAddSongPlaylist(songObject, "add-song-list");
 
     }
@@ -230,6 +230,7 @@ function displayAddSongPlaylist(songObject, rootID) {
     let icon = document.createElement("i");
     icon.setAttribute("class", "material-icons pointer");
     icon.innerText = "delete";
+    icon.onclick = deleteAddSong(songObject);
     iconDiv.appendChild(icon);
 
     function addOnclick(onclick_url) {
@@ -240,6 +241,15 @@ function displayAddSongPlaylist(songObject, rootID) {
     }
 }
 
+function deleteAddSong(song) {
+
+    return function (evt) {
+        evt.target.parentElement.parentElement.remove();
+        addPlaylist.removeSong(song)
+    }
+
+}
+
 /**
  * Add the songs to the Spotify playlist with an api call
  */
@@ -248,8 +258,8 @@ function addSongsToPlaylist() {
     let songList = [];
 
     // Create the id list
-    for (let songId in songAddList) {
-        songList.push(songAddList[songId].id);
+    for (let songId in addPlaylist.songList) {
+        songList.push(addPlaylist.songList[songId].id);
     }
 
     let xhttp = new XMLHttpRequest();
@@ -258,7 +268,7 @@ function addSongsToPlaylist() {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 201) {
             document.getElementById("add-song-list").innerText = "";
-            songAddList = [];
+            addPlaylist = new Playlist("main", "web", 0, null, null, "add")
         }
     };
 

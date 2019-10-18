@@ -35,7 +35,6 @@ def login():
         # get the user that logged in
         user = User.query.filter_by(username=form.username.data).first()
 
-        # todo remember username
         # if the user does not exist or has the wrong password
         if user is None or not user.check_password(form.password.data):
             flash("Invalid username or password")
@@ -43,7 +42,14 @@ def login():
 
         # login the user
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for("main.home"))
+        next_page = request.args.get("next")
+        if next_page:
+            if not next_page[0] is "/":
+                next_page = "/" + next_page
+
+            return redirect(f"{next_page}")
+        else:
+            return redirect(url_for("main.home"))
 
     if request.method == "POST":
         flash("You missed to fill some fields")

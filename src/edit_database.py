@@ -23,10 +23,7 @@ def clear_db():
         db.session.commit()
 
 
-def create_user():
-    password: str = "default"
-    username: str = "default"
-
+def create_user(username, password):
     # Set to use the ID harsher
     ph = PasswordHasher(type=Type.ID)
     password_hash = ph.hash(password)
@@ -61,5 +58,6 @@ def create_playlist():
         print("The playlist already exists")
 
 
+# create_user(username="default", password="default")
 create_playlist()
 print("Success")

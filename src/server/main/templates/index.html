@@ -3,11 +3,18 @@
 {% block css %}
     <link type="text/css" rel="stylesheet" href="../static/css/own/loading.css"
           media="screen,projection"/>
+
+    <style>
+        body {
+            overflow-y: scroll !important;
+        }
+    </style>
+
 {% endblock %}
 
 {% block javascript_variables %}
     <script type="text/javascript">
-        let searchAPI = "/api/spotify/search?searchterm=";
+        let searchAPI = "/api/spotify/search?playlist-id={{ playlist_id }}&searchterm=";
         let playlistAPI = "/api/spotify/playlist?playlist-id={{ playlist_id }}";
         let playlistTracksAPI = "/api/spotify/playlist/tracks?playlist-id={{ playlist_id }}";
         let playlistAddTracksAPI = "/api/spotify/playlist/add?playlist-id={{ playlist_id }}";
@@ -128,14 +135,14 @@
         <div class="modal-content">
             <h4>Search for Songs</h4>
 
-            <div class="row" id="click-exception">
+            <div class="row">
                 <div class="col s12">
                     <div class="chip">artist:Eminem<i class="close material-icons">close</i></div>
                     <div class="chip">track:Lose Yourself<i class="close material-icons">close</i></div>
                     <div class="chip">album:8 Mile<i class="close material-icons">close</i></div>
                     <div class="chip">year:2002<i class="close material-icons">close</i></div>
                 </div>
-                <div class="input-field col s12">
+                <div class="input-field col s12" id="click-exception">
                     <i class="material-icons prefix" id="search-song-icon">search</i>
                     <label for="new-song-search">Song search</label>
                     <input id="new-song-search" type="text">
@@ -152,8 +159,7 @@
         </div>
 
         <div class="modal-footer" id="add-song-footer">
-            <a class="modal-close waves-effect waves-green btn-flat left" id="add-song-button"
-               style="margin-left: 28px;">Cancel</a>
+            <a class="modal-close waves-effect waves-green btn-flat left" style="margin-left: 28px;">Cancel</a>
             <a class="modal-close waves-effect waves-green btn-flat" id="add-song-button">Add Songs</a>
         </div>
     </div>

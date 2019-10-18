@@ -1,3 +1,5 @@
+six
+requests
 Flask==1.1.1
 
 # To use the .flaskenv file

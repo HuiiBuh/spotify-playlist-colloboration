@@ -53,6 +53,7 @@ class SpotifyUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     spotify_user_id = db.Column(db.String(64), nullable=False, unique=True)
     oauth_token = db.Column(db.Text)
+    activated_at = db.Column(db.BigInteger)
 
     db.relationship('Playlist', backref='SpotifyUser', lazy="joined")
 

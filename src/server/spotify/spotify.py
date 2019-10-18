@@ -40,12 +40,12 @@ class SpotifyAuthorisationToken:
     Class that has the Authorisation Token
     """
 
-    def __init__(self, authorisation_token: str):
+    def __init__(self, authorisation_token: str, activation_time: int):
         """
         Generate a new authorisation token
         :param authorisation_token: The token
         """
-        self._time: int = int(time.time())
+        self.activation_time: int = activation_time
         self.token: str = authorisation_token
 
     def is_expired(self) -> bool:
@@ -55,7 +55,8 @@ class SpotifyAuthorisationToken:
         """
         current_time: int = int(time.time())
 
-        if current_time - self._time > 3600 * 59:
+        # Check if token is valid (60 would be correct, but a bit of time padding is always nice)
+        if current_time - self.activation_time > 3600 * 50:
             return True
 
         return False
@@ -79,7 +80,6 @@ class Spotify:
         """
 
         self.app_info: SpotifyAppInfo = None
-        self._authorization_token: SpotifyAuthorisationToken = None
 
     def build_authorize_url(self, show_dialog=True) -> str:
         """
@@ -105,7 +105,7 @@ class Spotify:
                    f"&state={self.app_info.state}"
         return url
 
-    def reauthorize(self) -> SpotifyAuthorisationToken:
+    def reauthorize(self, authorisation_token: SpotifyAuthorisationToken) -> SpotifyAuthorisationToken:
         """
         Reauthorizes the app.
         Only works if the app has benn authorized before
@@ -115,14 +115,14 @@ class Spotify:
         if self.app_info is None:
             raise TypeError("The app info is None. You have to add this with the app_information property")
 
-        if self._authorization_token is None:
+        if authorisation_token is None:
             raise TypeError("You have to provide a AuthorisationToken object")
 
         url: str = SpotifyUrls.REFRESH
 
         body: dict = {
             "grant_type": "authorization_code",
-            "code": self._authorization_token.token,
+            "code": authorisation_token.token,
             "redirect_uri": self.app_info.redirect_url
         }
 
@@ -130,21 +130,19 @@ class Spotify:
             six.text_type(self.app_info.application_id + ':' + self.app_info.application_secret).encode('ascii'))
         headers: dict = {'Authorization': 'Basic %s' % auth_header.decode('ascii')}
 
-        reauthorization_request = requests.post(url=url, data=body, headers=headers)
+        regularization_request = requests.post(url=url, data=body, headers=headers)
 
-        if "error" in reauthorization_request.json():
+        if "error" in regularization_request.json():
             raise SpotifyError(f"There was an error: "
-                               f"{reauthorization_request.json()}")
+                               f"{regularization_request.json()}")
 
         try:
-            access_token: str = reauthorization_request.json()["access_token"]
+            access_token: str = regularization_request.json()["access_token"]
         except KeyError:
             raise SpotifyError(f"No 'access_token' key was found in this json:"
-                               f"{reauthorization_request.json()}")
+                               f"{regularization_request.json()}")
         # Update the access token
-        auth_token: SpotifyAuthorisationToken = SpotifyAuthorisationToken(access_token)
-        self.auth_token = auth_token
-        return auth_token
+        return SpotifyAuthorisationToken(access_token, int(time.time()))
 
     @property
     def app_information(self) -> SpotifyAppInfo:
@@ -168,30 +166,10 @@ class Spotify:
 
         self.app_info = value
 
-    @property
-    def auth_token(self) -> SpotifyAuthorisationToken:
-        """
-        Get the authorisation Token Object
-        :return: The Authorisation Token
-        """
-
-        return self._authorization_token
-
-    @auth_token.setter
-    def auth_token(self, value: SpotifyAuthorisationToken) -> None:
-        """
-        Set a new authorisation token
-        :param value: the authorisation token object
-        :return: None
-        """
-
-        if not isinstance(value, SpotifyAuthorisationToken):
-            raise TypeError("The value has to be a AuthorisationToken")
-        self._authorization_token = value
-
-    def playlist_tracks(self, playlist_id, **kwargs) -> json:
+    def playlist_tracks(self, playlist_id: str, auth_token: SpotifyAuthorisationToken, **kwargs: str) -> json:
         """
         Get the songs of a playlist
+        :param auth_token: Valid SpotifyAuthorisationToken
         :param playlist_id: the id of the playlist
         :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlists-tracks/
         :return: playlist json
@@ -208,10 +186,10 @@ class Spotify:
             url_parameters = urlencode(url_parameters)
             url += f"?{url_parameters}"
 
-        if self.auth_token is None:
+        if auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
 
-        headers: dict = self._get_headers()
+        headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
@@ -219,9 +197,10 @@ class Spotify:
 
         return request.json()
 
-    def playlist(self, playlist_id, **kwargs) -> json:
+    def playlist(self, playlist_id: str, auth_token: SpotifyAuthorisationToken, **kwargs: str) -> json:
         """
         Get the playlist
+        :param auth_token: Valid SpotifyAuthorisationToken
         :param playlist_id: The id of the playlist
         :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist/
         :return: The json of the playlist
@@ -238,10 +217,10 @@ class Spotify:
             url_parameters = urlencode(url_parameters)
             url += f"?{url_parameters}"
 
-        if self.auth_token is None:
+        if auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
 
-        headers: dict = self._get_headers()
+        headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
@@ -249,17 +228,18 @@ class Spotify:
 
         return request.json()
 
-    def search(self, query, type, **kwargs) -> json:
+    def search(self, query: str, search_type: str, auth_token: SpotifyAuthorisationToken, **kwargs: str) -> json:
         """
         Search for things on spotify
+        :param auth_token: Valid SpotifyAuthorisationToken
         :param query: The search string4
-        :param type: The type of the search result (song, artist, playlist, album)
+        :param search_type: The type of the search result (song, artist, playlist, album)
         :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/search/search/
         :return: The json response of the api
         """
 
         url: str = SpotifyUrls.SEARCH.replace("{query}", query)
-        url += f"&type={type}"
+        url += f"&type={search_type}"
 
         # Add custom pararms to the url
         url_parameters = {}
@@ -270,10 +250,10 @@ class Spotify:
             url_parameters = urlencode(url_parameters)
             url += f"&{url_parameters}"
 
-        if self.auth_token is None:
+        if auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
 
-        headers: dict = self._get_headers()
+        headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
@@ -281,12 +261,14 @@ class Spotify:
 
         return request.json()
 
-    def add_playlist_tracks(self, playlist_id: str, song_list: list, **kwargs) -> json:
+    def add_playlist_tracks(self, playlist_id: str, song_list: list, auth_token: SpotifyAuthorisationToken,
+                            **kwargs) -> json:
         """
         Add songs to a specific playlist
+        :param auth_token: Valid SpotifyAuthorisationToken
         :param playlist_id: The id of the playlist
         :param song_list: The ids of the songs that are supposed to be added
-        :param kwargs: See https://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist/
+        :param kwargs: See http://developer.spotify.com/documentation/web-api/reference/playlists/add-tracks-to-playlist
         :return: snapshot_id
         """
 
@@ -312,10 +294,10 @@ class Spotify:
             url_parameters = urlencode(url_parameters)
             url += f"&{url_parameters}"
 
-        if self.auth_token is None:
+        if auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
 
-        headers: dict = self._get_headers()
+        headers: dict = self._get_headers(auth_token)
         request = requests.post(url=url, headers=headers)
 
         if "error" in request.json():
@@ -323,18 +305,19 @@ class Spotify:
 
         return request.json()
 
-    def me(self, filter_email=True) -> json:
+    def me(self, auth_token: SpotifyAuthorisationToken, filter_email=True) -> json:
         """
         Get the user of the current token in use
+        :param auth_token: Valid SpotifyAuthorisationToken
         :param filter_email: Removes the email from the json
         :return: The json
         """
         url: str = SpotifyUrls.ME
 
-        if self.auth_token is None:
+        if auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
 
-        headers: dict = self._get_headers()
+        headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
@@ -347,16 +330,18 @@ class Spotify:
 
         return request_json
 
-    def _get_headers(self) -> dict:
+    @staticmethod
+    def _get_headers(auth_token: SpotifyAuthorisationToken) -> dict:
         """
         Get the headers required for OAuth
+        :type auth_token: Valid SpotifyAuthorisationToken
         :return: headers
         """
 
-        if self.auth_token is None:
+        if auth_token is None:
             raise SpotifyError("You have to provide a valid auth token")
 
         return {
-            "Authorization": f"Bearer {self.auth_token.token}",
+            "Authorization": f"Bearer {auth_token.token}",
             "Content-Type": "application/json"
         }

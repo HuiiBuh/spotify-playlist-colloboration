@@ -2,11 +2,11 @@ from server import spotify, db, SpotifyAuthorisationToken
 from server.main.modals import SpotifyUser, Playlist
 
 
-def collect_tracks(playlist_id, count=0, offset=0, modified_tracks=None):
+def collect_tracks(playlist_id, auth_token, count=0, offset=0, modified_tracks=None):
     if modified_tracks is None:
         modified_tracks = {}
 
-    tracks = spotify.playlist_tracks(playlist_id=playlist_id, offset=offset)
+    tracks = spotify.playlist_tracks(playlist_id=playlist_id, auth_token=auth_token, offset=offset)
 
     count += len(tracks["items"])
 
@@ -16,6 +16,50 @@ def collect_tracks(playlist_id, count=0, offset=0, modified_tracks=None):
         collect_tracks(playlist_id, count=count, offset=(count - 1), modified_tracks=modified_tracks)
 
     return modified_tracks
+
+
+def get_token_by_playlist(playlist_id: str) -> SpotifyAuthorisationToken:
+    """
+    Takes the playlist id and gets the valid token for the playlist
+    :param playlist_id: The id of the playlist
+    :return: A valid and reauthorized token
+    """
+    playlist: Playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+    if not playlist:
+        return None
+
+    spotify_user = SpotifyUser.query.filter(SpotifyUser.id == playlist.spotify_user).first()
+    if not spotify_user:
+        return None
+
+    auth_token = SpotifyAuthorisationToken(spotify_user.oauth_token, spotify_user.activated_at)
+    if auth_token.is_expired():
+        auth_token = spotify.reauthorize(auth_token)
+        user_id = spotify.me()["id"]
+        update_user(user_id, auth_token)
+
+    return auth_token
+
+
+def update_user(user_id: str, auth_token: SpotifyAuthorisationToken):
+    """
+    Updates/creates the user with a token
+    :param user_id: The spotify user id
+    :param auth_token: The token of the user
+    :return: None
+    """
+    spotify_user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == user_id).first()
+
+    if not spotify_user:
+        spotify_user = SpotifyUser(spotify_user_id=user_id, oauth_token=auth_token.token,
+                                   activated_at=auth_token.activation_time)
+        db.session.add(spotify_user)
+        db.session.commit()
+        return
+
+    spotify_user.oauth_token = auth_token.token
+    spotify_user.activated_at = auth_token.activation_time
+    db.session.commit()
 
 
 def modify_track_json(track_list, return_track_list=None):
@@ -68,35 +112,3 @@ def modify_playlist_json(playlist_json):
             "image_url"] = "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg"
 
     return return_playlist
-
-
-def add_tracks(id_list: list, playlist_id: str):
-    spotify_playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
-
-    if not spotify_playlist:
-        return 400
-
-    user = SpotifyUser.query.filter(SpotifyUser.id == spotify_playlist.spotify_user).first()
-    spotify.auth_token = SpotifyAuthorisationToken(user.oauth_token)
-
-    spotify.add_playlist_tracks(playlist_id, id_list)
-    return 201
-
-
-def update_user(user_id: str, auth_token: str):
-    """
-    Updates/creates the user with a token
-    :param user_id: The spotify user id
-    :param auth_token: The token of the user
-    :return: None
-    """
-    spotify_user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == user_id).first()
-
-    if not spotify_user:
-        spotify_user = SpotifyUser(spotify_user_id=user_id, oauth_token=auth_token)
-        db.session.add(spotify_user)
-        db.session.commit()
-        return
-
-    spotify_user.oauth_token = auth_token
-    db.session.commit()

@@ -37,7 +37,7 @@ def get_token_by_playlist(playlist_id: str) -> SpotifyAuthorisationToken:
                                            activation_time=spotify_user.activated_at)
     if auth_token.is_expired():
         auth_token = spotify.reauthorize(auth_token)
-        user_id = spotify.me()["id"]
+        user_id = spotify.me(auth_token)["id"]
         update_user(user_id, auth_token)
 
     return auth_token

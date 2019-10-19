@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 
 {% block css %}
-
     <link type="text/css" rel="stylesheet" href="/static/css/own/pulse.css"
           media="screen,projection"/>
+
+    <style>
+        td, th {
+            padding: 7px 7px;
+        }
+    </style>
 {% endblock %}
 
 {% block main %}
@@ -34,8 +39,13 @@
                             </div>
                         </div>
                         <div class="col s10">
+
                             <table id="playlist-description">
                                 <tbody>
+                                <tr>
+                                    <td class="bold">Title</td>
+                                    <td class="bold">{{ playlist["name"] }}</td>
+                                </tr>
                                 <tr>
                                     <td>Author</td>
                                     <td><a class="pointer underline black-text"

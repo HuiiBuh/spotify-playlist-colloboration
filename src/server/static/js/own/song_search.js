@@ -258,8 +258,9 @@ function addSongsToPlaylist() {
     let songList = [];
 
     // Create the id list
-    for (let songId in addPlaylist.songList) {
-        songList.push(addPlaylist.songList[songId].id);
+    let songObjectList = addPlaylist.songList;
+    for (let songId in songObjectList) {
+        songList.push(songObjectList[songId].id);
     }
 
     let xhttp = new XMLHttpRequest();
@@ -268,6 +269,12 @@ function addSongsToPlaylist() {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 201) {
             document.getElementById("add-song-list").innerText = "";
+            displayPlaylistSongs("playlist-songs", addPlaylist.songList);
+
+            for (let songId in songObjectList) {
+                mainPlaylist.addSong(songObjectList[songId])
+            }
+            
             addPlaylist = new Playlist("main", "web", 0, null, null, "add")
         }
     };

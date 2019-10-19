@@ -36,6 +36,20 @@
     {% endif %}
 {% endwith %}
 
+
+{% block nav %}
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo left small-padding-left">HOME</a>
+            <a href="#" data-target="mobile-menu" class="sidenav-trigger"></a>
+            <ul class="right">
+                <li><a href="{{ url_for("main.logout") }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+
 {% block main %}
 
 {% endblock %}
@@ -77,11 +91,7 @@
                     <div class="col s3" style="text-align: right">
                         <a href="{{ url_for("admin.admin_page") }}" style="color: rgba(255,255,255,0.8);">Admin Site</a>
                     </div>
-                    <div class="col s9" id="copyright">
-                    </div>
-                    <div class="col s3" style="text-align: right">
-                        <a href="{{ url_for("main.logout") }}" style="color: rgba(255,255,255,0.8);">Logout</a>
-                    </div>
+                    <div class="col s9" id="copyright"></div>
                 </div>
             </div>
         </div>

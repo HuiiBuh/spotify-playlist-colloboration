@@ -122,6 +122,7 @@ img {
 }
 
 .show-autocomplete {
+    max-height: 436%;
     display: block;
     width: calc(100% - 4.5rem);
     left: 3.76rem;
@@ -131,6 +132,11 @@ img {
     transform: scaleX(1) scaleY(1);
 }
 
+
+.bold{
+    font-weight: bold;
+}
+
 #add-song-footer {
     padding-right: 34px;
     position: sticky;
@@ -138,7 +144,7 @@ img {
 }
 
 #song-modal .modal-content {
-    min-height: 63vh;
+    min-height: 62vh;
     padding-bottom: 0;
 }
 
@@ -225,7 +231,7 @@ img {
 }
 
 .small-padding-left {
-    padding-left: .5em;
+    padding-left: .5em !important;
 }
 
 .margin-top {

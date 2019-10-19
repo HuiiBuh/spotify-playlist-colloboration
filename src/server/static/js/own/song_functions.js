@@ -43,7 +43,7 @@ function createSongs(json, type, appendList = []) {
     }
 
     if (type === "main")
-        displayPlaylistSongs("playlist-songs");
+        displayPlaylistSongs("playlist-songs", mainPlaylist.songList);
     else
         return appendList
 }
@@ -51,14 +51,15 @@ function createSongs(json, type, appendList = []) {
 /**
  * Display the songs in the main playlist
  * @param rootID The root the songs get appended to
+ * @param mode Append or create the playlist
  */
-function displayPlaylistSongs(rootID) {
+function displayPlaylistSongs(rootID, songList) {
     let root = document.getElementById(rootID);
 
     // For every song in the playlist
-    for (let songNumber in mainPlaylist.songList) {
-        if (mainPlaylist.songList.hasOwnProperty(songNumber)) {
-            var {cover, title, url, artist, album, durationHumanReadable, id} = mainPlaylist.songList[songNumber];
+    for (let songNumber in songList) {
+        if (songList.hasOwnProperty(songNumber)) {
+            var {cover, title, url, artist, album, durationHumanReadable, id} = songList[songNumber];
         }
 
         let song = document.createElement("div");

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="/static/css/own/loading.css"
+          media="screen,projection"/>
+
+    <style>
+        body {
+            overflow-y: scroll !important;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascript_variables %}
+    <script type="text/javascript">
+        let searchAPI = "/api/spotify/search?playlist-id={{ playlist_id }}&searchterm=";
+        let playlistAPI = "/api/spotify/playlist?playlist-id={{ playlist_id }}";
+        let playlistTracksAPI = "/api/spotify/playlist/tracks?playlist-id={{ playlist_id }}";
+        let playlistAddTracksAPI = "/api/spotify/playlist/add?playlist-id={{ playlist_id }}";
+    </script>
+{% endblock %}
+
+{% block main %}
+
+    <div id="main-box">
+        <div class="container margin-top z-depth-3 rounded" id="playlist-box">
+
+            <div class="center small-padding-top">
+                <h1 id="playlist-name" style="display: none"></h1>
+                <div class="loading-card small-padding-top small-padding-bottom small-margin-bottom"
+                     style="border: none; margin: 2.8rem 0 1.68rem 0;" id="loading-heading">
+                    <div class="loading-bar big-loading-bar loading first-loading-bar margin-auto"></div>
+                </div>
+            </div>
+
+            <!-- Playlist information -->
+            <div class="row flex-v-center">
+                <div class="col s9">
+                    <table style="display: none" id="playlist-description">
+                        <tbody>
+                        <tr>
+                            <td>Author</td>
+                            <td><a class="pointer underline black-text" id="author">HuiiBuh</a></td>
+                        </tr>
+                        <tr>
+                            <td>Duration</td>
+                            <td id="duration">22h</td>
+                        </tr>
+                        <tr>
+                            <td>Song Count</td>
+                            <td id="song-count">500</td>
+                        </tr>
+                        <tr style="border-bottom:none!important;">
+                            <td>URL</td>
+                            <td><a class="pointer underline black-text" id="playlist-url">Go to Spotify</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="loading-card" id="loading-playlist-description" style="overflow: hidden">
+                        <div class="loading-bar loading-bar-2 loading first-loading-bar"></div>
+                        {% for i in range(1, 3) %}
+                            <div class="loading-bar loading-bar-3 loading "></div>
+                            <div class="loading-bar loading-bar-1 loading "></div>
+                            <div class="loading-bar loading-bar-2 loading "></div>
+                            <div class="loading-bar loading-bar-1 loading "></div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <div class="col s3 center no-padding">
+                    <div class="loading-card rectangle">
+                        <div class="image loading" id="playlist-cover"></div>
+                    </div>
+                </div>
+            </div>
+
+            <ul>
+                <li class="divider"></li>
+            </ul>
+
+            <!-- Song heading -->
+            <div class="row">
+                <h4 class="col s12 no-margin-bottom">Songs</h4>
+            </div>
+
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="search-playlist-song" class="postfix-input" type="text">
+                            <i class="material-icons postfix" id="clear-search-input">clear</i>
+                            <label for="search-playlist-song">Search</label>
+                            <span class="helper-text postfix-input" data-error="wrong" data-success="right">Search for songs in the playlist</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="search-results-block" style="display: none">
+                <h5>Search Results</h5>
+                <div id="search-results"></div>
+            </div>
+
+            <!-- All songs -->
+            <div id="playlist-songs" style="display: none"></div>
+
+            <div class="loading-card" id="song-placeholder">
+                <div class="contend-loader">
+                    <div class="loading-bar loading-bar-2 loading first-loading-bar"></div>
+
+                    {% for i in range(1, 20) %}
+                        <div class="loading-bar loading-bar-1 loading"></div>
+                        <div class="loading-bar loading-bar-3 loading"></div>
+                        <div class="loading-bar loading-bar-2 loading"></div>
+                        <div class="loading-bar loading-bar-1 loading"></div>
+                    {% endfor %}
+
+                    <div class="loading-bar loading-bar-1 loading last-loading-bar"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Action button -->
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large modal-trigger" href="#song-modal">
+            <i class="very-large material-icons pointer">add</i>
+        </a>
+    </div>
+
+
+    <div id="song-modal" class="modal">
+        <div class="modal-content">
+            <h4>Search for Songs</h4>
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="chip">artist:Eminem<i class="close material-icons">close</i></div>
+                    <div class="chip">track:Lose Yourself<i class="close material-icons">close</i></div>
+                    <div class="chip">album:8 Mile<i class="close material-icons">close</i></div>
+                    <div class="chip">year:2002<i class="close material-icons">close</i></div>
+                </div>
+                <div class="input-field col s12" id="click-exception">
+                    <i class="material-icons prefix" id="search-song-icon">search</i>
+                    <label for="new-song-search">Song search</label>
+                    <input id="new-song-search" type="text">
+
+                    <ul class="show-autocomplete dropdown-content" id="search-preview" tabindex="0">
+
+                    </ul>
+                </div>
+            </div>
+            <h5>Your songs</h5>
+
+            <div id="add-song-list"></div>
+
+        </div>
+
+        <div class="modal-footer" id="add-song-footer">
+            <a class="modal-close waves-effect waves-green btn-flat left" style="margin-left: 28px;">Cancel</a>
+            <a class="modal-close waves-effect waves-green btn-flat" id="add-song-button">Add Songs</a>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="/static/js/own/Playlist.js"></script>
+    <script type="text/javascript" src="/static/js/own/Song.js"></script>
+    <script type="text/javascript" src="/static/js/own/functions.js"></script>
+    <script type="text/javascript" src="/static/js/own/playlist_functions.js"></script>
+    <script type="text/javascript" src="/static/js/own/song_functions.js"></script>
+    <script type="text/javascript" src="/static/js/own/search_playlist.js"></script>
+    <script type="text/javascript" src="/static/js/own/song_search.js"></script>
+    <script type="text/javascript" src="/static/js/own/main.js"></script>
+{% endblock %}

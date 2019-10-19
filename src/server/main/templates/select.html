@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="/static/css/own/pulse.css"
+          media="screen,projection"/>
+
+    <style>
+        td, th {
+            padding: 7px 7px;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+
+    <div id="main-box" style="height: 100vh">
+        <div class="container margin-top z-depth-3 rounded" id="playlist-box">
+
+            <div class="center small-padding-top">
+                <h1>Select a Playlist</h1>
+
+                {% if playlist_list_json == {} %}
+
+                    <ul>
+                        <li class="divider"></li>
+                    </ul>
+                    <h5 style="margin: 3rem">Your user currently has no playlist assigned to him</h5>
+
+                {% endif %}
+
+                {% for id, playlist in playlist_list_json.items() %}
+
+                    <!-- Playlist information -->
+                    <div class="row flex-v-center">
+                        <div class="col s2 center no-padding">
+                            <div class="rectangle image-pulse">
+                                <div class="image background-image" onclick="location.href = '?playlist-id={{ id }}'"
+                                     style="background-image: url('{{ playlist["image_url"] }}'); cursor: pointer"></div>
+                            </div>
+                        </div>
+                        <div class="col s10">
+
+                            <table id="playlist-description">
+                                <tbody>
+                                <tr>
+                                    <td class="bold">Title</td>
+                                    <td class="bold">{{ playlist["name"] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Author</td>
+                                    <td><a class="pointer underline black-text"
+                                           onclick="window.open('{{ playlist["author"]["url"] }}')">
+                                        {{ playlist["author"]["name"] }}
+                                    </a></td>
+                                </tr>
+                                <tr>
+                                    <td>Song Count</td>
+                                    <td>{{ playlist.track_count }}</td>
+                                </tr>
+                                <tr style="border-bottom:none!important;">
+                                    <td>URL</td>
+                                    <td><a class="pointer underline black-text"
+                                           onclick="window.open('{{ playlist["url"] }}')">
+                                        Go to Spotify</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li class="divider"></li>
+                    </ul>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

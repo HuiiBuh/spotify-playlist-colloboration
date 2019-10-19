@@ -1,0 +1,84 @@
+.loading-card {
+    border: 1px solid #ddd;
+}
+
+.loading-card > .image {
+    position: absolute;
+    background: #e9ebee;
+    background-position: center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.contend-loader {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.loading-bar {
+    background: #e9ebee;
+    margin: 0 13px 13px;
+    height: 19px;
+}
+
+.first-loading-bar {
+    margin-top: 13px;
+}
+
+.big-loading-bar {
+    height: 50px;
+    width: 40%;
+}
+
+.loading-bar-1 {
+    width: 80%;
+}
+
+.loading-bar-2 {
+    width: 30%;
+}
+
+.loading-bar-3 {
+    width: 90%;
+}
+
+
+.absolute-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: "";
+    display: block;
+    background-color: #dddfe2;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateX(0);
+    animation: 1.5s loading-placeholder ease-in-out infinite;
+}
+
+@keyframes loading-placeholder {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}

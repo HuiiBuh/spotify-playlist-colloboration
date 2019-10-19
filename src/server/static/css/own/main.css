@@ -1,0 +1,369 @@
+.footer-image {
+    height: 1em;
+    margin-right: 5px;
+}
+
+.footer-links > li > a:hover {
+    text-decoration: underline;
+    transition: text-decoration .1s ease-in;
+}
+
+.footer-links > li > a {
+    text-decoration: underline solid transparent;
+    transition: text-decoration .1s ease-in;
+}
+
+.postfix {
+    position: absolute;
+    width: 3rem;
+    font-size: 2rem;
+    top: .5rem;
+    right: 0;
+    cursor: pointer;
+}
+
+.postfix-input {
+    margin-right: 3rem !important;
+    width: calc(100% - 3rem) !important;
+}
+
+.song-cover-div {
+    padding-left: 5px !important;
+    padding-right: 0 !important;
+}
+
+#copyright {
+    padding: 0 .75rem;
+}
+
+#toast-container {
+    width: 100%;
+    right: 0;
+    top: auto;
+    max-width: 100% !important;
+    bottom: 5% !important;
+}
+
+.toast {
+    width: max-content;
+    text-align: center;
+    margin: 1em auto auto;
+    max-width: 70%;
+}
+
+#main-box {
+    min-height: calc(100vh - 14px);
+}
+
+#playlist-box {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 1px;
+    margin-bottom: 1.5rem;
+}
+
+.song-image {
+    max-width: 100px;
+    max-height: 60px;
+
+    cursor: pointer;
+    height: auto;
+    width: auto;
+}
+
+.search-song-image {
+    max-width: 40px;
+    max-height: 40px;
+
+    cursor: pointer;
+    height: auto;
+    width: auto;
+}
+
+.cover-image {
+    background-color: gray;
+    max-width: 200px;
+    cursor: default;
+    height: auto;
+}
+
+.song {
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+i.very-large {
+    font-size: 3rem;
+}
+
+.song:hover {
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.dropdown-content li {
+    cursor: default;
+}
+
+.background-image {
+    position: absolute;
+    background-position: center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+img {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.show-autocomplete {
+    max-height: 436%;
+    display: block;
+    width: calc(100% - 4.5rem);
+    left: 3.76rem;
+    top: 43px;
+    transform-origin: 0 0 0;
+    opacity: 1;
+    transform: scaleX(1) scaleY(1);
+}
+
+
+.bold{
+    font-weight: bold;
+}
+
+#add-song-footer {
+    padding-right: 34px;
+    position: sticky;
+    bottom: 0;
+}
+
+#song-modal .modal-content {
+    min-height: 62vh;
+    padding-bottom: 0;
+}
+
+@media (max-width: 460px) {
+
+    .modal .modal-content {
+        padding: 10px;
+    }
+
+    #search-song-icon {
+        display: none;
+    }
+
+    #new-song-search {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #new-song-search + label {
+        width: 99%;
+        margin-left: 0;
+    }
+
+    .show-autocomplete {
+        width: calc(100% - 1.5rem);
+        left: .76rem;
+    }
+
+}
+
+#add-song-list {
+    overflow: auto;
+    padding: 5px;
+}
+
+
+/*Helpers**************************************************************************************************************/
+
+.inline {
+    display: inline-block;
+}
+
+.margin-auto {
+    margin: auto !important;
+}
+
+.small-margin-bottom {
+    margin-bottom: .5em;
+}
+
+.rectangle {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+}
+
+.underline:hover {
+    text-decoration: underline;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.flex-v-center {
+    display: flex;
+    align-items: center;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.small-padding-top {
+    padding-top: .5em;
+}
+
+.small-padding-right {
+    padding-right: .5em;
+}
+
+.small-padding-left {
+    padding-left: .5em !important;
+}
+
+.margin-top {
+    margin-top: 1em;
+}
+
+.margin-bottom {
+    margin-bottom: 1em;
+}
+
+.small-padding-bottom {
+    padding-bottom: .5em;
+}
+
+.small-margin-top {
+    margin-top: .5em;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.rounded {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+
+/*Container************************************************************************************************************/
+
+
+@media only screen and (max-width: 415px) {
+    .xs1 {
+        width: calc(100% / 12)
+    }
+
+    .xs3 {
+        width: calc(100% / 12);
+    }
+
+    .xs8 {
+        width: calc(100% / 12 * 8);
+    }
+
+    #playlist-box {
+        padding-right: 1em;
+        padding-left: 1em;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 95%;
+    }
+}
+
+@media only screen and (min-width: 601px) {
+    .container {
+        width: 90%
+    }
+}
+
+@media only screen and (min-width: 993px) {
+    .container {
+        width: 80%
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .container {
+        width: 80%
+    }
+}
+
+
+/*Label checkbox*******************************************************************************************************/
+[type="checkbox"]:not(.filled-in) + label:not(.lever)::after {
+    border: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+[type="checkbox"] + label:not(.lever)::before, [type="checkbox"]:not(.filled-in) + label:not(.lever)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    z-index: 0;
+    border: 2px solid #5a5a5a;
+    border-radius: 1px;
+    margin-top: 3px;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+[type="checkbox"]:checked + label:not(.lever)::before {
+    top: -4px;
+    left: -5px;
+    width: 12px;
+    height: 22px;
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent;
+    border-right: 2px solid #26a69a;
+    border-bottom: 2px solid #26a69a;
+    -webkit-transform: rotate(40deg);
+    transform: rotate(40deg);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform-origin: 100% 100%;
+    transform-origin: 100% 100%;
+}
+
+[type="checkbox"] + label:not(.lever) {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    font-size: 1rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+*, ::before, ::after {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+/*Label checkbox*******************************************************************************************************/

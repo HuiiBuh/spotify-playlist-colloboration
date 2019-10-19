@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ title }}</title>
+
+    <!--Import Google Icon Font-->
+    <link href="/static/css/libraries/materiel-icons.css" rel="stylesheet">
+    <link rel="icon" href="/static/icons/Spotify-64-Green.png">
+
+    <!--Import CSS-->
+    <link type="text/css" rel="stylesheet" href="/static/css/libraries/materialize.min.css"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/main.css"
+          media="screen,projection"/>
+
+    {% block css %}
+    {% endblock %}
+
+    {% block javascript_variables %}
+    {% endblock %}
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+
+{% block nav %}
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo left small-padding-left">HOME</a>
+            <a href="#" data-target="mobile-menu" class="sidenav-trigger"></a>
+            <ul class="right">
+                <li><a href="{{ url_for("main.logout") }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+
+{% block main %}
+
+{% endblock %}
+
+{% block footer %}
+    <footer class="page-footer" style="z-index: 1000; position: relative">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 m6 s12">
+                    <h5 class="white-text">Playlist Editor</h5>
+                    <p class="grey-text text-lighten-4">
+                        A Webapp that allows you to edit a playlist as a group.
+                    </p>
+                </div>
+                <div class="col l4 offset-l2 m4 offset-m2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul class="footer-links">
+                        <li class="valign-wrapper">
+                            <img class="footer-image" alt="" src="../static/icons/GitHub-120px-dark.png">
+                            <a class="grey-text text-lighten-3"
+                               href="https://github.com/HuiiBuh/spotify-playlist-colloboration">
+                                Fork on Github
+                            </a>
+                        </li>
+                        <li class="valign-wrapper">
+                            <img class="footer-image" alt="" src="../static/icons/GitHub-120px-dark.png">
+                            <a class="grey-text text-lighten-3" href="https://github.com/HuiiBuh/">HuiiBuh</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col s9" id="copyright">
+                        © 2019 HuiBuh
+                    </div>
+                    <div class="col s3" style="text-align: right">
+                        <a href="{{ url_for("admin.admin_page") }}" style="color: rgba(255,255,255,0.8);">Admin Site</a>
+                    </div>
+                    <div class="col s9" id="copyright"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            document.getElementById("copyright").innerText = "© " + new Date().getFullYear() + " HuiiBuh"
+        }
+    </script>
+
+{% endblock %}
+
+
+<script type="text/javascript" src="/static/js/libraries/materialize.min.js"></script>
+{% block javascript %}
+
+{% endblock %}
+
+</body>
+</html>

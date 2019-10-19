@@ -1,2 +1,25 @@
+six
+requests
 Flask==1.1.1
+
+# To use the .flaskenv file
+python-dotenv==0.10.3
+
+# Input forms
+wtforms==2.2.1
+flask-wtf==0.14.2
+
+
+# database
+flask-sqlalchemy==2.4.1
+flask-migrate==2.5.2
+
+# login and passwords
+flask-login
+argon2-cffi
+
+# backup
+schedule==0.6.0
+
+# production server
 uwsgi

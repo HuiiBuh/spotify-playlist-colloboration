@@ -10,6 +10,7 @@ class User(db.Model, UserMixin):
     The User Model
     """
     id = db.Column(db.Integer, primary_key=True)
+    is_admin = db.Column(db.Boolean, nullable=False)
     username = db.Column(db.String(64), nullable=False, index=True, unique=True)
     password_hash = db.Column(db.Text, nullable=False)
     db.relationship('Playlist', backref='User')
@@ -53,7 +54,7 @@ class SpotifyUser(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     spotify_user_id = db.Column(db.String(64), nullable=False, unique=True)
-    original_token = db.Column(db.Text)
+    refresh_token = db.Column(db.Text)
     oauth_token = db.Column(db.Text)
     activated_at = db.Column(db.BigInteger)
 

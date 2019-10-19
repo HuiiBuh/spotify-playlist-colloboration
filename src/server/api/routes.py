@@ -18,6 +18,30 @@ def authorize():
     return redirect(url)
 
 
+@mod.route("/callback/")
+@login_required
+def callback():
+    if request.args.get("error"):
+        return jsonify(dict(error=request.args.get("error_description")))
+    else:
+        callback_state = request.args.get("state")
+
+        if callback_state != spotify_info.state:
+            return f"The state was not the same. The returned state was {callback_state}"
+
+    auth_code: str = request.args.get("code")
+    auth_token: SpotifyAuthorisationToken = SpotifyAuthorisationToken(refresh_token=auth_code,
+                                                                      activation_time=int(time.time()))
+
+    # Check if expired and update the user
+    auth_token = spotify.reauthorize(auth_token, grant_type="authorization_code")
+    auth_token = spotify.reauthorize(auth_token)
+    user_id = spotify.me(auth_token)["id"]
+    update_user(user_id, auth_token)
+
+    return jsonify(OAuth_Token=auth_token.token, Reauthorization_Token=auth_token.refresh_token)
+
+
 @mod.route("/reauthorize")
 @login_required
 def reauthorize():
@@ -31,30 +55,7 @@ def reauthorize():
     if not auth_token:
         return abort(400, "No playlist with this id found")
 
-    return spotify.reauthorize(auth_token)
-
-
-@mod.route("/callback/")
-@login_required
-def callback():
-    if request.args.get("error"):
-        return jsonify(dict(error=request.args.get("error_description")))
-    else:
-        callback_state = request.args.get("state")
-
-        if callback_state != spotify_info.state:
-            return f"The state was not the same." \
-                   f"The returned state was {callback_state}"
-
-    auth_code: str = request.args.get("code")
-    auth_token: SpotifyAuthorisationToken = SpotifyAuthorisationToken(auth_code, int(time.time()))
-
-    # Check if expired and update the user
-    auth_token = spotify.reauthorize(auth_token)
-    user_id = spotify.me(auth_token)["id"]
-    update_user(user_id, auth_token)
-
-    return jsonify(OAuth_Token=auth_code)
+    return jsonify(OAuth_Token=spotify.reauthorize(auth_token).token)
 
 
 @mod.route("/spotify/search")

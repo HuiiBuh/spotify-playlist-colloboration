@@ -40,12 +40,14 @@ class SpotifyAuthorisationToken:
     Class that has the Authorisation Token
     """
 
-    def __init__(self, authorisation_token: str, activation_time: int):
+    def __init__(self, refresh_token: str, activation_time: int, authorisation_token=None):
         """
         Generate a new authorisation token
+        :param refresh_token: The refresh token that was given to the application
         :param authorisation_token: The token
         """
         self.activation_time: int = activation_time
+        self.refresh_token = refresh_token
         self.token: str = authorisation_token
 
     def is_expired(self) -> bool:
@@ -105,26 +107,34 @@ class Spotify:
                    f"&state={self.app_info.state}"
         return url
 
-    def reauthorize(self, authorisation_token: SpotifyAuthorisationToken) -> SpotifyAuthorisationToken:
+    def reauthorize(self, spotify_auth_token: SpotifyAuthorisationToken,
+                    grant_type="refresh_token") -> SpotifyAuthorisationToken:
         """
-        Reauthorizes the app.
+        Reauthorizes the token and returns the reauthorized token.
         Only works if the app has benn authorized before
-        :return: None
+        :param grant_type: If the token is to be refreshed, or authorization_code
+        :param spotify_auth_token A valid SpotifyAuthorisationToken
+        :return: Reauthorized SpotifyAuthorisationToken
         """
 
         if self.app_info is None:
             raise TypeError("The app info is None. You have to add this with the app_information property")
 
-        if authorisation_token is None:
+        if spotify_auth_token is None:
             raise TypeError("You have to provide a AuthorisationToken object")
 
         url: str = SpotifyUrls.REFRESH
 
         body: dict = {
-            "grant_type": "authorization_code",
-            "code": authorisation_token.token,
-            "redirect_uri": self.app_info.redirect_url
+            "grant_type": grant_type,
         }
+
+        if grant_type is "refresh_token":
+            body["refresh_token"] = spotify_auth_token.refresh_token
+
+        if grant_type is "authorization_code":
+            body["code"] = spotify_auth_token.refresh_token
+            body["redirect_uri"] = self.app_info.redirect_url
 
         auth_header: base64 = base64.b64encode(
             six.text_type(self.app_info.application_id + ':' + self.app_info.application_secret).encode('ascii'))
@@ -135,13 +145,22 @@ class Spotify:
         if "error" in reauthorization_request.json():
             raise SpotifyError(f"There was an error: {reauthorization_request.json()}")
 
+        a = reauthorization_request.json()
+
         try:
             access_token: str = reauthorization_request.json()["access_token"]
         except KeyError:
             raise SpotifyError(f"No 'access_token' key was found in this json:"
                                f"{reauthorization_request.json()}")
+        try:
+            refresh_token: str = reauthorization_request.json()["refresh_token"]
+        except KeyError:
+            refresh_token = spotify_auth_token.refresh_token
+
         # Update the access token
-        return SpotifyAuthorisationToken(access_token, int(time.time()))
+        return SpotifyAuthorisationToken(refresh_token=refresh_token,
+                                         authorisation_token=access_token,
+                                         activation_time=int(time.time()))
 
     @property
     def app_information(self) -> SpotifyAppInfo:

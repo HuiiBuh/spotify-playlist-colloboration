@@ -32,7 +32,9 @@ def get_token_by_playlist(playlist_id: str) -> SpotifyAuthorisationToken:
     if not spotify_user:
         return None
 
-    auth_token = SpotifyAuthorisationToken(spotify_user.oauth_token, spotify_user.activated_at)
+    auth_token = SpotifyAuthorisationToken(refresh_token=spotify_user.refresh_token,
+                                           authorisation_token=spotify_user.oauth_token,
+                                           activation_time=spotify_user.activated_at)
     if auth_token.is_expired():
         auth_token = spotify.reauthorize(auth_token)
         user_id = spotify.me()["id"]
@@ -51,13 +53,16 @@ def update_user(user_id: str, auth_token: SpotifyAuthorisationToken):
     spotify_user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == user_id).first()
 
     if not spotify_user:
-        spotify_user = SpotifyUser(spotify_user_id=user_id, oauth_token=auth_token.token,
-                                   activated_at=auth_token.activation_time)
+        spotify_user = SpotifyUser(spotify_user_id=user_id,
+                                   oauth_token=auth_token.token,
+                                   activated_at=auth_token.activation_time,
+                                   refresh_token=auth_token.refresh_token)
         db.session.add(spotify_user)
         db.session.commit()
         return
 
     spotify_user.oauth_token = auth_token.token
+    spotify_user.refresh_token = auth_token.refresh_token
     spotify_user.activated_at = auth_token.activation_time
     db.session.commit()
 

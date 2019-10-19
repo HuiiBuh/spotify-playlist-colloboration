@@ -29,7 +29,7 @@ def create_user(username, password):
     password_hash = ph.hash(password)
 
     try:
-        user = User(username=username, password_hash=password_hash)
+        user = User(username=username, password_hash=password_hash, is_admin=True)
         db.session.add(user)
         db.session.commit()
     except sqlalchemy.exc.IntegrityError:

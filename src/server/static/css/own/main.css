@@ -119,6 +119,10 @@ i.very-large {
     cursor: default;
 }
 
+li {
+    list-style-position: inside;
+}
+
 .background-image {
     position: absolute;
     background-position: center !important;

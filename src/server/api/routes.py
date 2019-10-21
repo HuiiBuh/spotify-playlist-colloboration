@@ -3,9 +3,10 @@ import time
 from flask import Blueprint, jsonify, request, Response, redirect, abort
 from flask_login import login_required, current_user
 
-from server import spotify, spotify_info
+from server import spotify, spotify_info, db
 from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_user, \
     get_token_by_playlist
+from server.main.modals import Playlist
 from server.spotify import SpotifyAuthorisationToken
 
 mod = Blueprint("api", __name__)
@@ -62,6 +63,35 @@ def reauthorize():
         return abort(400, "No playlist with this id found")
 
     return jsonify(OAuth_Token=spotify.reauthorize(auth_token).token)
+
+
+@mod.route("playlist/add")
+@login_required
+def add_playlist():
+    if not current_user.is_admin:
+        return "You are not authorized to visit this page"
+    playlist_id = request.args.get("playlist-id")
+    if not playlist_id:
+        return abort(400, "You passed an empty playlist")
+
+
+@mod.route("playlist/remove")
+@login_required
+def remove_playlist():
+    if not current_user.is_admin:
+        return "You are not authorized to visit this page"
+
+    playlist_id = request.args.get("playlist-id")
+    if not playlist_id:
+        return abort(400, "You passed an empty playlist")
+
+    playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+    if not playlist:
+        return abort(400, "The playlist id you provided does not exist")
+
+    db.session.delete(playlist)
+    db.session.commit()
+    return ""
 
 
 @mod.route("/spotify/search")

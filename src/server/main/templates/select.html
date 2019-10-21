@@ -44,7 +44,9 @@
                                 <tbody>
                                 <tr>
                                     <td class="bold">Title</td>
-                                    <td class="bold">{{ playlist["name"] }}</td>
+                                    <td class="bold"
+                                        onclick="window.open('{{ playlist["url"] }}')">
+                                        <a class="pointer underline black-text">{{ playlist["name"] }}</a></td>
                                 </tr>
                                 <tr>
                                     <td>Author</td>
@@ -73,7 +75,6 @@
                         <li class="divider"></li>
                     </ul>
                 {% endfor %}
-
 
             </div>
         </div>

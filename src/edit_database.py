@@ -23,13 +23,13 @@ def clear_db():
         db.session.commit()
 
 
-def create_user(username, password):
+def create_user(username, password, admin):
     # Set to use the ID harsher
     ph = PasswordHasher(type=Type.ID)
     password_hash = ph.hash(password)
 
     try:
-        user = User(username=username, password_hash=password_hash, is_admin=True)
+        user = User(username=username, password_hash=password_hash, is_admin=admin)
         db.session.add(user)
         db.session.commit()
     except sqlalchemy.exc.IntegrityError:
@@ -61,6 +61,6 @@ def create_playlist():
         print("The playlist already exists")
 
 
-# create_user(username="default", password="default")
+# create_user(username="muaythay", password="test", admin=False)
 create_playlist()
 print("Success")

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block javascript_variables %}
+    <script type="text/javascript">
+        let removePlaylistAPI = "{{ url_for("api.remove_playlist") }}?playlist-id=";
+    </script>
+{% endblock %}
+
+{% block main %}
+    <div id="main-box" style="height: 100vh">
+        <div class="container margin-top z-depth-3 rounded" id="playlist-box">
+
+            <div class="center small-padding-top">
+
+                <h1>{{ user_name }}'s Playlists</h1>
+
+                {% for playlist_id, playlist in playlist_list_json.items() %}
+
+                    <div class="row flex-v-center playlist" id="{{ playlist_id }}">
+                        <div class="col xs3 s2 l1 center flex-v-center song-cover-div">
+                            <img alt="cover" src="{{ playlist["image_url"] }}">
+                        </div>
+                        <div class="col xs8 s9 l10">
+                            <div class="col s12" style="text-align: left">
+                                <a class=" pointer underline black-text"
+                                   onclick="window.open('{{ playlist["url"] }}')"
+                                >{{ playlist["name"] }}</a>
+                            </div>
+                        </div>
+                        <div class="col xs1 s1">
+                            <i class="material-icons pointer">delete</i>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+    <div id="add-modal" class="modal">
+        <div class="modal-content">
+            <h4>Add Playlist to the Spotify User</h4>
+
+            <div class="input-field col s12">
+                <input id="add-playlist-song-input" class="postfix-input" type="text">
+                <i class="material-icons postfix" id="add-playlist-song-id">add_circle</i>
+                <label for="add-playlist-song-input">Add</label>
+                <span class="helper-text postfix-input" data-error="wrong" data-success="right">Add playlist ids to add a playlist</span>
+            </div>
+
+            <div id="add-playlist-list">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="" class="modal-close waves-effect waves-green btn-flat left">Cancel</a>
+            <a href="" class="modal-close waves-effect waves-green btn-flat" id="add-playlists">Add</a>
+        </div>
+    </div>
+
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large">
+            <i class="very-large large material-icons modal-trigger" id="add-playlist-id" data-target="add-modal">add</i>
+        </a>
+    </div>
+{% endblock %}
+
+
+
+{% block javascript %}
+    <script type="text/javascript" src="/static/js/own/remove-playlist/main.js"></script>
+{% endblock %}

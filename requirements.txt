@@ -26,4 +26,4 @@ argon2-cffi
 schedule==0.6.0
 
 # production server
-uwsgi
+uWSGI

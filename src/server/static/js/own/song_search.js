@@ -274,7 +274,7 @@ function addSongsToPlaylist() {
             for (let songId in songObjectList) {
                 mainPlaylist.addSong(songObjectList[songId])
             }
-            
+
             addPlaylist = new Playlist("main", "web", 0, null, null, "add")
         }
     };

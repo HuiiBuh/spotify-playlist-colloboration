@@ -1,7 +1,7 @@
 import time
 
 from flask import Blueprint, jsonify, request, Response, redirect, abort
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from server import spotify, spotify_info
 from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_user, \
@@ -14,6 +14,9 @@ mod = Blueprint("api", __name__)
 @mod.route("/authorize")
 @login_required
 def authorize():
+    if not current_user.is_admin:
+        return "You are not authorized to visit this page"
+
     url = spotify.build_authorize_url(show_dialog=False)
     return redirect(url)
 
@@ -21,6 +24,9 @@ def authorize():
 @mod.route("/callback/")
 @login_required
 def callback():
+    if not current_user.is_admin:
+        return "You are not authorized to visit this page"
+
     if request.args.get("error"):
         return jsonify(dict(error=request.args.get("error_description")))
     else:

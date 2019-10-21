@@ -95,6 +95,21 @@ i.very-large {
     font-size: 3rem;
 }
 
+.icon {
+    position: absolute;
+    top: 35%;
+    bottom: 35%;
+    left: 35%;
+    z-index: 10;
+    right: 35%;
+}
+
+.icon svg {
+    color: #b3b3b3;
+    width: 100%;
+    height: 100%;
+}
+
 .song:hover {
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.2s ease-in-out;
@@ -107,7 +122,7 @@ i.very-large {
 .background-image {
     position: absolute;
     background-position: center !important;
-    background-size: contain !important;
+    background-size: cover !important;
     background-repeat: no-repeat !important;
     top: 0;
     left: 0;
@@ -133,7 +148,7 @@ img {
 }
 
 
-.bold{
+.bold {
     font-weight: bold;
 }
 

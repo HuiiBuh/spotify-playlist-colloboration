@@ -5,7 +5,7 @@ services:
     container_name: flask
     restart: always
     expose:
-      - 5000
+      - 5555
   nginx:
     build: nginx
     container_name: nginx

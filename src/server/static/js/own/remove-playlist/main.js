@@ -1,13 +1,31 @@
 M.AutoInit();
-let playlistIDs = [];
+let bodyParams = {};
+bodyParams["playlists"] = {};
+let first = true;
 
 
 window.onload = function () {
     addEventHandler()
 };
 
-function addToPlaylist() {
-    //TODO
+function addToPlaylist(evt) {
+
+    if (Object.entries(bodyParams["playlists"]).length === undefined) {
+        return
+    }
+
+    let xhttp = new XMLHttpRequest();
+    let url = addPlaylistAPI;
+
+    xhttp.open("POST", url, true);
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            alert("sdf")
+        }
+    };
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(bodyParams));
 }
 
 function addEventHandler() {
@@ -26,25 +44,65 @@ function addEventHandler() {
     }
 }
 
-function addPlaylistId(evt) {
-    let value = document.getElementById("add-playlist-song-input").value;
-    if (playlistIDs.includes(value))
+function addPlaylistId() {
+    let playlistIdValue = document.getElementById("add-playlist-song-input").value;
+    let userValue = document.getElementById("user-select").value;
+    if (playlistIdValue in bodyParams["playlists"] || playlistIdValue === "" || userValue === "")
         return;
 
-    let playlistLi = document.createElement("li");
-    playlistLi.setAttribute("class", "playlist-add");
-    playlistLi.innerText = value;
-
     let root = document.getElementById("add-playlist-list");
-    root.appendChild(playlistLi);
-    playlistIDs.push(value);
+
+    if (!first) {
+        let ul = document.createElement("ul");
+        root.appendChild(ul);
+
+        let divider = document.createElement("li");
+        divider.setAttribute("class", "divider");
+        ul.appendChild(divider);
+    }
+    first = false;
+
+    let playlistDivRow = document.createElement("div");
+    playlistDivRow.setAttribute("class", "row");
+    root.appendChild(playlistDivRow);
+
+    let idRoundDiv = document.createElement("div");
+    idRoundDiv.setAttribute("class", "col s12 rounded margin-bottom");
+    playlistDivRow.appendChild(idRoundDiv);
+
+    let idName = document.createElement("div");
+    idName.setAttribute("class", "col s5 background light-nav-bg-color  rounded-left");
+    idName.innerText = "Playlist ID";
+    playlistDivRow.appendChild(idName);
+
+    let playlistId = document.createElement("div");
+    playlistId.setAttribute("class", "col s7 background light-bg-color rounded-right");
+    playlistId.innerText = playlistIdValue;
+    playlistDivRow.appendChild(playlistId);
+
+
+    let userDivRow = document.createElement("div");
+    userDivRow.setAttribute("class", "row");
+    root.appendChild(userDivRow);
+
+    let userLabelDiv = document.createElement("div");
+    userLabelDiv.setAttribute("class", "col s5 background light-nav-bg-color  rounded-left");
+    userLabelDiv.innerText = "Username";
+    userDivRow.appendChild(userLabelDiv);
+
+    let userDiv = document.createElement("div");
+    userDiv.setAttribute("class", "col s7 background light-bg-color rounded-right");
+    userDiv.innerText = userValue;
+    userDivRow.appendChild(userDiv);
+
+    bodyParams["playlists"][playlistIdValue] = userValue;
 }
 
 
 function deletePlaylist(id, playlist) {
     let playlistId = id;
     let playlistNode = playlist;
-    return function (evt) {
+    return function () {
         let xhttp = new XMLHttpRequest();
         let url = removePlaylistAPI + playlistId;
 
@@ -53,7 +111,7 @@ function deletePlaylist(id, playlist) {
                 playlistNode.remove()
             }
         };
-        xhttp.open("GET", url);
+        xhttp.open("GET", url, true);
         xhttp.send();
     }
 }

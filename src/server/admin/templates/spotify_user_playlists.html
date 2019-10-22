@@ -3,7 +3,31 @@
 {% block javascript_variables %}
     <script type="text/javascript">
         let removePlaylistAPI = "{{ url_for("api.remove_playlist") }}?playlist-id=";
+        let addPlaylistAPI = "{{ url_for("api.add_playlist") }}"
     </script>
+{% endblock %}
+
+
+{% block css %}
+    <style>
+        .modal {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .modal::-webkit-scrollbar {
+            display: none;
+        }
+
+        .song-cover-div img {
+            width: 100%
+        }
+
+        .modal-content {
+            min-height: 50vh;
+        }
+
+    </style>
 {% endblock %}
 
 {% block main %}
@@ -42,11 +66,24 @@
         <div class="modal-content">
             <h4>Add Playlist to the Spotify User</h4>
 
-            <div class="input-field col s12">
-                <input id="add-playlist-song-input" class="postfix-input" type="text">
-                <i class="material-icons postfix" id="add-playlist-song-id">add_circle</i>
-                <label for="add-playlist-song-input">Add</label>
-                <span class="helper-text postfix-input" data-error="wrong" data-success="right">Add playlist ids to add a playlist</span>
+            <div class="row flex-v-center">
+                <div class="input-field col s5 m6">
+                    <input id="add-playlist-song-input" type="text">
+                    <label for="add-playlist-song-input">Playlist ID</label>
+                </div>
+
+                <div class="input-field col s5">
+                    <select aria-label="User select" id="user-select">
+                        <option value="" disabled selected>User</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                    </select>
+                </div>
+
+                <div class="col s2 m1">
+                    <i class="material-icons pointer" id="add-playlist-song-id">add_circle</i>
+                </div>
             </div>
 
             <div id="add-playlist-list">
@@ -54,15 +91,16 @@
 
         </div>
         <div class="modal-footer">
-            <a href="" class="modal-close waves-effect waves-green btn-flat left">Cancel</a>
-            <a href="" class="modal-close waves-effect waves-green btn-flat" id="add-playlists">Add</a>
+            <a class="modal-close waves-effect waves-green btn-flat left">Cancel</a>
+            <a class="modal-close waves-effect waves-green btn-flat" id="add-playlists">Add</a>
         </div>
     </div>
 
 
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large">
-            <i class="very-large large material-icons modal-trigger" id="add-playlist-id" data-target="add-modal">add</i>
+            <i class="very-large large material-icons modal-trigger" id="add-playlist-id"
+               data-target="add-modal">add</i>
         </a>
     </div>
 {% endblock %}

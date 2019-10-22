@@ -134,6 +134,16 @@ li {
     right: 0;
 }
 
+.rounded-left {
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+
+.rounded-right {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
 img {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -201,6 +211,15 @@ img {
 
 
 /*Helpers**************************************************************************************************************/
+
+
+.light-nav-bg-color {
+    background-color: #EE6E738C !important;
+}
+
+.light-bg-color {
+    background-color: #00000026 !important;
+}
 
 .inline {
     display: inline-block;

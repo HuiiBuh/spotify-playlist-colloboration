@@ -46,3 +46,10 @@ def spotify_user_playlist_display(spotify_user_id: str):
 
     return render_template("spotify_user_playlists.html", playlist_list_json=playlist_list_json,
                            user_name=user_name, title=f"{user_name}'s Playlists")
+
+
+def add_playlists_to_user(playlist_list: dict):
+
+    for playlist_id, user in playlist_list.items():
+
+        Playlist(spotify_id=playlist_id, spotify_user=)

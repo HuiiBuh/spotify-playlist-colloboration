@@ -14,13 +14,14 @@
 {% block main %}
 
     <div class="center">
-        <h1>Select a Playlist</h1>
+        <h3>Select a Playlist</h3>
 
         {% if playlist_list_json == {} %}
 
             <ul>
                 <li class="divider"></li>
             </ul>
+
             <h5 style="margin: 3rem">Your user currently has no playlist assigned to him</h5>
 
         {% endif %}
@@ -43,7 +44,8 @@
                             <td class="bold">Title</td>
                             <td class="bold"
                                 onclick="window.open('{{ playlist["url"] }}')">
-                                <a class="pointer underline black-text">{{ playlist["name"] }}</a></td>
+                                <a class="pointer underline black-text">{{ playlist["name"] }}</a>
+                            </td>
                         </tr>
                         <tr>
                             <td>Author</td>
@@ -70,12 +72,12 @@
 
             {% if playlist_list_json | first == id %}
 
-                    {#            {{ playlist }}#}
-            {#            {% if playlist_list_json | first is not playlist_list_json %}#}
-            <ul>
-                <li class="divider"></li>
-            </ul>
-                        {% endif %}
+                {#            {{ playlist }}#}
+                {#            {% if playlist_list_json | first is not playlist_list_json %}#}
+                <ul>
+                    <li class="divider"></li>
+                </ul>
+            {% endif %}
 
         {% endfor %}
 

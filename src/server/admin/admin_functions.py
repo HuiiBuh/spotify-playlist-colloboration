@@ -50,7 +50,6 @@ def display_spotify_user_playlists(spotify_user_id: str):
 
 
 def add_playlists_to_user(playlist_list: dict, spotify_user: str):
-
     for playlist_id, user in playlist_list.items():
 
         if Playlist.query.filter(Playlist.spotify_id == playlist_id).first():
@@ -78,7 +77,9 @@ def add_playlists_to_user(playlist_list: dict, spotify_user: str):
         if not User.query.filter(User.id == int(user)).first():
             return abort(400, "The user you assigned the playlist to does not exist")
 
-        database_playlist = Playlist(spotify_id=playlist_id, spotify_user=user, user=int(user))
+        spotify_user_object: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user).first()
+
+        database_playlist = Playlist(spotify_id=playlist_id, spotify_user=spotify_user_object.id, user=int(user))
         db.session.add(database_playlist)
         db.session.commit()
         return ""

@@ -29,16 +29,23 @@
     {% if current_user.is_admin %}
         <nav>
             <div class="nav-wrapper">
-                <ul class="left">
+                <ul class="left hide-on-med-and-down">
                     <li><a href="{{ url_for("admin.spotify_users") }}">Spotify Users</a></li>
                     <li><a href="{{ url_for("admin.users") }}">Users</a></li>
                 </ul>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <a href="/" class="brand-logo center">HOME</a>
-                <ul class="right">
+                <ul class="right hide-on-med-and-down">
                     <li><a href="{{ url_for("main.logout") }}">Logout</a></li>
                 </ul>
             </div>
         </nav>
+        <ul class="sidenav" id="mobile-demo">
+            <li><h3 style="padding: 0 32px">HuiiBuh</h3></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for("admin.spotify_users") }}">Spotify Users</a></li>
+            <li><a href="{{ url_for("admin.users") }}">Users</a></li>
+        </ul>
     {% else %}
         <nav>
             <div class="nav-wrapper">
@@ -106,7 +113,8 @@
     <script type="text/javascript">
         window.onload = function () {
             document.getElementById("copyright").innerText = "© " + new Date().getFullYear() + " HuiiBuh"
-        }
+        };
+        M.AutoInit();
     </script>
 
 {% endblock %}

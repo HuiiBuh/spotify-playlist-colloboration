@@ -34,25 +34,37 @@
 {% block main %}
 
     <div class="center">
-        <h1>{{ user_name }}'s Playlists</h1>
+        <h3>{{ user_name }}'s Playlists</h3>
 
-        {% for playlist_id, playlist in playlist_list_json.items() %}
 
-            <div class="row flex-v-center playlist" id="{{ playlist_id }}">
-                <div class="col xs3 s2 l1 center flex-v-center song-cover-div no-padding">
-                    <img alt="cover" src="{{ playlist["image_url"] }}">
-                </div>
-                <div class="col xs8 s9 l10" style="text-align: left">
-                    <a class=" pointer underline black-text"
-                       onclick="window.open('{{ playlist["url"] }}')"
-                    >{{ playlist["name"] }}</a>
-                </div>
-                <div class="col xs1 s1">
-                    <i class="material-icons pointer">delete</i>
-                </div>
-            </div>
+        <table class="striped highlight">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Track count</th>
+                <th style="width: 1px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for playlist_id, playlist in playlist_list_json.items() %}
+                <tr>
+                    <td>
+                        <a class="black-text pointer underline"
+                           onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
+                    </td>
+                    <td>
+                        <a class="black-text pointer underline"
+                           onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
+                    </td>
+                    <td>{{ playlist.track_count }}</td>
+                    <td><i class="material-icons pointer red-text">delete</i></td>
+                </tr>
+            {% endfor %}
 
-        {% endfor %}
+            </tbody>
+        </table>
+
     </div>
 
     <div id="add-modal" class="modal">

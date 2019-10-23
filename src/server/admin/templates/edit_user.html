@@ -23,15 +23,39 @@
                 <td>{{ playlist.id }}</td>
                 <td>{{ playlist.tracks.total }}</td>
                 <td>{{ playlist.owner.display_name }}</td>
-                <td><i class="material-icons pointer">delete</i></td>
+                <td><i class="material-icons pointer red-text">delete</i></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <button class="btn-flat">Add Playlist to User</button>
+    <ul>
+        <li class="divider"></li>
+    </ul>
+
+
+    <h5 class="margin-bottom">Add Playlists to User</h5>
+
+    <div class="input-field col s12">
+        <select multiple>
+            <option value="" disabled selected>Choose a Playlist</option>
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+        </select>
+    </div>
+
+    <div class="right-align">
+        <a class="waves-effect waves-green btn-flat">Add</a>
+    </div>
 
 
 
+{% endblock %}
+
+
+{% block javascript %}
+    <script>    M.AutoInit()
+    </script>
 
 {% endblock %}

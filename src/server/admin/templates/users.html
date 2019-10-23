@@ -2,6 +2,10 @@
 
 {% block main %}
 
+    <div class="center">
+        <h3>User Accounts</h3>
+    </div>
+
     <table class="striped highlight">
         <thead>
         <tr>
@@ -16,15 +20,9 @@
         {% for user in user_list %}
 
             <tr>
-                <td>
-                    {{ user.username }}
-                </td>
-                <td>
-                    {{ user.is_admin }}
-                </td>
-                <td>
-                    2
-                </td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.is_admin }}</td>
+                <td>2</td>
 
                 <td>
                     <a class="material-icons pointer black-text"

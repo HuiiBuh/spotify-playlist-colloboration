@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+    <table class="striped highlight">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Admin</th>
+            <th>Playlists</th>
+            <th style="width: 1px"></th>
+            <th style="width: 1px"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in user_list %}
+
+            <tr>
+                <td>
+                    {{ user.username }}
+                </td>
+                <td>
+                    {{ user.is_admin }}
+                </td>
+                <td>
+                    2
+                </td>
+
+                <td>
+                    <a class="material-icons pointer black-text"
+                       href="{{ url_for("admin.users") }}?user-id={{ user.id }}">edit</a>
+                </td>
+                <td>
+                    <a class="material-icons pointer red-text">delete</a>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <div id="add-modal" class="modal">
+        <form action="{{ url_for("admin.add_user") }}" method="post">
+
+            {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
+
+            <div class="modal-content">
+                <h4>Add new User</h4>
+                <div class="row flex-v-center">
+                    <div class="input-field col s6">
+                        {{ form.username(size=32) }}
+                        {{ form.username.label }}
+                    </div>
+                    <div class="input-field col s6">
+                        {{ form.password(size=32) }}
+                        {{ form.password.label }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <div style="float: right;">
+                            {{ form.is_admin() }}
+                            {{ form.is_admin.label() }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-close waves-effect waves-green btn-flat left">Cancel</a>
+                {{ form.submit(class='btn-flat modal-close', id="add-playlists") }}
+            </div>
+        </form>
+    </div>
+
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large">
+            <i class="very-large large material-icons modal-trigger" data-target="add-modal">add</i>
+        </a>
+    </div>
+
+
+{% endblock %}
+
+{% block javascript %}
+
+    <script>
+        M.AutoInit();
+    </script>
+{% endblock %}

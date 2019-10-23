@@ -260,6 +260,10 @@ img {
     padding: 0 !important;
 }
 
+.small-padding {
+    padding: .5em;
+}
+
 .small-padding-top {
     padding-top: .5em;
 }

@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 
-{% block nav %}
-
+{% block css %}
+    <style>
+        #main-box > div {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 {% endblock %}
+
+{% block nav %}{% endblock %}
 
 {% block main %}
     <form action="" method="post">
@@ -40,8 +47,7 @@
     </form>
 {% endblock %}
 
-{% block footer %}
-{% endblock %}
+{% block footer %}{% endblock %}
 
 
 {% block javascript %}

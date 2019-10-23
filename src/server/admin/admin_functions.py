@@ -6,7 +6,7 @@ from server.main.modals import SpotifyUser, Playlist, User
 from server.spotify.spotify import SpotifyError
 
 
-def spotify_user_display():
+def display_spotify_users():
     spotify_user_list = SpotifyUser.query.all()
 
     user_json_list = {}
@@ -16,27 +16,27 @@ def spotify_user_display():
                                                                            authorisation_token=spotify_user.oauth_token)
 
         if oauth_token.is_expired():
-            auth_token = spotify.reauthorize(oauth_token)
-            user_id = spotify.me(auth_token)["id"]
-            update_user(user_id, auth_token)
+            oauth_token = spotify.reauthorize(oauth_token)
+            user_id = spotify.me(oauth_token)["id"]
+            update_user(user_id, oauth_token)
 
         user_json_list[spotify_user.spotify_user_id] = spotify.me(oauth_token)
         user_json_list[spotify_user.spotify_user_id]["playlist_count"] = Playlist.query.filter(
             Playlist.spotify_user == spotify_user.id).count()
 
-    return render_template("add_spotify_user.html", spotify_users=user_json_list, title="Users")
+    return render_template("spotify_users.html", spotify_users=user_json_list, title="Users")
 
 
-def spotify_user_playlist_display(spotify_user_id: str):
+def display_spotify_user_playlists(spotify_user_id: str):
     user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
     playlist_list = Playlist.query.filter(Playlist.spotify_user == user.id).all()
 
     oauth_token: SpotifyAuthorisationToken = SpotifyAuthorisationToken(user.refresh_token, user.activated_at,
                                                                        user.oauth_token)
     if oauth_token.is_expired():
-        auth_token = spotify.reauthorize(oauth_token)
-        user_id = spotify.me(auth_token)["id"]
-        update_user(user_id, auth_token)
+        oauth_token = spotify.reauthorize(oauth_token)
+        user_id = spotify.me(oauth_token)["id"]
+        update_user(user_id, oauth_token)
 
     playlist_list_json = {}
     for playlist in playlist_list:
@@ -50,12 +50,6 @@ def spotify_user_playlist_display(spotify_user_id: str):
 
 
 def add_playlists_to_user(playlist_list: dict, spotify_user: str):
-    """
-
-    :param playlist_list:
-    :param spotify_user:
-    :return:
-    """
 
     for playlist_id, user in playlist_list.items():
 
@@ -69,6 +63,8 @@ def add_playlists_to_user(playlist_list: dict, spotify_user: str):
 
         if auth_token.is_expired():
             auth_token = spotify.reauthorize(auth_token)
+            user_id = spotify.me(auth_token)["id"]
+            update_user(user_id, auth_token)
 
         try:
             playlist_json = spotify.playlist(playlist_id, auth_token)

@@ -1,8 +1,9 @@
-from flask import render_template
+from flask import render_template, abort
 
-from server import SpotifyAuthorisationToken, spotify
+from server import SpotifyAuthorisationToken, spotify, db
 from server.api.api_functions import update_user, modify_playlist_json
-from server.main.modals import SpotifyUser, Playlist
+from server.main.modals import SpotifyUser, Playlist, User
+from server.spotify.spotify import SpotifyError
 
 
 def spotify_user_display():
@@ -48,8 +49,40 @@ def spotify_user_playlist_display(spotify_user_id: str):
                            user_name=user_name, title=f"{user_name}'s Playlists")
 
 
-def add_playlists_to_user(playlist_list: dict):
+def add_playlists_to_user(playlist_list: dict, spotify_user: str):
+    """
+
+    :param playlist_list:
+    :param spotify_user:
+    :return:
+    """
 
     for playlist_id, user in playlist_list.items():
 
-        Playlist(spotify_id=playlist_id, spotify_user=)
+        if Playlist.query.filter(Playlist.spotify_id == playlist_id).first():
+            return abort(400, "The playlist does already exist")
+
+        temp_user: SpotifyUser = SpotifyUser.query.first()
+
+        auth_token = SpotifyAuthorisationToken(temp_user.refresh_token, temp_user.activated_at,
+                                               temp_user.oauth_token)
+
+        if auth_token.is_expired():
+            auth_token = spotify.reauthorize(auth_token)
+
+        try:
+            playlist_json = spotify.playlist(playlist_id, auth_token)
+        except SpotifyError as e:
+            if "Invalid playlist Id" in e:
+                return abort(400, "One of the playlist ids you passed is not valid")
+        playlist_json_owner = playlist_json["owner"]["id"]
+        if playlist_json_owner != spotify_user:
+            return abort(400, f"This user does not own the playlist {playlist_id}")
+
+        if not User.query.filter(User.id == int(user)).first():
+            return abort(400, "The user you assigned the playlist to does not exist")
+
+        database_playlist = Playlist(spotify_id=playlist_id, spotify_user=user, user=int(user))
+        db.session.add(database_playlist)
+        db.session.commit()
+        return ""

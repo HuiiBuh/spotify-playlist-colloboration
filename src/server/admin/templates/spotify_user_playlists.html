@@ -3,7 +3,8 @@
 {% block javascript_variables %}
     <script type="text/javascript">
         let removePlaylistAPI = "{{ url_for("api.remove_playlist") }}?playlist-id=";
-        let addPlaylistAPI = "{{ url_for("api.add_playlist") }}"
+        let addPlaylistAPI = "{{ url_for("api.add_playlist") }}";
+        let playlistAPI = "/api/spotify/playlist?playlist-id=";
     </script>
 {% endblock %}
 
@@ -31,7 +32,7 @@
 {% endblock %}
 
 {% block main %}
-    <div id="main-box" style="height: 100vh">
+    <div id="main-box">
         <div class="container margin-top z-depth-3 rounded" id="playlist-box">
 
             <div class="center small-padding-top">
@@ -44,12 +45,10 @@
                         <div class="col xs3 s2 l1 center flex-v-center song-cover-div">
                             <img alt="cover" src="{{ playlist["image_url"] }}">
                         </div>
-                        <div class="col xs8 s9 l10">
-                            <div class="col s12" style="text-align: left">
-                                <a class=" pointer underline black-text"
-                                   onclick="window.open('{{ playlist["url"] }}')"
-                                >{{ playlist["name"] }}</a>
-                            </div>
+                        <div class="col xs8 s9 l10" style="text-align: left">
+                            <a class=" pointer underline black-text"
+                               onclick="window.open('{{ playlist["url"] }}')"
+                            >{{ playlist["name"] }}</a>
                         </div>
                         <div class="col xs1 s1">
                             <i class="material-icons pointer">delete</i>

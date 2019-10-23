@@ -73,18 +73,13 @@ def add_playlist():
         return "You are not authorized to visit this page"
 
     json = request.get_json()
-    if "playlists" not in json:
+    if ("playlists" or "spotify_user") not in json:
         return abort(400, "You have to pass the playlists in the body")
 
     playlists = json["playlists"]
+    spotify_user = json["spotify_user"]
 
-    # Get user id of playlist
-    # Compare with the passed user
-    playlist_list = Playlist(spotify_id=None, spotify_user=None, user=None)
-
-    add_playlists_to_user(playlist_list)
-
-    return ""
+    return add_playlists_to_user(playlists, spotify_user)
 
 
 @mod.route("playlist/remove")

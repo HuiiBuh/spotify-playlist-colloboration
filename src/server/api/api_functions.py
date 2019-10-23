@@ -107,13 +107,12 @@ def modify_playlist_json(playlist_json):
             "url": playlist_json["owner"]["external_urls"]["spotify"]
         },
         "url": playlist_json["external_urls"]["spotify"],
-        "track_count": playlist_json["tracks"]["total"]
+        "track_count": playlist_json["tracks"]["total"],
+        "id": playlist_json["id"]
     }
     try:
         return_playlist["image_url"] = playlist_json["images"][0]["url"]
     except IndexError:
-        # todo local playlist cover
-        return_playlist[
-            "image_url"] = "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg"
+        return_playlist["image_url"] = "/static/icons/Playlist_Placeholder.svg"
 
     return return_playlist

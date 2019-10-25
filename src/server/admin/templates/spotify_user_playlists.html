@@ -3,32 +3,9 @@
 {% block javascript_variables %}
     <script type="text/javascript">
         let removePlaylistAPI = "{{ url_for("api.remove_playlist") }}?playlist-id=";
-        let addPlaylistAPI = "{{ url_for("api.add_playlist") }}";
-        let playlistAPI = "/api/spotify/playlist?playlist-id=";
+        let addPlaylistAPI = "{{ url_for("api.add_playlist") }}?playlist-id=";
+        let playlistAPI = "{{ url_for("api.get_playlist") }}?playlist-id=";
     </script>
-{% endblock %}
-
-
-{% block css %}
-    <style>
-        .modal {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .modal::-webkit-scrollbar {
-            display: none;
-        }
-
-        .song-cover-div img {
-            width: 100%
-        }
-
-        .modal-content {
-            min-height: 50vh;
-        }
-
-    </style>
 {% endblock %}
 
 {% block main %}
@@ -46,9 +23,9 @@
                 <th style="width: 1px"></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="insert">
             {% for playlist_id, playlist in playlist_list_json.items() %}
-                <tr>
+                <tr class="playlist">
                     <td>
                         <a class="black-text pointer underline"
                            onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
@@ -58,55 +35,24 @@
                            onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
                     </td>
                     <td>{{ playlist.track_count }}</td>
-                    <td><i class="material-icons pointer red-text">delete</i></td>
+                    <td><i class="material-icons pointer red-text" id="{{ playlist_id }}">delete</i></td>
                 </tr>
             {% endfor %}
 
             </tbody>
         </table>
-
-    </div>
-
-    <div id="add-modal" class="modal">
-        <div class="modal-content">
-            <h4>Add Playlist to the Spotify User</h4>
-
-            <div class="row flex-v-center">
-                <div class="input-field col s5 m6">
-                    <input id="add-playlist-song-input" type="text">
-                    <label for="add-playlist-song-input">Playlist ID</label>
-                </div>
-
-                <div class="input-field col s5">
-                    <select aria-label="User select" id="user-select">
-                        <option value="" disabled selected>User</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                    </select>
-                </div>
-
-                <div class="col s2 m1">
-                    <i class="material-icons pointer" id="add-playlist-song-id">add_circle</i>
-                </div>
-            </div>
-
-            <div id="add-playlist-list">
-            </div>
-
+        <div class="left-align">
+            <h4>Add Playlists</h4>
         </div>
-        <div class="modal-footer">
-            <a class="modal-close waves-effect waves-green btn-flat left">Cancel</a>
-            <a class="modal-close waves-effect waves-green btn-flat" id="add-playlists">Add</a>
+
+        <div class="row flex-v-center">
+            <div class="input-field col s10">
+                <input id="playlist-id" type="text" class="validate">
+                <label for="playlist-id">Playlist ID</label>
+            </div>
+            <button class="btn-flat col s2" id="add-button">Add</button>
         </div>
-    </div>
 
-
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large">
-            <i class="very-large large material-icons modal-trigger" id="add-playlist-id"
-               data-target="add-modal">add</i>
-        </a>
     </div>
 
 {% endblock %}

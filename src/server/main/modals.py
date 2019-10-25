@@ -67,5 +67,5 @@ class Playlist(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
-    spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id), nullable=False)
-    user = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id))
+    user = db.Column(db.Integer, db.ForeignKey(User.id))

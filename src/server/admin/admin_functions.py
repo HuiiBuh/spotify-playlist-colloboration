@@ -1,4 +1,4 @@
-from flask import render_template, abort
+from flask import render_template, abort, jsonify
 
 from server import SpotifyAuthorisationToken, spotify, db
 from server.api.api_functions import update_user, modify_playlist_json
@@ -49,37 +49,35 @@ def display_spotify_user_playlists(spotify_user_id: str):
                            user_name=user_name, title=f"{user_name}'s Playlists")
 
 
-def add_playlists_to_user(playlist_list: dict, spotify_user: str):
-    for playlist_id, user in playlist_list.items():
+def add_playlist_to_spotify_user(playlist_id: str):
+    if Playlist.query.filter(Playlist.spotify_id == playlist_id).first():
+        return abort(400, "The playlist does already exist")
 
-        if Playlist.query.filter(Playlist.spotify_id == playlist_id).first():
-            return abort(400, "The playlist does already exist")
+    temp_user: SpotifyUser = SpotifyUser.query.first()
+    auth_token = SpotifyAuthorisationToken(temp_user.refresh_token, temp_user.activated_at,
+                                           temp_user.oauth_token)
 
-        temp_user: SpotifyUser = SpotifyUser.query.first()
+    if auth_token.is_expired():
+        auth_token = spotify.reauthorize(auth_token)
+        user_id = spotify.me(auth_token)["id"]
+        update_user(user_id, auth_token)
 
-        auth_token = SpotifyAuthorisationToken(temp_user.refresh_token, temp_user.activated_at,
-                                               temp_user.oauth_token)
+    try:
+        playlist_json = spotify.playlist(playlist_id, auth_token)
+    except SpotifyError as e:
+        if "Invalid playlist Id" in e:
+            return abort(400, "One of the playlist ids you passed is not valid")
 
-        if auth_token.is_expired():
-            auth_token = spotify.reauthorize(auth_token)
-            user_id = spotify.me(auth_token)["id"]
-            update_user(user_id, auth_token)
+    playlist_json_owner = playlist_json["owner"]["id"]
 
-        try:
-            playlist_json = spotify.playlist(playlist_id, auth_token)
-        except SpotifyError as e:
-            if "Invalid playlist Id" in e:
-                return abort(400, "One of the playlist ids you passed is not valid")
-        playlist_json_owner = playlist_json["owner"]["id"]
-        if playlist_json_owner != spotify_user:
-            return abort(400, f"This user does not own the playlist {playlist_id}")
+    spotify_user_object: SpotifyUser = SpotifyUser.query.filter(
+        SpotifyUser.spotify_user_id == playlist_json_owner).first()
 
-        if not User.query.filter(User.id == int(user)).first():
-            return abort(400, "The user you assigned the playlist to does not exist")
+    if not spotify_user_object:
+        return abort(400, f"The user ({playlist_json_owner}) the playlist belongs to does not exist in the tool. \n"
+                          f"You have to create it manually.")
 
-        spotify_user_object: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user).first()
-
-        database_playlist = Playlist(spotify_id=playlist_id, spotify_user=spotify_user_object.id, user=int(user))
-        db.session.add(database_playlist)
-        db.session.commit()
-        return ""
+    database_playlist = Playlist(spotify_id=playlist_id, spotify_user=spotify_user_object.id, user=None)
+    db.session.add(database_playlist)
+    db.session.commit()
+    return playlist_json

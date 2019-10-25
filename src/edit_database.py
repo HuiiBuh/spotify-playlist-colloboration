@@ -61,6 +61,6 @@ def create_playlist():
         print("The playlist already exists")
 
 
-# create_user(username="muaythay", password="test", admin=False)
-create_playlist()
+create_user(username="default", password="default", admin=True)
+# create_playlist()
 print("Success")

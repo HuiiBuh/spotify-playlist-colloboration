@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, Response, redirect, abort
 from flask_login import login_required, current_user
 
 from server import spotify, spotify_info, db
-from server.admin.admin_functions import add_playlists_to_user
+from server.admin.admin_functions import add_playlist_to_spotify_user
 from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_user, \
     get_token_by_playlist
 from server.main.modals import Playlist
@@ -72,14 +72,11 @@ def add_playlist():
     if not current_user.is_admin:
         return "You are not authorized to visit this page"
 
-    json = request.get_json()
-    if ("playlists" or "spotify_user") not in json:
-        return abort(400, "You have to pass the playlists in the body")
+    playlist_id = request.args.get("playlist-id")
+    if not playlist_id:
+        return abort(400, "You passed an empty playlist")
 
-    playlists = json["playlists"]
-    spotify_user = json["spotify_user"]
-
-    return add_playlists_to_user(playlists, spotify_user)
+    return add_playlist_to_spotify_user(playlist_id)
 
 
 @mod.route("playlist/remove")

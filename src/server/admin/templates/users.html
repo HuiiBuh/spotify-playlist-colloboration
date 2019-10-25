@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block javascript_variables %}
+
+    <script>
+        let deleteUserAPI = "{{ url_for("api.remove_user") }}?user-id="
+    </script>
+
+
+{% endblock %}
+
 {% block main %}
 
     <div class="center">
@@ -19,7 +28,7 @@
         <tbody>
         {% for user in user_list %}
 
-            <tr>
+            <tr class="user">
                 <td>{{ user.username }}</td>
                 <td>{{ user.is_admin }}</td>
                 <td>{{ user.playlist_count }}</td>
@@ -29,7 +38,7 @@
                        href="{{ url_for("admin.users") }}?user-id={{ user.id }}">edit</a>
                 </td>
                 <td>
-                    <a class="material-icons pointer primary-text-color">delete</a>
+                    <a class="material-icons pointer primary-text-color" id="{{ user.id }}">delete</a>
                 </td>
             </tr>
 
@@ -85,6 +94,7 @@
 
 {% block javascript %}
 
+    <script type="text/javascript" src="/static/js/own/users/main.js"></script>
     <script>
         M.AutoInit();
     </script>

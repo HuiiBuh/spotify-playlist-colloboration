@@ -1,24 +1,27 @@
 window.onload = function () {
     addEventHandler()
+
 };
+
 
 function addEventHandler() {
 
-    let userList = document.getElementsByClassName("spotify-user");
+    let userList = document.getElementsByClassName("user");
     for (let userNumber in userList) {
         if (userList.hasOwnProperty(userNumber)) {
             let user = userList[userNumber];
             let deleteIcon = user.getElementsByClassName("material-icons")[1];
 
-            deleteIcon.onclick = deleteSpotifyUser(user, deleteIcon.id)
+            deleteIcon.onclick = deleteUser(user, deleteIcon.id)
         }
     }
+
 }
 
-function deleteSpotifyUser(userNode, userID) {
+function deleteUser(userNode, userID) {
     return function () {
         let xhttp = new XMLHttpRequest();
-        let url = deleteSpotifyUserAPI + userID;
+        let url = deleteUserAPI + userID;
 
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {

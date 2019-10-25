@@ -1,6 +1,7 @@
 import argon2
 from argon2 import PasswordHasher, Type
 from flask_login import UserMixin
+from sqlalchemy.orm import relationship
 
 from server import db, login
 
@@ -13,7 +14,7 @@ class User(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, nullable=False)
     username = db.Column(db.String(64), nullable=False, index=True, unique=True)
     password_hash = db.Column(db.Text, nullable=False)
-    db.relationship('Playlist', backref='User')
+    playlists = relationship('Playlist', secondary='link')
 
     def set_password(self, password: str):
         """
@@ -68,4 +69,10 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
     spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id, ondelete='CASCADE'))
-    user = db.Column(db.Integer, db.ForeignKey(User.id))
+    user = relationship(User, secondary='link')
+
+
+class Link(db.Model):
+    __tablename__ = 'link'
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
+    playlist_id = db.Column(db.Integer, db.ForeignKey(Playlist.id), primary_key=True)

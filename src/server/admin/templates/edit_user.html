@@ -38,10 +38,10 @@
 
     <div class="input-field col s12">
         <select multiple>
-            <option value="" disabled selected>Choose a Playlist</option>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
+            <option value="" disabled selected>Select a Playlist</option>
+            {% for playlist in all_playlists_list %}
+                <option value="{{ playlist.id }}">{{ playlist.name }}</option>
+            {% endfor %}
         </select>
     </div>
 
@@ -55,7 +55,9 @@
 
 
 {% block javascript %}
-    <script>    M.AutoInit()
+    <script type="text/javascript" src="/static/js/own/edit_user/main.js"></script>
+    <script>
+        M.AutoInit()
     </script>
 
 {% endblock %}

@@ -51,7 +51,24 @@ def users():
                 auth_token = get_token_by_playlist(playlist.spotify_id)
                 playlist_json.append(spotify.playlist(playlist.spotify_id, auth_token))
 
-            return render_template("edit_user.html", title="Edit Users", user=user, playlist_list=playlist_json)
+            all_playlists = Playlist.query.all()
+
+            all_playlists_list = []
+            for playlist in all_playlists:
+                indicator = True
+                for p in playlist_json:
+                    if not playlist.spotify_id == p.id:
+                        indicator = False
+                if indicator:
+                    auth_token = get_token_by_playlist(playlist.spotify_id)
+                    if auth_token.is_expired():
+                        auth_token = spotify.reauthorize(auth_token)
+                    p_json = spotify.playlist(playlist.spotify_id, auth_token)
+
+                    all_playlists_list.append(p_json)
+
+            return render_template("edit_user.html", title="Edit Users", user=user, playlist_list=playlist_json,
+                                   all_playlists_list=all_playlists_list)
         else:
             return render_template("resource_not_found.html")
 
@@ -60,7 +77,8 @@ def users():
 
     updated_user_list = []
     for user in user_list:
-        playlist_count = len(Playlist.query.filter(Playlist.user == user.id).all())
+        # TODO Playlist.user sind mehrere
+        playlist_count = Playlist.query.filter(Playlist.user == user.id).all()
         user.playlist_count = playlist_count
         updated_user_list.append(user)
 

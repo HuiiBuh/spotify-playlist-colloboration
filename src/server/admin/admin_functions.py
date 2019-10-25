@@ -24,7 +24,7 @@ def display_spotify_users():
         user_json_list[spotify_user.spotify_user_id]["playlist_count"] = Playlist.query.filter(
             Playlist.spotify_user == spotify_user.id).count()
 
-    return render_template("spotify_users.html", spotify_users=user_json_list, title="Users")
+    return render_template("spotify_users.html", spotify_users=user_json_list, title="Spotify Users")
 
 
 def display_spotify_user_playlists(spotify_user_id: str):

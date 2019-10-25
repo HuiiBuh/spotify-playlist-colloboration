@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block javascript_variables %}
+    <script>
+        let deleteSpotifyUserAPI = "{{ url_for("api.remove_spotify_user") }}?spotify-user-id=";
+    </script>
+{% endblock %}
+
 {% block main %}
 
     <div class="center">
@@ -20,7 +26,7 @@
             <tbody>
             {% for user_id, user in spotify_users.items() %}
 
-                <tr>
+                <tr class="spotify-user">
                     <td>
                         <a class="black-text pointer underline"
                            onclick="window.open('{{ user.external_urls.spotify }}')">{{ user.display_name }}</a>
@@ -30,7 +36,7 @@
                     <td>{{ user.followers.total }}</td>
                     <td><a class="material-icons pointer black-text"
                            href="{{ url_for("admin.spotify_users") }}?spotify-user-id={{ user.id }}">edit</a></td>
-                    <td><i class="material-icons pointer red-text">delete</i></td>
+                    <td><i class="material-icons pointer primary-text-color" id="{{ user_id }}">delete</i></td>
                 </tr>
 
             {% endfor %}
@@ -44,6 +50,10 @@
         </a>
     </div>
 
+{% endblock %}
 
+{% block javascript %}
+
+    <script type="text/javascript" src="/static/js/own/spotify_users/main.js"></script>
 
 {% endblock %}

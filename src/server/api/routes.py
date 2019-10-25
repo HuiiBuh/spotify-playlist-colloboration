@@ -1,13 +1,13 @@
 import time
 
-from flask import Blueprint, jsonify, request, Response, redirect, abort
+from flask import Blueprint, jsonify, request, Response, redirect, abort, url_for
 from flask_login import login_required, current_user
 
 from server import spotify, spotify_info, db
 from server.admin.admin_functions import add_playlist_to_spotify_user
 from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_user, \
     get_token_by_playlist
-from server.main.modals import Playlist
+from server.main.modals import Playlist, SpotifyUser
 from server.spotify import SpotifyAuthorisationToken
 
 mod = Blueprint("api", __name__)
@@ -47,8 +47,8 @@ def callback():
     user_id = spotify.me(auth_token)["id"]
     update_user(user_id, auth_token)
 
-    return jsonify(OAuth_Token=auth_token.token, Reauthorization_Token=auth_token.refresh_token)
-
+    # return jsonify(OAuth_Token=auth_token.token, Reauthorization_Token=auth_token.refresh_token)
+    return redirect(url_for("admin.spotify_users"))
 
 @mod.route("/reauthorize")
 @login_required
@@ -94,6 +94,26 @@ def remove_playlist():
         return abort(400, "The playlist id you provided does not exist")
 
     db.session.delete(playlist)
+    db.session.commit()
+    return ""
+
+
+@mod.route("/spotify-user/delete")
+@login_required
+def remove_spotify_user():
+    if not current_user.is_admin:
+        return "You are not authorized to visit this page"
+
+    spotify_user_id = request.args.get("spotify-user-id")
+    if not spotify_user_id:
+        return abort(400, "You did not pass a user")
+
+    spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
+
+    if not spotify_user:
+        return abort(400, "The user id you provided does not exist")
+
+    db.session.delete(spotify_user)
     db.session.commit()
     return ""
 

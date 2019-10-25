@@ -58,7 +58,7 @@ class SpotifyUser(db.Model):
     oauth_token = db.Column(db.Text)
     activated_at = db.Column(db.BigInteger)
 
-    db.relationship('Playlist', backref='SpotifyUser', lazy="joined")
+    db.relationship('Playlist', backref='SpotifyUser', cascade="all, delete, delete-orphan")
 
 
 class Playlist(db.Model):
@@ -67,5 +67,5 @@ class Playlist(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
-    spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id))
+    spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id, ondelete='CASCADE'))
     user = db.Column(db.Integer, db.ForeignKey(User.id))

@@ -252,6 +252,14 @@ img {
     align-items: center;
 }
 
+.primary-text-color {
+    color: #ee6e73;
+}
+
+.primary-bg-color {
+    background-color: #ee6e73;
+}
+
 .flex-end {
     justify-content: flex-end;
 }

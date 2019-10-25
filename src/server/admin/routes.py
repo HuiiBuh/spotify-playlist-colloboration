@@ -51,13 +51,20 @@ def users():
                 auth_token = get_token_by_playlist(playlist.spotify_id)
                 playlist_json.append(spotify.playlist(playlist.spotify_id, auth_token))
 
-            return render_template("edit_user.html", user=user, playlist_list=playlist_json)
+            return render_template("edit_user.html", title="Edit Users", user=user, playlist_list=playlist_json)
         else:
             return render_template("resource_not_found.html")
 
     user_list = User.query.all()
     form = AddUserForm()
-    return render_template("users.html", user_list=user_list, form=form)
+
+    updated_user_list = []
+    for user in user_list:
+        playlist_count = len(Playlist.query.filter(Playlist.user == user.id).all())
+        user.playlist_count = playlist_count
+        updated_user_list.append(user)
+
+    return render_template("users.html", title="Users", user_list=updated_user_list, form=form)
 
 
 @mod.route("/user/add", methods=["POST", "GET"])

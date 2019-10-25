@@ -35,7 +35,7 @@
                            onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
                     </td>
                     <td>{{ playlist.track_count }}</td>
-                    <td><i class="material-icons pointer red-text" id="{{ playlist_id }}">delete</i></td>
+                    <td><i class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i></td>
                 </tr>
             {% endfor %}
 
@@ -50,7 +50,7 @@
                 <input id="playlist-id" type="text" class="validate">
                 <label for="playlist-id">Playlist ID</label>
             </div>
-            <button class="btn-flat col s2" id="add-button">Add</button>
+            <button class="btn-flat col s2 primary-bg-color white-text" id="add-button">Add</button>
         </div>
 
     </div>
@@ -60,5 +60,5 @@
 
 
 {% block javascript %}
-    <script type="text/javascript" src="/static/js/own/remove-playlist/main.js"></script>
+    <script type="text/javascript" src="/static/js/own/spotify_user_playlists/main.js"></script>
 {% endblock %}

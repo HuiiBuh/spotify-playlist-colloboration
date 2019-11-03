@@ -16,17 +16,25 @@
             <th style="width: 1px"></th>
         </tr>
         </thead>
-        <tbody>
-        {% for playlist in playlist_list %}
+        {% if playlist_list != [] %}
+            <tbody>
+            {% for playlist in playlist_list %}
+                <tr>
+                    <td>{{ playlist.name }}</td>
+                    <td>{{ playlist.id }}</td>
+                    <td>{{ playlist.tracks.total }}</td>
+                    <td>{{ playlist.owner.display_name }}</td>
+                    <td><i class="material-icons pointer primary-text-color">delete</i></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        {% else %}
             <tr>
-                <td>{{ playlist.name }}</td>
-                <td>{{ playlist.id }}</td>
-                <td>{{ playlist.tracks.total }}</td>
-                <td>{{ playlist.owner.display_name }}</td>
-                <td><i class="material-icons pointer primary-text-color">delete</i></td>
+                <td class="center-align" colspan="100%">
+                    This user has no playlists
+                </td>
             </tr>
-        {% endfor %}
-        </tbody>
+        {% endif %}
     </table>
 
     <ul>
@@ -37,7 +45,7 @@
     <h5 class="margin-bottom">Add Playlists to User</h5>
 
     <div class="input-field col s12">
-        <select multiple>
+        <select aria-label="playlist-select" multiple id="playlist-select">
             <option value="" disabled selected>Select a Playlist</option>
             {% for playlist in all_playlists_list %}
                 <option value="{{ playlist.id }}">{{ playlist.name }}</option>
@@ -46,7 +54,7 @@
     </div>
 
     <div class="right-align">
-        <a class="waves-effect waves-green btn-flat">Add</a>
+        <a class="waves-effect waves-green btn-flat" id="add-playlist">Add</a>
     </div>
 
 

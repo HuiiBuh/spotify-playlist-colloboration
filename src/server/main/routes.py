@@ -16,7 +16,7 @@ def home():
 
     if not playlist_id:
         user = current_user.id
-        playlist_list = Playlist.query.filter(Playlist.user == user).all()
+        playlist_list = Playlist.query.join(User.playlists).filter(User.id == user).all()
 
         playlist_list_json = {}
         for playlist in playlist_list:

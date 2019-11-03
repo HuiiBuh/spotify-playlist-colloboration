@@ -34,7 +34,7 @@ def spotify_users():
         return display_spotify_users()
 
 
-@mod.route("/user")
+@mod.route("/users")
 @login_required
 def users():
     if not current_user.is_admin:
@@ -44,7 +44,7 @@ def users():
     if user_id:
         user = User.query.filter(User.id == user_id).first()
         if user:
-            playlist_list = Playlist.query.filter(Playlist.user == user.id).all()
+            playlist_list = Playlist.query.join(User.playlists).filter(User.id == user.id).all()
 
             playlist_json = []
             for playlist in playlist_list:
@@ -78,8 +78,9 @@ def users():
     updated_user_list = []
     for user in user_list:
         # TODO Playlist.user sind mehrere
-        playlist_count = Playlist.query.filter(Playlist.user == user.id).all()
-        user.playlist_count = playlist_count
+
+        playlist_count = Playlist.query.join(User.playlists).filter(User.id == user.id).all()
+        user.playlist_count = len(playlist_count)
         updated_user_list.append(user)
 
     return render_template("users.html", title="Users", user_list=updated_user_list, form=form)

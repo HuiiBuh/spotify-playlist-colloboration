@@ -1,8 +1,8 @@
-from flask import render_template, abort, jsonify
+from flask import render_template, abort
 
 from server import SpotifyAuthorisationToken, spotify, db
 from server.api.api_functions import update_user, modify_playlist_json
-from server.main.modals import SpotifyUser, Playlist, User
+from server.main.modals import SpotifyUser, Playlist
 from server.spotify.spotify import SpotifyError
 
 
@@ -77,7 +77,11 @@ def add_playlist_to_spotify_user(playlist_id: str):
         return abort(400, f"The user ({playlist_json_owner}) the playlist belongs to does not exist in the tool. \n"
                           f"You have to create it manually.")
 
-    database_playlist = Playlist(spotify_id=playlist_id, spotify_user=spotify_user_object.id, user=None)
+    database_playlist = Playlist(spotify_id=playlist_id, spotify_user=spotify_user_object.id, users=[])
     db.session.add(database_playlist)
     db.session.commit()
     return playlist_json
+
+
+def assign_playlists_to_user(playlist_list: list):
+    pass

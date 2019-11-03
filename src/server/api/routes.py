@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, Response, redirect, abort, url_fo
 from flask_login import login_required, current_user
 
 from server import spotify, spotify_info, db
-from server.admin.admin_functions import add_playlist_to_spotify_user
+from server.admin.admin_functions import add_playlist_to_spotify_user, assign_playlists_to_user
 from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_user, \
     get_token_by_playlist
 from server.main.modals import Playlist, SpotifyUser, User
@@ -16,6 +16,10 @@ mod = Blueprint("api", __name__)
 @mod.route("/authorize")
 @login_required
 def authorize():
+    """
+    Authorize a new spotify user
+    :return: A redirect to the right spotify url
+    """
     if not current_user.is_admin:
         return "You are not authorized to visit this page"
 
@@ -26,6 +30,10 @@ def authorize():
 @mod.route("/callback/")
 @login_required
 def callback():
+    """
+    Callback that will be called if the user authorizes the first time
+    :return: A redirect to the spotify user home page
+    """
     if not current_user.is_admin:
         return "You are not authorized to visit this page"
 
@@ -54,6 +62,10 @@ def callback():
 @mod.route("/reauthorize")
 @login_required
 def reauthorize():
+    """
+    Reauthorize the spotify oauth code
+    :return: The tokens
+    """
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
@@ -67,9 +79,36 @@ def reauthorize():
     return jsonify(OAuth_Token=spotify.reauthorize(auth_token).token)
 
 
+@mod.route("playlist/user/add", methods=["POST", "GET"])
+@login_required
+def add_playlists_to_user():
+    """
+    Add a user to a spotify playlist
+    :return: 200, 400
+    """
+    if not current_user.is_admin():
+        return "You are not authorized to visit this page"
+
+    request_json = request.get_json()
+
+    if not request_json:
+        return abort(400, "You did not pass a playlist")
+
+    if "playlists" not in request_json:
+        return abort(400, "You did not pass a playlist")
+
+    # ToDo
+    playlist_list: list = request_json["playlists"]
+    assign_playlists_to_user(playlist_list)
+
+
 @mod.route("playlist/add", methods=['POST', 'GET'])
 @login_required
 def add_playlist():
+    """
+    Add a playlist to a spotify user
+    :return: The playlist json or 400
+    """
     if not current_user.is_admin:
         return "You are not authorized to visit this page"
 
@@ -83,6 +122,10 @@ def add_playlist():
 @mod.route("playlist/remove")
 @login_required
 def remove_playlist():
+    """
+    Remove playlist form a spotify user
+    :return: status 400, 200
+    """
     if not current_user.is_admin:
         return "You are not authorized to visit this page"
 
@@ -102,6 +145,10 @@ def remove_playlist():
 @mod.route("/spotify-user/remove")
 @login_required
 def remove_spotify_user():
+    """
+    Remove a spotify user
+    :return: status 400, 200
+    """
     if not current_user.is_admin:
         return "You are not authorized to visit this page"
 
@@ -122,6 +169,10 @@ def remove_spotify_user():
 @mod.route("/user/remove")
 @login_required
 def remove_user():
+    """
+    Remove a user
+    :return: status 400, 200
+    """
     if not current_user.is_admin:
         return "You are not authorized to visit this page"
 
@@ -143,6 +194,10 @@ def remove_user():
 @mod.route("/spotify/search")
 @login_required
 def search_for_songs():
+    """
+    Search for songs and artists
+    :return: The search results as json
+    """
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
@@ -173,6 +228,10 @@ def search_for_songs():
 @mod.route("/spotify/playlist")
 @login_required
 def get_playlist():
+    """
+    Get a playlist
+    :return: The json of the playlist
+    """
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
@@ -198,6 +257,10 @@ def get_playlist():
 @mod.route("/spotify/playlist/tracks")
 @login_required
 def get_playlist_tracks():
+    """
+    Get the tracks of a playlist
+    :return: The tracks of the playlist as json
+    """
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
@@ -222,6 +285,10 @@ def get_playlist_tracks():
 @mod.route("/spotify/playlist/add", methods=['POST', 'GET'])
 @login_required
 def add_track_to_playlist():
+    """
+    Add tracks to the playlist
+    :return: status 201, or 400
+    """
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
@@ -250,6 +317,10 @@ def add_track_to_playlist():
 @mod.route("/spotify/me")
 @login_required
 def me():
+    """
+    Get information about the auth token for the playlist
+    :return: Information about the playlist spotify user
+    """
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:

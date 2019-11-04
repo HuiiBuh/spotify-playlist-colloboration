@@ -9,3 +9,9 @@ function showErrorMessage(self) {
 
     M.toast({html: toast_message, classes: "red"})
 }
+
+function addOnclick(onclick_url) {
+    return function () {
+        window.open(onclick_url)
+    }
+}

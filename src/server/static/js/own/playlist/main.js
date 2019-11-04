@@ -5,9 +5,6 @@ let searchPreviewPlaylist = null;
 
 smallStyleChanges();
 
-M.AutoInit();
-
-
 window.onload = function () {
     getPlaylistInfo();
     getPlaylistSongs();

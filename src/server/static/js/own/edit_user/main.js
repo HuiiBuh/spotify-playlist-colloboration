@@ -11,7 +11,8 @@ function addEventHandler() {
         if (playlistList.hasOwnProperty(playlistNumber)) {
             let playlist = playlistList[playlistNumber];
             let deleteIcon = playlist.getElementsByClassName("material-icons")[0];
-            deleteIcon.onclick = removePlaylistFromUser(playlist, playlist["id"]);
+            let name = playlist.getElementsByClassName("playlist-name")[0].innerText;
+            deleteIcon.onclick = removePlaylistFromUser(playlist, playlist["id"], name);
         }
     }
 }

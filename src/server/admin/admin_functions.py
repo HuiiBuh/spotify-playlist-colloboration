@@ -65,8 +65,8 @@ def add_playlist_to_spotify_user(playlist_id: str):
     try:
         playlist_json = spotify.playlist(playlist_id, auth_token)
     except SpotifyError as e:
-        if "Invalid playlist Id" in e:
-            return abort(400, "One of the playlist ids you passed is not valid")
+        if "Invalid playlist Id" in str(e):
+            return abort(400, "The Playlist ID you passed is not valid")
 
     playlist_json_owner = playlist_json["owner"]["id"]
 
@@ -89,14 +89,19 @@ def assign_playlists_to_user(playlist_list: list, user_id: str):
     if not user:
         return 400, "The user does not exist"
 
+    playlist_json_list = []
+    auth_token = get_token_by_playlist(playlist_list[0])
     for playlist_id in playlist_list:
         playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
 
         if playlist:
             user.playlists.append(playlist)
 
+        # Append the information of the playlist ot the json
+        playlist_json_list.append(modify_playlist_json(spotify.playlist(playlist_id, auth_token)))
+
     db.session.commit()
-    return 200, "Success"
+    return 200, playlist_json_list
 
 
 def display_user(user_id):

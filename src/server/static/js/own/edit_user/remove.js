@@ -1,20 +1,4 @@
-function checkIfTableIsEmpty() {
-    let table = document.getElementsByTagName("tbody")[0];
-
-    if (table.innerText === "") {
-        let tr = document.createElement("tr");
-
-        let td = document.createElement("td");
-        td.setAttribute("class", "center-align");
-        td.setAttribute("colspan", "100%");
-        td.innerText = " This user has no playlists ";
-        tr.appendChild(td);
-
-        table.appendChild(tr);
-    }
-}
-
-function removePlaylistFromUser(playlistNode, playlistID) {
+function removePlaylistFromUser(playlistNode, playlistID, name) {
     return function () {
         let xhttp = new XMLHttpRequest();
         xhttp.open("POST", removePlaylistFromUserAPI, true);
@@ -23,7 +7,8 @@ function removePlaylistFromUser(playlistNode, playlistID) {
         xhttp.onreadystatechange = function () {
             if (this.status === 200 && this.readyState === 4) {
                 playlistNode.remove();
-                checkIfTableIsEmpty()
+                checkIfTableIsEmpty();
+                addPlaylistToSelect(playlistID, name);
             } else if (this.status !== 200 && this.readyState === 4) {
                 showErrorMessage(this)
             }
@@ -40,4 +25,33 @@ function removePlaylistFromUser(playlistNode, playlistID) {
 
         xhttp.send(JSON.stringify(sendValue));
     }
+}
+
+function checkIfTableIsEmpty() {
+    let table = document.getElementsByTagName("tbody")[0];
+
+    if (table.innerText === "") {
+        let tr = document.createElement("tr");
+
+        let td = document.createElement("td");
+        td.setAttribute("class", "center-align");
+        td.setAttribute("colspan", "100%");
+        td.innerText = " This user has no playlists ";
+        tr.appendChild(td);
+
+        table.appendChild(tr);
+    }
+}
+
+function addPlaylistToSelect(playlistID, name) {
+    let select = document.getElementById("playlist-select");
+
+    select.querySelectorAll("[disabled]")[0].innerText = "Select a Playlist";
+
+
+    let option = document.createElement("option");
+    option.setAttribute("value", playlistID);
+    option.innerText = name;
+    select.appendChild(option);
+    M.FormSelect.init(select);
 }

@@ -102,7 +102,7 @@ def add_playlists_to_user():
     user_id = request_json["user-id"]
 
     status, data = assign_playlists_to_user(playlist_list, user_id)
-    return make_response(data, status)
+    return make_response(jsonify(data), status)
 
 
 @mod.route("/playlist/user/remove", methods=["POST", "GET"])

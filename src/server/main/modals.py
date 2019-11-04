@@ -5,7 +5,7 @@ from flask_login import UserMixin
 from server import db, login
 
 user_playlists = db.Table(
-    "playlists",
+    "playlist_user",
     db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
     db.Column("playlist_id", db.Integer, db.ForeignKey("playlist.id"))
 )
@@ -63,8 +63,8 @@ class SpotifyUser(db.Model):
     refresh_token = db.Column(db.Text)
     oauth_token = db.Column(db.Text)
     activated_at = db.Column(db.BigInteger)
-
-    db.relationship('Playlist', backref='SpotifyUser', cascade="all, delete, delete-orphan", ondelete="CASCADE")
+    playlists = db.relationship('Playlist', backref='SpotifyUser', lazy="joined", cascade="all, delete, delete-orphan",
+                                passive_deletes=True)
 
 
 class Playlist(db.Model):
@@ -73,5 +73,4 @@ class Playlist(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
-    spotify_user = db.Column(db.Integer,
-                             db.ForeignKey(SpotifyUser.id))
+    spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id, ondelete="CASCADE"))

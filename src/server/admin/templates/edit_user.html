@@ -32,7 +32,7 @@
             {% for playlist in playlist_list %}
                 <tr class="playlist" id="{{ playlist.id }}">
                     <td>
-                        <a class="pointer underline black-text"
+                        <a class="pointer underline black-text playlist-name"
                            onclick="window.open('{{ playlist.external_urls.spotify }}')">{{ playlist.name }}</a>
                     </td>
                     <td>{{ playlist.id }}</td>
@@ -90,8 +90,5 @@
     <script type="text/javascript" src="/static/js/own/edit_user/remove.js"></script>
     <script type="text/javascript" src="/static/js/own/edit_user/main.js"></script>
     <script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
-    <script>
-        M.AutoInit()
-    </script>
 
 {% endblock %}

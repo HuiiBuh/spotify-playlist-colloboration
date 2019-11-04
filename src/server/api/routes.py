@@ -96,7 +96,7 @@ def add_playlists_to_user():
 
     playlist_list: list = request_json["playlists"]
 
-    if playlist_list == []:
+    if not playlist_list:
         return abort(400, "You did not select a playlist")
 
     user_id = request_json["user-id"]

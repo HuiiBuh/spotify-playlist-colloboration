@@ -31,10 +31,16 @@
             <tbody>
             {% for playlist in playlist_list %}
                 <tr class="playlist" id="{{ playlist.id }}">
-                    <td>{{ playlist.name }}</td>
+                    <td>
+                        <a class="pointer underline black-text"
+                           onclick="window.open('{{ playlist.external_urls.spotify }}')">{{ playlist.name }}</a>
+                    </td>
                     <td>{{ playlist.id }}</td>
                     <td>{{ playlist.tracks.total }}</td>
-                    <td>{{ playlist.owner.display_name }}</td>
+                    <td>
+                        <a class="pointer underline black-text"
+                           onclick="window.open('{{ playlist.owner.external_urls.spotify }}')">{{ playlist.owner.display_name }}</a>
+                    </td>
                     <td><i class="material-icons pointer primary-text-color">delete</i></td>
                 </tr>
             {% endfor %}
@@ -56,10 +62,10 @@
 
     <div class="input-field col s12">
         <select aria-label="playlist-select" multiple id="playlist-select">
-            <option value="" disabled selected>Select a Playlist</option>
-
             {# Fill in the playlists for the user #}
             {% if all_playlists_list != [] %}
+                <option value="" disabled selected>Select a Playlist</option>
+
                 {% for playlist in all_playlists_list %}
                     <option value="{{ playlist.id }}">{{ playlist.name }}</option>
                 {% endfor %}
@@ -80,6 +86,8 @@
 
 
 {% block javascript %}
+    <script type="text/javascript" src="/static/js/own/edit_user/add.js"></script>
+    <script type="text/javascript" src="/static/js/own/edit_user/remove.js"></script>
     <script type="text/javascript" src="/static/js/own/edit_user/main.js"></script>
     <script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
     <script>

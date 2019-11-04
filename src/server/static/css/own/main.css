@@ -204,6 +204,10 @@ img {
 
 }
 
+.page-footer {
+    margin-top: 2rem;
+}
+
 #add-song-list {
     overflow: auto;
     padding: 5px;

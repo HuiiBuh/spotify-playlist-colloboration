@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template, redirect, url_for
 from flask_login import login_required, current_user
 
 from server import db, spotify
-from server.admin.admin_functions import display_spotify_users, display_spotify_user_playlists
+from server.admin.admin_functions import display_spotify_users, display_spotify_user_playlists, display_user
 from server.admin.forms import AddUserForm
 from server.api.api_functions import get_token_by_playlist
 from server.main.modals import User, Playlist
@@ -41,44 +41,17 @@ def users():
         return "You are not authorized to visit this page"
 
     user_id = request.args.get("user-id")
+
+    # Check if a user id is given in the url
     if user_id:
-        user = User.query.filter(User.id == user_id).first()
-        if user:
-            playlist_list = Playlist.query.join(User.playlists).filter(User.id == user.id).all()
+        return display_user(user_id)
 
-            playlist_json = []
-            for playlist in playlist_list:
-                auth_token = get_token_by_playlist(playlist.spotify_id)
-                playlist_json.append(spotify.playlist(playlist.spotify_id, auth_token))
-
-            all_playlists = Playlist.query.all()
-
-            all_playlists_list = []
-            for playlist in all_playlists:
-                indicator = True
-                for p in playlist_json:
-                    if not playlist.spotify_id == p.id:
-                        indicator = False
-                if indicator:
-                    auth_token = get_token_by_playlist(playlist.spotify_id)
-                    if auth_token.is_expired():
-                        auth_token = spotify.reauthorize(auth_token)
-                    p_json = spotify.playlist(playlist.spotify_id, auth_token)
-
-                    all_playlists_list.append(p_json)
-
-            return render_template("edit_user.html", title="Edit Users", user=user, playlist_list=playlist_json,
-                                   all_playlists_list=all_playlists_list)
-        else:
-            return render_template("resource_not_found.html")
-
+    # If no use id is given show all users
     user_list = User.query.all()
     form = AddUserForm()
 
     updated_user_list = []
     for user in user_list:
-        # TODO Playlist.user sind mehrere
-
         playlist_count = Playlist.query.join(User.playlists).filter(User.id == user.id).all()
         user.playlist_count = len(playlist_count)
         updated_user_list.append(user)

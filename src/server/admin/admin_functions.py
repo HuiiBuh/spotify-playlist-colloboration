@@ -1,8 +1,8 @@
 from flask import render_template, abort
 
 from server import SpotifyAuthorisationToken, spotify, db
-from server.api.api_functions import update_user, modify_playlist_json
-from server.main.modals import SpotifyUser, Playlist
+from server.api.api_functions import update_user, modify_playlist_json, get_token_by_playlist
+from server.main.modals import SpotifyUser, Playlist, User
 from server.spotify.spotify import SpotifyError
 
 
@@ -83,5 +83,63 @@ def add_playlist_to_spotify_user(playlist_id: str):
     return playlist_json
 
 
-def assign_playlists_to_user(playlist_list: list):
-    pass
+def assign_playlists_to_user(playlist_list: list, user_id: str):
+    user = User.query.filter(User.id == user_id).first()
+
+    if not user:
+        return 400, "The user does not exist"
+
+    for playlist_id in playlist_list:
+        playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+
+        if playlist:
+            user.playlists.append(playlist)
+
+    db.session.commit()
+    return 200, "Success"
+
+
+def display_user(user_id):
+    # Get the user to the user id
+    user = User.query.filter(User.id == user_id).first()
+    if user:
+        # Get all playlists of a user
+        playlist_list = Playlist.query.join(User.playlists).filter(User.id == user.id).all()
+
+        # Build the playlist json
+        playlist_json = []
+
+        # Get a auth_token for every playlist and get the information of the playlist with a api call
+        for playlist in playlist_list:
+            auth_token = get_token_by_playlist(playlist.spotify_id)
+
+            if auth_token:
+                playlist_json.append(spotify.playlist(playlist.spotify_id, auth_token))
+
+        # Get all playlists
+        all_playlists = Playlist.query.all()
+
+        all_playlists_list = []
+        for playlist in all_playlists:
+            indicator = True
+            # For every playlist that the user owns
+            for p in playlist_json:
+                # Check if the playlist (all) is in the playlists of the user
+
+                if playlist.spotify_id == p["id"]:
+                    indicator = False
+            # If the user has not the playlist append it to the list
+            if indicator:
+                auth_token = get_token_by_playlist(playlist.spotify_id)
+
+                if auth_token:
+                    if auth_token.is_expired():
+                        auth_token = spotify.reauthorize(auth_token)
+                    p_json = spotify.playlist(playlist.spotify_id, auth_token)
+
+                    all_playlists_list.append(p_json)
+
+        return render_template("edit_user.html", title="Edit Users", user=user, playlist_list=playlist_json,
+                               all_playlists_list=all_playlists_list)
+    else:
+        return render_template("resource_not_found.html")

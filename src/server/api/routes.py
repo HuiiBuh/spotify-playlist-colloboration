@@ -1,6 +1,6 @@
 import time
 
-from flask import Blueprint, jsonify, request, Response, redirect, abort, url_for
+from flask import Blueprint, jsonify, request, Response, redirect, abort, url_for, make_response
 from flask_login import login_required, current_user
 
 from server import spotify, spotify_info, db
@@ -86,20 +86,60 @@ def add_playlists_to_user():
     Add a user to a spotify playlist
     :return: 200, 400
     """
-    if not current_user.is_admin():
+    if not current_user.is_admin:
         return "You are not authorized to visit this page"
 
     request_json = request.get_json()
 
-    if not request_json:
-        return abort(400, "You did not pass a playlist")
+    if not request_json or ("playlists" and "user-id") not in request_json:
+        return abort(400, "You did not pass a playlist or user-id")
 
-    if "playlists" not in request_json:
-        return abort(400, "You did not pass a playlist")
-
-    # ToDo
     playlist_list: list = request_json["playlists"]
-    assign_playlists_to_user(playlist_list)
+
+    if playlist_list == []:
+        return abort(400, "You did not select a playlist")
+
+    user_id = request_json["user-id"]
+
+    status, data = assign_playlists_to_user(playlist_list, user_id)
+    return make_response(data, status)
+
+
+@mod.route("/playlist/user/remove", methods=["POST", "GET"])
+@login_required
+def remove_playlist_from_user():
+    """
+    Removes a playlist from a user
+    :return: 200,400
+    """
+    if not current_user.is_admin:
+        return "You are not authorized to visit this page"
+
+    request_json: dict = request.get_json()
+
+    if not request_json or "playlist-id" not in request_json and "user-id" not in request_json:
+        return abort(400, "You did not provide a playlist id or a user id")
+
+    playlist_id: str = request_json["playlist-id"]
+    user_id: str = request_json["user-id"]
+
+    user: User = User.query.filter(User.id == user_id).first()
+    if not user:
+        return abort(400, "You did not provide a valid user")
+
+    playlist: Playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+    if not playlist:
+        return abort(400, "You did not provide a valid playlist")
+
+    playlist_list: list = user.playlists
+
+    if playlist not in playlist_list:
+        return abort(400, "The use has your playlist not assigned to him")
+
+    user.playlists.remove(playlist)
+    db.session.commit()
+
+    return ""
 
 
 @mod.route("playlist/add", methods=['POST', 'GET'])

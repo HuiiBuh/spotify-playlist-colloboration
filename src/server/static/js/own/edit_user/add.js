@@ -46,6 +46,10 @@ function addPlaylistsToUser() {
 function updatePlaylists(playlistJSON) {
     let root = document.getElementsByTagName("tbody")[0];
 
+    if (document.getElementById("no-playlists-placeholder") !== null) {
+        document.getElementById("no-playlists-placeholder").remove();
+    }
+
     for (let playlistNumber in playlistJSON) {
         if (playlistJSON.hasOwnProperty(playlistNumber)) {
             let playlist = playlistJSON[playlistNumber];

@@ -25,22 +25,41 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for user_id, user in spotify_users.items() %}
 
-                    <tr class="spotify-user">
-                        <td>
-                            <a class="black-text pointer underline"
-                               onclick="window.open('{{ user.external_urls.spotify }}')">{{ user.display_name }}</a>
-                        </td>
-                        <td>{{ user.country }}</td>
-                        <td>{{ user.playlist_count }}</td>
-                        <td>{{ user.followers.total }}</td>
-                        <td><a class="material-icons pointer black-text"
-                               href="{{ url_for("admin.spotify_users") }}?spotify-user-id={{ user.id }}">edit</a></td>
-                        <td><i class="material-icons pointer primary-text-color" id="{{ user_id }}">delete</i></td>
+                {% if spotify_users != {} %}
+
+                    {% for user_id, user in spotify_users.items() %}
+
+                        <tr class="spotify-user">
+                            <td>
+                                <a class="black-text pointer underline"
+                                   onclick="window.open('{{ user.external_urls.spotify }}')">{{ user.display_name }}</a>
+                            </td>
+                            <td>{{ user.country }}</td>
+                            <td>{{ user.playlist_count }}</td>
+                            <td>{{ user.followers.total }}</td>
+                            <td><a class="material-icons pointer black-text"
+                                   href="{{ url_for("admin.spotify_users") }}?spotify-user-id={{ user.id }}">edit</a>
+                            </td>
+                            <td><i class="material-icons pointer primary-text-color" id="{{ user_id }}">delete</i></td>
+                        </tr>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <tr id="user-placeholder">
+
+                        <td></td>
+                        <td></td>
+                        <td>No Users</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
                     </tr>
 
-                {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
         </div>

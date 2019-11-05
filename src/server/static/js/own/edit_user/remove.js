@@ -1,3 +1,20 @@
+let playlistPlaceholder = function () {
+    let tr = document.createElement("tr");
+    tr.id = "no-playlists-placeholder";
+
+    tr.appendChild(document.createElement("td"));
+    tr.appendChild(document.createElement("td"));
+
+    let td = document.createElement("td");
+    td.setAttribute("class", "center-align");
+    td.innerText = "No Playlists";
+    tr.appendChild(td);
+
+    tr.appendChild(document.createElement("td"));
+    tr.appendChild(document.createElement("td"));
+    return tr;
+}();
+
 function removePlaylistFromUser(playlistNode, playlistID, name) {
     return function () {
         let xhttp = new XMLHttpRequest();
@@ -31,15 +48,7 @@ function checkIfTableIsEmpty() {
     let table = document.getElementsByTagName("tbody")[0];
 
     if (table.innerText === "") {
-        let tr = document.createElement("tr");
-
-        let td = document.createElement("td");
-        td.setAttribute("class", "center-align");
-        td.setAttribute("colspan", "100%");
-        td.innerText = " This user has no playlists ";
-        tr.appendChild(td);
-
-        table.appendChild(tr);
+        table.appendChild(playlistPlaceholder);
     }
 }
 

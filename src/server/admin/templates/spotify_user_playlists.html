@@ -25,20 +25,34 @@
                 </tr>
                 </thead>
                 <tbody id="insert">
-                {% for playlist_id, playlist in playlist_list_json.items() %}
-                    <tr class="playlist">
-                        <td>
-                            <a class="black-text pointer underline"
-                               onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
-                        </td>
-                        <td>
-                            <a class="black-text pointer underline"
-                               onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
-                        </td>
-                        <td>{{ playlist.track_count }}</td>
-                        <td><i class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i></td>
+
+                {% if playlist_list_json != {} %}
+
+                    {% for playlist_id, playlist in playlist_list_json.items() %}
+                        <tr class="playlist">
+                            <td>
+                                <a class="black-text pointer underline"
+                                   onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
+                            </td>
+                            <td>
+                                <a class="black-text pointer underline"
+                                   onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
+                            </td>
+                            <td>{{ playlist.track_count }}</td>
+                            <td><i class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                {% else %}
+                    <tr id="no-playlists-placeholder">
+                        <td></td>
+                        <td class="center-align">No Playlists</td>
+
+                        <td></td>
+                        <td></td>
                     </tr>
-                {% endfor %}
+                {% endif %}
 
                 </tbody>
             </table>
@@ -62,6 +76,8 @@
 
 
 {% block javascript %}
+    <script type="text/javascript" src="/static/js/own/spotify_user_playlists/add.js"></script>
+    <script type="text/javascript" src="/static/js/own/spotify_user_playlists/remove.js"></script>
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/main.js"></script>
     <script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
 {% endblock %}

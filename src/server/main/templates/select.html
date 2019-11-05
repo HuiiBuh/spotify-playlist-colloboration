@@ -29,57 +29,61 @@
         {% for id, playlist in playlist_list_json.items() %}
 
             <!-- Playlist information -->
-            <div class="row flex-v-center">
-                <div class="col s2 center no-padding">
-                    <div class="rectangle image-pulse">
-                        <div class="image background-image" onclick="location.href = '?playlist-id={{ id }}'"
-                             style="background-image: url('{{ playlist["image_url"] }}'); cursor: pointer"></div>
-                    </div>
-                </div>
+            <div class="row flex-v-center select-playlist">
                 <div class="col s10">
-
                     <table>
                         <tbody>
                         <tr>
                             <td class="bold">Title</td>
-                            <td class="bold"
-                                onclick="window.open('{{ playlist["url"] }}')">
-                                <a class="pointer underline black-text">{{ playlist["name"] }}</a>
+                            <td class="bold">
+                                <a class="pointer underline black-text"
+                                   onclick="window.open('{{ playlist["url"] }}')">{{ playlist["name"] }}</a>
                             </td>
                         </tr>
                         <tr>
                             <td>Author</td>
-                            <td><a class="pointer underline black-text"
+                            <td>
+                                <a class="pointer underline black-text"
                                    onclick="window.open('{{ playlist["author"]["url"] }}')">
-                                {{ playlist["author"]["name"] }}
-                            </a></td>
+                                    {{ playlist["author"]["name"] }}
+                                </a></td>
                         </tr>
                         <tr>
                             <td>Song Count</td>
                             <td>{{ playlist.track_count }}</td>
                         </tr>
-                        <tr style="border-bottom:none!important;">
-                            <td>URL</td>
-                            <td><a class="pointer underline black-text"
-                                   onclick="window.open('{{ playlist["url"] }}')">
-                                Go to Spotify</a>
-                            </td>
+                        <tr>
+                            <td>ID</td>
+                            <td>{{ id }}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+                <div class="col s2 center no-padding height-140">
+                    <div class="rectangle image-pulse">
+                        <div class="image background-image" onclick="location.href = '?playlist-id={{ id }}'"
+                             style="background-image: url('{{ playlist["image_url"] }}'); cursor: pointer"></div>
+                    </div>
+                </div>
             </div>
 
-            {% if playlist_list_json | first == id %}
+            {% if playlist_list_json | first == id  and playlist_list_json | length > 1 %}
 
-                {#            {{ playlist }}#}
-                {#            {% if playlist_list_json | first is not playlist_list_json %}#}
                 <ul>
                     <li class="divider"></li>
                 </ul>
+
             {% endif %}
 
         {% endfor %}
 
+
     </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script type="text/javascript">
+        var HoverOnTouch = new HoverOnTouch();
+    </script>
 {% endblock %}

@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <title>{{ title }}</title>
+    <link rel="icon" href="/static/icons/Spotify.png">
 
     <!--Import Google Icon Font-->
     <link href="/static/css/libraries/materiel-icons.css" rel="stylesheet">
-    <link rel="icon" href="/static/icons/Spotify-64-Green.png">
 
     <!--Import CSS-->
     <link type="text/css" rel="stylesheet" href="/static/css/libraries/materialize.min.css"
@@ -44,6 +44,9 @@
         <ul class="sidenav" id="mobile-demo">
 
             <div class="nav-logo"></div>
+
+            <li class="divider"></li>
+
             <li><a href="{{ url_for("admin.spotify_users") }}">Spotify Users</a></li>
             <li><a href="{{ url_for("admin.users") }}">Users</a></li>
             <li><a href="{{ url_for("main.logout") }}">Logout</a></li>
@@ -62,7 +65,7 @@
 {% endblock %}
 
 
-<div id="main-box" style="min-height: 100vh">
+<div id="main-box">
     <div class="container margin-top z-depth-3 rounded small-padding">
         {% block main %}        {% endblock %}
     </div>
@@ -71,7 +74,7 @@
 
 
 {% block footer %}
-    <footer class="page-footer" style="z-index: 1000; position: relative">
+    <footer class="margin-top page-footer" style="z-index: 1000; position: relative">
         <div class="container">
             <div class="row">
                 <div class="col l6 m6 s12">
@@ -120,7 +123,6 @@
 
 
 <script type="text/javascript" src="/static/js/libraries/materialize.min.js"></script>
-<script type="text/javascript" src="/static/js/libraries/hoverontouch.js"></script>
 <script type="text/javascript">
     M.AutoInit();
 </script>

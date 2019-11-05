@@ -17,42 +17,48 @@
         <h3>{{ user.username }}</h3>
     </div>
 
-    <table class="striped highlight">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>ID</th>
-            <th>Tracks</th>
-            <th>Author</th>
-            <th style="width: 1px"></th>
-        </tr>
-        </thead>
-        {% if playlist_list != [] %}
-            <tbody>
-            {% for playlist in playlist_list %}
-                <tr class="playlist" id="{{ playlist.id }}">
-                    <td>
-                        <a class="pointer underline black-text playlist-name"
-                           onclick="window.open('{{ playlist.external_urls.spotify }}')">{{ playlist.name }}</a>
-                    </td>
-                    <td>{{ playlist.id }}</td>
-                    <td>{{ playlist.tracks.total }}</td>
-                    <td>
-                        <a class="pointer underline black-text"
-                           onclick="window.open('{{ playlist.owner.external_urls.spotify }}')">{{ playlist.owner.display_name }}</a>
-                    </td>
-                    <td><i class="material-icons pointer primary-text-color">delete</i></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        {% else %}
+    <div class="table-wrapper">
+        <table class="striped highlight own-responsive-table">
+            <thead>
             <tr>
-                <td class="center-align" colspan="100%">
-                    This user has no playlists
-                </td>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Tracks</th>
+                <th>Author</th>
+                <th style="width: 1px"></th>
             </tr>
-        {% endif %}
-    </table>
+            </thead>
+            {% if playlist_list != [] %}
+                <tbody>
+                {% for playlist in playlist_list %}
+                    <tr class="playlist" id="{{ playlist.id }}">
+                        <td>
+                            <a class="pointer underline black-text playlist-name"
+                               onclick="window.open('{{ playlist.external_urls.spotify }}')">{{ playlist.name }}</a>
+                        </td>
+                        <td>{{ playlist.id }}</td>
+                        <td>{{ playlist.tracks.total }}</td>
+                        <td>
+                            <a class="pointer underline black-text"
+                               onclick="window.open('{{ playlist.owner.external_urls.spotify }}')">{{ playlist.owner.display_name }}</a>
+                        </td>
+                        <td><i class="material-icons pointer primary-text-color">delete</i></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% else %}
+                <tr>
+                    <td></td>
+                    <td></td>
+
+                    <td class="center-align">This user has no playlists</td>
+
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
 
     <ul>
         <li class="divider"></li>

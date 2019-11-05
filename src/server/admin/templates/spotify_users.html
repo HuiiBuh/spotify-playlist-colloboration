@@ -12,36 +12,38 @@
 
         <h3>Spotify Users</h3>
 
-        <table class="striped highlight">
-            <thead>
-            <tr>
-                <th>Username</th>
-                <th>Country</th>
-                <th>Playlists</th>
-                <th>Followers</th>
-                <th style="width: 1px"></th>
-                <th style="width: 1px"></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for user_id, user in spotify_users.items() %}
-
-                <tr class="spotify-user">
-                    <td>
-                        <a class="black-text pointer underline"
-                           onclick="window.open('{{ user.external_urls.spotify }}')">{{ user.display_name }}</a>
-                    </td>
-                    <td>{{ user.country }}</td>
-                    <td>{{ user.playlist_count }}</td>
-                    <td>{{ user.followers.total }}</td>
-                    <td><a class="material-icons pointer black-text"
-                           href="{{ url_for("admin.spotify_users") }}?spotify-user-id={{ user.id }}">edit</a></td>
-                    <td><i class="material-icons pointer primary-text-color" id="{{ user_id }}">delete</i></td>
+        <div class="table-wrapper">
+            <table class="striped highlight own-responsive-table">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Country</th>
+                    <th>Playlists</th>
+                    <th>Followers</th>
+                    <th style="width: 1px"></th>
+                    <th style="width: 1px"></th>
                 </tr>
+                </thead>
+                <tbody>
+                {% for user_id, user in spotify_users.items() %}
 
-            {% endfor %}
-            </tbody>
-        </table>
+                    <tr class="spotify-user">
+                        <td>
+                            <a class="black-text pointer underline"
+                               onclick="window.open('{{ user.external_urls.spotify }}')">{{ user.display_name }}</a>
+                        </td>
+                        <td>{{ user.country }}</td>
+                        <td>{{ user.playlist_count }}</td>
+                        <td>{{ user.followers.total }}</td>
+                        <td><a class="material-icons pointer black-text"
+                               href="{{ url_for("admin.spotify_users") }}?spotify-user-id={{ user.id }}">edit</a></td>
+                        <td><i class="material-icons pointer primary-text-color" id="{{ user_id }}">delete</i></td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="fixed-action-btn">

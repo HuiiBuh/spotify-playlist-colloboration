@@ -40,12 +40,15 @@
                 </ul>
             </div>
         </nav>
+
         <ul class="sidenav" id="mobile-demo">
-            <li><h3 style="padding: 0 32px">HuiiBuh</h3></li>
-            <li class="divider"></li>
+
+            <div class="nav-logo"></div>
             <li><a href="{{ url_for("admin.spotify_users") }}">Spotify Users</a></li>
             <li><a href="{{ url_for("admin.users") }}">Users</a></li>
+            <li><a href="{{ url_for("main.logout") }}">Logout</a></li>
         </ul>
+
     {% else %}
         <nav>
             <div class="nav-wrapper">

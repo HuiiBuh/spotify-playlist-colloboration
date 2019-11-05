@@ -15,36 +15,38 @@
         <h3>User Accounts</h3>
     </div>
 
-    <table class="striped highlight">
-        <thead>
-        <tr>
-            <th>Username</th>
-            <th>Admin</th>
-            <th>Playlists</th>
-            <th style="width: 1px"></th>
-            <th style="width: 1px"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in user_list %}
-
-            <tr class="user">
-                <td>{{ user.username }}</td>
-                <td>{{ user.is_admin }}</td>
-                <td>{{ user.playlist_count }}</td>
-
-                <td>
-                    <a class="material-icons pointer black-text"
-                       href="{{ url_for("admin.users") }}?user-id={{ user.id }}">edit</a>
-                </td>
-                <td>
-                    <a class="material-icons pointer primary-text-color" id="{{ user.id }}">delete</a>
-                </td>
+    <div class="table-wrapper">
+        <table class="striped highlight own-responsive-table">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Admin</th>
+                <th>Playlists</th>
+                <th style="width: 1px"></th>
+                <th style="width: 1px"></th>
             </tr>
+            </thead>
+            <tbody>
+            {% for user in user_list %}
 
-        {% endfor %}
-        </tbody>
-    </table>
+                <tr class="user">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.is_admin }}</td>
+                    <td>{{ user.playlist_count }}</td>
+
+                    <td>
+                        <a class="material-icons pointer black-text"
+                           href="{{ url_for("admin.users") }}?user-id={{ user.id }}">edit</a>
+                    </td>
+                    <td>
+                        <a class="material-icons pointer primary-text-color" id="{{ user.id }}">delete</a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 
 

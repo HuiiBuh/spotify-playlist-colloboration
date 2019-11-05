@@ -14,33 +14,35 @@
         <h3>{{ user_name }}'s Playlists</h3>
 
 
-        <table class="striped highlight">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Author</th>
-                <th>Track count</th>
-                <th style="width: 1px"></th>
-            </tr>
-            </thead>
-            <tbody id="insert">
-            {% for playlist_id, playlist in playlist_list_json.items() %}
-                <tr class="playlist">
-                    <td>
-                        <a class="black-text pointer underline"
-                           onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
-                    </td>
-                    <td>
-                        <a class="black-text pointer underline"
-                           onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
-                    </td>
-                    <td>{{ playlist.track_count }}</td>
-                    <td><i class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i></td>
+        <div class="table-wrapper">
+            <table class="striped highlight own-responsive-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Author</th>
+                    <th>Track count</th>
+                    <th style="width: 1px"></th>
                 </tr>
-            {% endfor %}
+                </thead>
+                <tbody id="insert">
+                {% for playlist_id, playlist in playlist_list_json.items() %}
+                    <tr class="playlist">
+                        <td>
+                            <a class="black-text pointer underline"
+                               onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
+                        </td>
+                        <td>
+                            <a class="black-text pointer underline"
+                               onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
+                        </td>
+                        <td>{{ playlist.track_count }}</td>
+                        <td><i class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i></td>
+                    </tr>
+                {% endfor %}
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
         <div class="left-align">
             <h4>Add Playlists</h4>
         </div>

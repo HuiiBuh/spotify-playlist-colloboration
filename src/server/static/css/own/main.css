@@ -13,6 +13,15 @@
     transition: text-decoration .1s ease-in;
 }
 
+.nav-logo {
+    height: 26%;
+    width: 100%;
+    background: url(/static/icons/spotify_nav.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .postfix {
     position: absolute;
     width: 3rem;
@@ -30,6 +39,10 @@
 .song-cover-div {
     padding-left: 5px !important;
     padding-right: 0 !important;
+}
+
+.song-cover-div > img {
+    width: 100%
 }
 
 #copyright {
@@ -317,18 +330,26 @@ img {
 
 /*Container************************************************************************************************************/
 
+.xs1 {
+}
+
+.xs3 {
+}
+
+.xs8 {
+}
 
 @media only screen and (max-width: 415px) {
     .xs1 {
-        width: calc(100% / 12)
+        width: calc(100% / 12) !important;
     }
 
     .xs3 {
-        width: calc(100% / 12);
+        width: calc(100% / 12) !important;
     }
 
     .xs8 {
-        width: calc(100% / 12 * 8);
+        width: calc(100% / 12 * 8) !important;
     }
 
     #playlist-box {
@@ -420,4 +441,90 @@ img {
     box-sizing: inherit;
 }
 
-/*Label checkbox*******************************************************************************************************/
+/*Table *******************************************************************************************************/
+
+/*
+@media (max-width: 400px) {
+    .own-responsive-table {
+        display: block;
+        width: 100%;
+    }
+
+    .own-responsive-table thead, .own-responsive-table tbody, .own-responsive-table thead th {
+        display: block;
+    }
+
+    .own-responsive-table thead {
+        float: left;
+    }
+
+    .own-responsive-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+
+    .own-responsive-table td, .own-responsive-table th {
+        padding: 20px .625em .625em .625em;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 100px;
+        text-overflow: ellipsis;
+    }
+
+    .own-responsive-table tbody tr {
+        display: table-cell;
+    }
+
+    .own-responsive-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}
+
+*/
+
+/* Responsive */
+
+@media (max-width: 767px) {
+    .own-responsive-table {
+        display: block;
+        width: 100%;
+    }
+
+    .own-responsive-table thead, .own-responsive-table tbody, .own-responsive-table thead th {
+        display: block;
+    }
+
+    .own-responsive-table thead {
+        float: left;
+    }
+
+    .own-responsive-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+    .own-responsive-table td, .own-responsive-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        text-overflow: ellipsis;
+    }
+    .own-responsive-table thead th {
+        text-align: left;
+    }
+    .own-responsive-table tbody tr {
+        display: table-cell;
+    }
+    .own-responsive-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}

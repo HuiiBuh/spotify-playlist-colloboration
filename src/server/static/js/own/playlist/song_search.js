@@ -147,12 +147,12 @@ function addToAddPlaylist(song) {
 
             if (artistRegex.test(song.searchString) && titleRegex.test(song.searchString) && albumRegex.test(song.searchString)) {
                 let toastHTML = '<p style="text-align: center; width:100%">The Song already exists in the playlist</p>';
-                M.toast({html: toastHTML});
+                M.toast({html: toastHTML, classes:"bg-warning"});
                 return
             }
         }
 
-        evt.currentTarget.style.color = "green";
+        evt.currentTarget.classList.add("success");
 
         addPlaylist.addSong(songObject);
         displayAddSongPlaylist(songObject, "add-song-list");
@@ -228,7 +228,7 @@ function displayAddSongPlaylist(songObject, rootID) {
     songDiv.appendChild(iconDiv);
 
     let icon = document.createElement("i");
-    icon.setAttribute("class", "material-icons pointer");
+    icon.setAttribute("class", "material-icons pointer primary-text-color");
     icon.innerText = "delete";
     icon.onclick = deleteAddSong(songObject);
     iconDiv.appendChild(icon);

@@ -14,7 +14,7 @@ function addPlaylistsToUser() {
     }
 
     if (valueList === []) {
-        M.toast({html: "You did not select a playlist", colors: "red"});
+        M.toast({html: "You did not select a playlist", colors: "bg-warning"});
         return
     }
 
@@ -32,7 +32,7 @@ function addPlaylistsToUser() {
 
     xhttp.onreadystatechange = function () {
         if (this.status === 200 && this.readyState === 4) {
-            M.toast({html: "Success", classes: "green"});
+            M.toast({html: "Success", classes: "bg-success"});
             updatePlaylists(JSON.parse(this.responseText));
             updateSelect(JSON.parse(this.responseText))
         } else if (this.readyState === 4) {

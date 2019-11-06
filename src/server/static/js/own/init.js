@@ -6,4 +6,4 @@ window.onload = function () {
 
 
 let hoverOnTouch = new HoverOnTouch();
-hoverOnTouch.addEvents();
+hoverOnTouch.start();

@@ -11,7 +11,7 @@ function showErrorMessage(self) {
     toast_message.style.marginBottom = "0px";
     toast_message.innerText = error_response;
 
-    M.toast({html: toast_message, classes: "red"})
+    M.toast({html: toast_message, classes: "bg-warning"})
 }
 
 /**

@@ -1,0 +1,73 @@
+/*Add css variables*/
+:root {
+    --main-color: rgb(151, 148, 255);
+    --secondary-color: #5660fa;
+    --success-color: #3ea951;
+    --warning-color: #ff7a8b;
+}
+
+/*Background***********************************************/
+/*Main background color*/
+nav, .page-footer, .primary-bg-color {
+    background-color: var(--main-color) !important;
+}
+
+/*Secondary background color*/
+.btn-floating, .btn-floating:hover {
+    background-color: var(--secondary-color);
+}
+
+/*Success background color*/
+.bg-success {
+    background-color: var(--success-color);
+}
+
+/*Warning background color*/
+.bg-warning {
+    background-color: var(--warning-color);
+}
+
+/*Color*****************************************************/
+/*Main color*/
+.active, .prefix.active {
+    color: var(--main-color) !important;
+}
+
+/*Success color*/
+.success {
+    color: var(--success-color);
+}
+
+/*Warning color*/
+.primary-text-color {
+    color: var(--warning-color)
+}
+
+
+/*Give the input the right color*/
+input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]), input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]), input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]), input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]), input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]), input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid var(--main-color);
+    -webkit-box-shadow: 0 1px 0 0 var(--main-color);
+    box-shadow: 0 1px 0 0 var(--main-color);
+}
+
+/*Give the checkbox the right color*/
+[type="checkbox"]:checked + span:not(.lever):before {
+    border-right: 2px solid var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+/*Change selected text color*/
+::selection {
+    background: var(--warning-color);
+}
+
+::-moz-selection {
+    background: var(--warning-color);
+}

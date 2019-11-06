@@ -1,3 +1,4 @@
+/*Add this code if the client can process hover events*/
 @media (pointer: fine) {
     .underline:hover {
         text-decoration: underline;
@@ -19,6 +20,7 @@
     }
 }
 
+/*The simulated hover for touch devices*/
 .current-touch.underline {
     text-decoration: underline;
 }

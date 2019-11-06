@@ -7,7 +7,7 @@ function deletePlaylist(playlistNode, playlistID) {
             if (this.readyState === 4 && this.status === 200) {
                 playlistNode.remove();
                 checkIfTableIsEmpty();
-                M.toast({html: "Successfully deleted the playlist", classes: "green"})
+                M.toast({html: "Successfully deleted the playlist", classes: "bg-success"})
             }
         };
 

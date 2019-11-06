@@ -14,12 +14,23 @@
           media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="/static/css/own/hover.css"
           media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/color.css"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/helpers.css"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/container.css"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/label_checkbox.css"
+          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/responsive_table.css"
+          media="screen,projection"/>
     {% block css %}{% endblock %}
 
     {% block javascript_variables %}{% endblock %}
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Description" content="A website made to collaborate on multible spotify playlists">
     <meta charset="UTF-8">
 
 </head>
@@ -44,7 +55,7 @@
 
         <ul class="sidenav" id="mobile-demo">
 
-            <div class="nav-logo"></div>
+            <li class="nav-logo"></li>
 
             <li class="divider"></li>
 
@@ -109,7 +120,6 @@
                     <div class="col s9" id="copyright">
                         © 2019 HuiBuh
                     </div>
-                    <div class="col s9" id="copyright"></div>
                 </div>
             </div>
         </div>
@@ -122,8 +132,6 @@
 <script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
 <script type="text/javascript" src="/static/js/own/hoverontouch.js"></script>
 <script type="text/javascript" src="/static/js/own/init.js"></script>
-
-
 
 
 {% block javascript %}

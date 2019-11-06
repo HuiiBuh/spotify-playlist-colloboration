@@ -1,0 +1,45 @@
+/*Change the apperance of a table if the width is right*/
+@media (max-width: 450px) {
+    .own-responsive-table {
+        display: block;
+        width: 100%;
+    }
+
+    .own-responsive-table thead, .own-responsive-table tbody, .own-responsive-table thead th {
+        display: block;
+    }
+
+    .own-responsive-table thead {
+        float: left;
+    }
+
+    .own-responsive-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+
+    .own-responsive-table td, .own-responsive-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        text-overflow: ellipsis;
+    }
+
+    .own-responsive-table thead th {
+        text-align: left;
+    }
+
+    .own-responsive-table tbody tr {
+        display: table-cell;
+    }
+
+    .own-responsive-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}

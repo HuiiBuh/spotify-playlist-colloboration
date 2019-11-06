@@ -1,39 +1,33 @@
+/*Create a border for the loading class*/
 .loading-card {
     border: 1px solid #ddd;
 }
 
-.loading-card > .image {
-    position: absolute;
-    background: #e9ebee;
-    background-position: center !important;
-    background-size: contain !important;
-    background-repeat: no-repeat !important;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-}
-
+/*The loading placeholder for the playlist songs*/
 .contend-loader {
     height: 100vh;
     overflow: hidden;
 }
 
+/*The loading bar*/
 .loading-bar {
     background: #e9ebee;
     margin: 0 13px 13px;
     height: 19px;
 }
 
+/*Create a padding top for the first loading bar*/
 .first-loading-bar {
     margin-top: 13px;
 }
 
+/*A extra large loaing bar*/
 .big-loading-bar {
     height: 50px;
     width: 40%;
 }
 
+/*Loading bars in different width if the loading-bar class*/
 .loading-bar-1 {
     width: 80%;
 }
@@ -46,21 +40,13 @@
     width: 90%;
 }
 
-
-.absolute-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-}
-
-
+/*The class the loading animation belongs to*/
 .loading {
     position: relative;
     overflow: hidden;
 }
 
+/*The loading animation*/
 .loading::after {
     content: "";
     display: block;
@@ -74,6 +60,7 @@
     animation: 1.5s loading-placeholder ease-in-out infinite;
 }
 
+/*Animate the movement*/
 @keyframes loading-placeholder {
     0% {
         transform: translateX(-100%);

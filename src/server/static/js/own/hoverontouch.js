@@ -16,8 +16,8 @@ class HoverOnTouch {
     addEvents() {
         let self = this;
         this.elements.forEach(function (node, key, list) {
-            node.addEventListener("touchstart", self.addClass);
-            node.addEventListener("touchend", self.removeClass);
+            node.addEventListener("touchstart", self.addClass, {passive: true});
+            node.addEventListener("touchend", self.removeClass, {passive: true});
         })
     }
 

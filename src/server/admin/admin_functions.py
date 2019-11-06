@@ -1,13 +1,12 @@
-from flask import render_template, abort
+from flask import render_template
 
-from server import SpotifyAuthorisationToken, spotify, db
+from server import SpotifyAuthorisationToken, spotify
 from server.admin.forms import AddUserForm
-from server.api.api_functions import update_user, modify_playlist_json, get_token_by_playlist
+from server.api.api_functions import update_spotify_user, modify_playlist_json, get_token_by_playlist
 from server.main.modals import SpotifyUser, Playlist, User
-from server.spotify.spotify import SpotifyError
 
 
-def display_all_spotify_users():
+def display_all_spotify_users() -> render_template:
     """
     Display all spotify users
     :return: A rendered template
@@ -28,7 +27,7 @@ def display_all_spotify_users():
         if oauth_token.is_expired():
             oauth_token = spotify.reauthorize(oauth_token)
             user_id = spotify.me(oauth_token)["id"]
-            update_user(user_id, oauth_token)
+            update_spotify_user(user_id, oauth_token)
 
         # Get information from the database and spotify and store it in the json
         user_json_list[spotify_user.spotify_user_id] = spotify.me(oauth_token)
@@ -85,7 +84,7 @@ def display_spotify_user_playlists(spotify_user_id: str):
     if oauth_token.is_expired():
         oauth_token = spotify.reauthorize(oauth_token)
         user_id = spotify.me(oauth_token)["id"]
-        update_user(user_id, oauth_token)
+        update_spotify_user(user_id, oauth_token)
 
     # Build the playlist json by the requests to spotify
     playlist_list_json = {}
@@ -98,87 +97,6 @@ def display_spotify_user_playlists(spotify_user_id: str):
 
     return render_template("spotify_user_playlists.html", playlist_list_json=playlist_list_json,
                            user_name=user_name, title=f"{user_name}'s Playlists")
-
-
-def add_playlist_to_spotify_user(playlist_id: str):
-    """
-    Add a new spotify playlist to a user
-    :param playlist_id: The playlist id
-    :return: Status 400 or the playlist json
-    """
-
-    # Check if the playlist exists
-    if Playlist.query.filter(Playlist.spotify_id == playlist_id).first():
-        return abort(400, "The playlist does already exist")
-
-    # Get a random spotify user for a auth token
-    temp_user: SpotifyUser = SpotifyUser.query.first()
-    auth_token = SpotifyAuthorisationToken(temp_user.refresh_token, temp_user.activated_at,
-                                           temp_user.oauth_token)
-
-    if auth_token.is_expired():
-        auth_token = spotify.reauthorize(auth_token)
-        user_id = spotify.me(auth_token)["id"]
-        update_user(user_id, auth_token)
-
-    # Check if the playlist id is valid
-    try:
-        playlist_json = spotify.playlist(playlist_id, auth_token)
-    except SpotifyError as e:
-        if "Invalid playlist Id" in str(e):
-            return abort(400, "The Playlist ID you passed is not valid")
-
-    # Get the owner of the playlist
-    playlist_json_owner = playlist_json["owner"]["id"]
-
-    # Get the owner of the playlist
-    spotify_user_object: SpotifyUser = SpotifyUser.query.filter(
-        SpotifyUser.spotify_user_id == playlist_json_owner).first()
-
-    # Check if the owner is in the spotify user database
-    if not spotify_user_object:
-        return abort(400, f"The user ({playlist_json_owner}) the playlist belongs to does not exist in the tool. \n"
-                          f"You have to create it manually.")
-
-    # Create the playlist and add it to the database
-    database_playlist = Playlist(spotify_id=playlist_id, spotify_user=spotify_user_object.id, users=[])
-    db.session.add(database_playlist)
-    db.session.commit()
-    return playlist_json
-
-
-def assign_playlists_to_user(playlist_list: list, user_id: str):
-    """
-    Assign a number of playlists to a user
-    :param playlist_list: A list of playlist ids
-    :param user_id: The user id the playlists should be added to
-    :return: The status (200, 400) and the playlist json
-    """
-
-    # Get the user
-    user: User = User.query.filter(User.id == user_id).first()
-
-    if not user:
-        return 400, "The user does not exist"
-
-    # Get the json from the playlists which get added to the user
-    playlist_json_list = []
-    for playlist_id in playlist_list:
-        playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
-
-        # Check if the playlist exists in the database
-        if playlist:
-            user.playlists.append(playlist)
-
-            auth_token = get_token_by_playlist(playlist_id)
-
-            if auth_token:
-                # Append the information of the playlist ot the json
-                playlist_json_list.append(modify_playlist_json(spotify.playlist(playlist_id, auth_token)))
-
-    # Update commit the information to the database
-    db.session.commit()
-    return 200, playlist_json_list
 
 
 def display_user(user_id: str):

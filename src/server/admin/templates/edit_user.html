@@ -6,17 +6,17 @@
         let addUserToPlaylistAPI = "{{ url_for("api.add_playlists_to_user") }}";
         let removePlaylistFromUserAPI = "{{ url_for("api.remove_playlist_from_user") }}"
     </script>
-
-
-
 {% endblock %}
+
 
 {% block main %}
 
+    {# User name #}
     <div class="center">
         <h3>{{ user.username }}</h3>
     </div>
 
+    {# The table with the user playlists #}
     <div class="table-wrapper">
         <table class="striped highlight own-responsive-table">
             <thead>
@@ -28,8 +28,13 @@
                 <th style="width: 1px"></th>
             </tr>
             </thead>
+
+            {# Check if the user has a playlist #}
             {% if playlist_list != [] %}
+
                 <tbody>
+
+                {# Add a new row for every playlist#}
                 {% for playlist in playlist_list %}
                     <tr class="playlist" id="{{ playlist.id }}">
                         <td>
@@ -45,7 +50,9 @@
                         <td><i class="material-icons pointer primary-text-color">delete</i></td>
                     </tr>
                 {% endfor %}
+
                 </tbody>
+
             {% else %}
                 <tr id="no-playlists-placeholder">
                     <td></td>
@@ -57,9 +64,12 @@
                     <td></td>
                 </tr>
             {% endif %}
+
+
         </table>
     </div>
 
+    {# Add playlist to user section #}
     <ul>
         <li class="divider"></li>
     </ul>
@@ -68,13 +78,16 @@
 
     <div class="input-field col s12">
         <select aria-label="playlist-select" multiple id="playlist-select">
-            {# Fill in the playlists for the user #}
+
+            {# Check if we can add playlists to the user #}
             {% if all_playlists_list != [] %}
                 <option value="" disabled selected>Select a Playlist</option>
 
+                {# Show all available playlists#}
                 {% for playlist in all_playlists_list %}
                     <option value="{{ playlist.id }}">{{ playlist.name }}</option>
                 {% endfor %}
+
             {% else %}
                 <option value="" disabled selected>No Playlists available</option>
             {% endif %}
@@ -82,10 +95,10 @@
         </select>
     </div>
 
+    {# The add button for the playlists #}
     <div class="right-align">
         <a class="waves-effect waves-green btn-flat" id="add-playlist">Add</a>
     </div>
-
 
 
 {% endblock %}

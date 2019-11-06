@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 
 {% block javascript_variables %}
-
     <script>
         let deleteUserAPI = "{{ url_for("api.remove_user") }}?user-id="
     </script>
-
-
 {% endblock %}
 
 {% block main %}
@@ -27,6 +24,8 @@
             </tr>
             </thead>
             <tbody>
+
+            {# Show every user #}
             {% for user in user_list %}
 
                 <tr class="user">
@@ -49,24 +48,32 @@
     </div>
 
 
-
+    {# Modal that allows the user to add new users #}
     <div id="add-modal" class="modal">
         <form action="{{ url_for("admin.add_user") }}" method="post">
 
+            {# CSRF Token #}
             {{ form.csrf_token }}
 
+            {# The contend of the modal #}
             <div class="modal-content">
                 <h4>Add new User</h4>
                 <div class="row flex-v-center">
+
+                    {# Username #}
                     <div class="input-field col s6">
                         {{ form.username(size=32) }}
                         {{ form.username.label }}
                     </div>
+
+                    {# Password #}
                     <div class="input-field col s6">
                         {{ form.password(size=32) }}
                         {{ form.password.label }}
                     </div>
                 </div>
+
+                {# Checkbox admin #}
                 <div class="row">
                     <div class="col s12">
                         <div style="float: right;">
@@ -75,21 +82,25 @@
                         </div>
                     </div>
                 </div>
+
             </div>
+
             <div class="modal-footer">
+                {# Cancel button #}
                 <a class="modal-close waves-effect waves-green btn-flat left">Cancel</a>
+
+                {# Submit button #}
                 {{ form.submit(class='btn-flat modal-close', id="add-playlists") }}
             </div>
         </form>
     </div>
 
-
+    {# The add button #}
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large">
             <i class="very-large large material-icons modal-trigger" data-target="add-modal">add</i>
         </a>
     </div>
-
 
 {% endblock %}
 

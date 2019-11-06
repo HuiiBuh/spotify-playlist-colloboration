@@ -12,63 +12,63 @@
 
     <div class="center">
         <h3>{{ user_name }}'s Playlists</h3>
+    </div>
 
+    <div class="table-wrapper">
+        <table class="striped highlight own-responsive-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Track count</th>
+                <th style="width: 1px"></th>
+            </tr>
+            </thead>
+            <tbody id="insert">
 
-        <div class="table-wrapper">
-            <table class="striped highlight own-responsive-table">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Author</th>
-                    <th>Track count</th>
-                    <th style="width: 1px"></th>
-                </tr>
-                </thead>
-                <tbody id="insert">
+            {# Check if spotify user has a playlist #}
+            {% if playlist_list_json != {} %}
 
-                {% if playlist_list_json != {} %}
-
-                    {% for playlist_id, playlist in playlist_list_json.items() %}
-                        <tr class="playlist">
-                            <td>
-                                <a class="black-text pointer underline" hover-on-touch
-                                   onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
-                            </td>
-                            <td>
-                                <a class="black-text pointer underline" hover-on-touch
-                                   onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
-                            </td>
-                            <td>{{ playlist.track_count }}</td>
-                            <td><i class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i>
-                            </td>
-                        </tr>
-                    {% endfor %}
-
-                {% else %}
-                    <tr id="no-playlists-placeholder">
-                        <td></td>
-                        <td class="center-align">No Playlists</td>
-
-                        <td></td>
-                        <td></td>
+                {# For every playlist the spotify user has #}
+                {% for playlist_id, playlist in playlist_list_json.items() %}
+                    <tr class="playlist">
+                        <td>
+                            <a class="black-text pointer underline" hover-on-touch
+                               onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
+                        </td>
+                        <td>
+                            <a class="black-text pointer underline" hover-on-touch
+                               onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
+                        </td>
+                        <td>{{ playlist.track_count }}</td>
+                        <td><i class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i>
+                        </td>
                     </tr>
-                {% endif %}
+                {% endfor %}
 
-                </tbody>
-            </table>
-        </div>
-        <div class="left-align">
-            <h4>Add Playlists</h4>
-        </div>
+            {% else %}
+                <tr id="no-playlists-placeholder">
+                    <td></td>
+                    <td class="center-align">No Playlists</td>
 
-        <div class="row flex-v-center">
-            <div class="input-field col s10">
-                <input id="playlist-id" type="text" class="validate">
-                <label for="playlist-id">Playlist ID</label>
-            </div>
-            <button class="btn-flat col s2 primary-bg-color white-text" id="add-button">Add</button>
-        </div>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endif %}
 
+            </tbody>
+        </table>
+    </div>
+    <div class="left-align">
+        <h4>Add Playlists</h4>
+    </div>
+
+    <div class="row flex-v-center">
+        <div class="input-field col s10">
+            <input id="playlist-id" type="text" class="validate">
+            <label for="playlist-id">Playlist ID</label>
+        </div>
+        <button class="btn-flat col s2 primary-bg-color white-text" id="add-button">Add</button>
     </div>
 
 {% endblock %}

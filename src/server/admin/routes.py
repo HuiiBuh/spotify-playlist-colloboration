@@ -12,7 +12,7 @@ mod = Blueprint("admin", __name__, template_folder='templates')
 
 @mod.route("/spotify-users")
 @login_required
-def spotify_users():
+def spotify_users() -> render_template:
     """
     Display one or all spotify users depending on the args in the url
     :return:
@@ -33,7 +33,7 @@ def spotify_users():
 
 @mod.route("/users")
 @login_required
-def users():
+def users() -> render_template:
     """
     Display the users or one user
     :return: A rendered template

@@ -26,8 +26,10 @@
                 </thead>
                 <tbody>
 
+                {# Check if there are spotify users#}
                 {% if spotify_users != {} %}
 
+                    {# For every user create a row #}
                     {% for user_id, user in spotify_users.items() %}
 
                         <tr class="spotify-user">
@@ -46,6 +48,7 @@
 
                     {% endfor %}
 
+                    {# Show that no playlists are availabel #}
                 {% else %}
 
                     <tr id="user-placeholder">
@@ -65,6 +68,7 @@
         </div>
     </div>
 
+    {# Show floating button that redirects the user to spotify #}
     <div class="fixed-action-btn">
         <a class="btn-floating btn-large" href="{{ url_for("api.authorize") }}">
             <i class="very-large large material-icons">add</i>

@@ -53,7 +53,6 @@
     <div id="add-modal" class="modal">
         <form action="{{ url_for("admin.add_user") }}" method="post">
 
-            {{ form.hidden_tag() }}
             {{ form.csrf_token }}
 
             <div class="modal-content">

@@ -24,7 +24,7 @@
             {# Playlist #}
             <div class="row flex-v-center select-playlist" hover-on-touch>
                 {# Information of the playlist #}
-                <div class="col s10">
+                <div class="col s8 m10">
                     <table>
                         <tbody>
                         <tr>
@@ -42,11 +42,11 @@
                                     {{ playlist["author"]["name"] }}
                                 </a></td>
                         </tr>
-                        <tr>
+                        <tr class="hide-medium">
                             <td>Song Count</td>
                             <td>{{ playlist.track_count }}</td>
                         </tr>
-                        <tr>
+                        <tr class="hide-medium">
                             <td>ID</td>
                             <td>{{ id }}</td>
                         </tr>
@@ -54,7 +54,7 @@
                     </table>
                 </div>
                 {# Cover image of the playlist #}
-                <div class="col s2 center no-padding height-140">
+                <div class="col s4 m2 center no-padding height-140">
                     <div class="rectangle pulse">
                         <div class="image background-image" onclick="location.href = '?playlist-id={{ id }}'"
                              style="background-image: url('{{ playlist["image_url"] }}'); cursor: pointer"></div>

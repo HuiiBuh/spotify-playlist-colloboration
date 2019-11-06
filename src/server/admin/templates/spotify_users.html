@@ -32,7 +32,7 @@
 
                         <tr class="spotify-user">
                             <td>
-                                <a class="black-text pointer underline"
+                                <a class="black-text pointer underline" hover-on-touch
                                    onclick="window.open('{{ user.external_urls.spotify }}')">{{ user.display_name }}</a>
                             </td>
                             <td>{{ user.country }}</td>
@@ -74,8 +74,5 @@
 {% endblock %}
 
 {% block javascript %}
-
     <script type="text/javascript" src="/static/js/own/spotify_users/main.js"></script>
-    <script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
-
 {% endblock %}

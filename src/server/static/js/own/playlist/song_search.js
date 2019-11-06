@@ -72,6 +72,7 @@ function displaySearchPreview(searchSongList, rootID) {
 
         let titleA = document.createElement("a");
         titleA.setAttribute("class", "pointer underline black-text");
+        titleA.setAttribute("hover-on-touch", "");
         titleA.onclick = addOnclick(url);
         titleA.innerText = title;
         titleDiv.appendChild(titleA);
@@ -80,6 +81,7 @@ function displaySearchPreview(searchSongList, rootID) {
         for (let artistNumber in artist) {
             let artistA = document.createElement("a");
             artistA.setAttribute("class", "pointer underline black-text");
+            artistA.setAttribute("hover-on-touch", "");
             artistA.innerText = artist[artistNumber]["name"];
             infoDiv.appendChild(artistA);
 
@@ -99,6 +101,7 @@ function displaySearchPreview(searchSongList, rootID) {
 
         let albumA = document.createElement("a");
         albumA.setAttribute("class", "pointer underline black-text");
+        albumA.setAttribute("hover-on-touch", "");
         albumA.innerText = album["name"];
         infoDiv.appendChild(albumA);
 
@@ -112,13 +115,6 @@ function displaySearchPreview(searchSongList, rootID) {
         addPlaylistIcon.onclick = addToAddPlaylist(searchSongList[songNumber]);
         addPlaylistIcon.innerText = "playlist_add";
         addPlaylistDiv.appendChild(addPlaylistIcon);
-    }
-
-    function addOnclick(onclick_url) {
-        let url = onclick_url;
-        return function () {
-            window.open(url)
-        }
     }
 }
 
@@ -174,6 +170,7 @@ function displayAddSongPlaylist(songObject, rootID) {
 
     let songDiv = document.createElement('div');
     songDiv.setAttribute("class", "row flex-v-center song rounded add-song-list");
+    songDiv.setAttribute("hover-on-touch", "");
     root.appendChild(songDiv);
 
     let imageDiv = document.createElement("div");
@@ -191,6 +188,7 @@ function displayAddSongPlaylist(songObject, rootID) {
 
     let titleDiv = document.createElement("div");
     titleDiv.setAttribute("class", "s12 black-text pointer underline");
+    titleDiv.setAttribute("hover-on-touch", "");
     titleDiv.innerText = songObject.title;
     titleDiv.onclick = addOnclick(songObject.url);
     infoDiv.appendChild(titleDiv);
@@ -200,6 +198,7 @@ function displayAddSongPlaylist(songObject, rootID) {
 
         let interpretA = document.createElement("a");
         interpretA.setAttribute("class", "black-text pointer underline");
+        interpretA.setAttribute("hover-on-touch", "");
         interpretA.innerText = artist["name"];
         interpretA.onclick = addOnclick(artist["url"]);
         infoDiv.appendChild(interpretA);
@@ -219,6 +218,7 @@ function displayAddSongPlaylist(songObject, rootID) {
 
     let albumA = document.createElement("a");
     albumA.setAttribute("class", "black-text pointer underline");
+    albumA.setAttribute("hover-on-touch", "");
     albumA.innerText = songObject.album["name"];
     albumA.onclick = addOnclick(songObject.album["url"]);
     infoDiv.appendChild(albumA);
@@ -233,12 +233,7 @@ function displayAddSongPlaylist(songObject, rootID) {
     icon.onclick = deleteAddSong(songObject);
     iconDiv.appendChild(icon);
 
-    function addOnclick(onclick_url) {
-        let url = onclick_url;
-        return function () {
-            window.open(url)
-        };
-    }
+    hoverOnTouch.reinitialise();
 }
 
 function deleteAddSong(song) {

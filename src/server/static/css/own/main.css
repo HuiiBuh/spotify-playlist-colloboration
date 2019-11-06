@@ -3,10 +3,6 @@
     margin-right: 5px;
 }
 
-.footer-links > li > a:hover, .footer-links > li > a:active, .footer-links > li > a:focus {
-    text-decoration: underline;
-    transition: text-decoration .1s ease-in;
-}
 
 .footer-links > li > a {
     text-decoration: underline solid transparent;
@@ -130,13 +126,12 @@ i.very-large {
     height: 100%;
 }
 
-.song:hover, .song:active, .song:focus {
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-    transition: box-shadow 0.2s ease-in-out;
-}
-
 tr:last-child {
     border-bottom: none;
+}
+
+a {
+    color: black;
 }
 
 .dropdown-content li {
@@ -152,10 +147,6 @@ li {
     transition: box-shadow 0.2s ease-in-out;
 }
 
-.select-playlist:hover, .select-playlist:active, .select-playlist:focus {
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-    transition: box-shadow 0.2s ease-in-out;
-}
 
 .background-image {
     position: absolute;
@@ -278,10 +269,6 @@ img {
     position: relative;
     width: 100%;
     padding-top: 100%;
-}
-
-.underline:hover {
-    text-decoration: underline;
 }
 
 .pointer {

@@ -29,21 +29,21 @@
         {% for id, playlist in playlist_list_json.items() %}
 
             <!-- Playlist information -->
-            <div class="row flex-v-center select-playlist">
+            <div class="row flex-v-center select-playlist" hover-on-touch>
                 <div class="col s10">
                     <table>
                         <tbody>
                         <tr>
                             <td class="bold">Title</td>
                             <td class="bold">
-                                <a class="pointer underline black-text"
+                                <a class="pointer underline  black-text" hover-on-touch
                                    onclick="window.open('{{ playlist["url"] }}')">{{ playlist["name"] }}</a>
                             </td>
                         </tr>
                         <tr>
                             <td>Author</td>
                             <td>
-                                <a class="pointer underline black-text"
+                                <a class="pointer underline  black-text" hover-on-touch
                                    onclick="window.open('{{ playlist["author"]["url"] }}')">
                                     {{ playlist["author"]["name"] }}
                                 </a></td>

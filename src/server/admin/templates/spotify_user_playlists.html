@@ -31,11 +31,11 @@
                     {% for playlist_id, playlist in playlist_list_json.items() %}
                         <tr class="playlist">
                             <td>
-                                <a class="black-text pointer underline"
+                                <a class="black-text pointer underline" hover-on-touch
                                    onclick="window.open('{{ playlist.url }}')"> {{ playlist["name"] }}</a>
                             </td>
                             <td>
-                                <a class="black-text pointer underline"
+                                <a class="black-text pointer underline" hover-on-touch
                                    onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
                             </td>
                             <td>{{ playlist.track_count }}</td>
@@ -79,5 +79,4 @@
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/add.js"></script>
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/remove.js"></script>
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/main.js"></script>
-    <script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
 {% endblock %}

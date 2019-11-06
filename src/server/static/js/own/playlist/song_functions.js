@@ -51,7 +51,7 @@ function createSongs(json, type, appendList = []) {
 /**
  * Display the songs in the main playlist
  * @param rootID The root the songs get appended to
- * @param mode Append or create the playlist
+ * @param songList A list of songs
  */
 function displayPlaylistSongs(rootID, songList) {
     let root = document.getElementById(rootID);
@@ -65,6 +65,7 @@ function displayPlaylistSongs(rootID, songList) {
         let song = document.createElement("div");
         song.id = id;
         song.setAttribute("class", "row flex-v-center song rounded add-song-list");
+        song.setAttribute("hover-on-touch", "");
         root.appendChild(song);
 
         let imageDiv = document.createElement("div");
@@ -86,6 +87,7 @@ function displayPlaylistSongs(rootID, songList) {
 
         let titleA = document.createElement("a");
         titleA.setAttribute("class", " pointer underline black-text");
+        titleA.setAttribute("hover-on-touch", "");
         titleA.innerText = title;
         titleA.onclick = addOnclick(url);
         titleDiv.appendChild(titleA);
@@ -97,6 +99,7 @@ function displayPlaylistSongs(rootID, songList) {
             }
             let interpretA = document.createElement("a");
             interpretA.setAttribute("class", "black-text pointer underline");
+            interpretA.setAttribute("hover-on-touch", "");
             interpretA.innerText = singleArtistObject["name"];
 
             interpretA.onclick = addOnclick(singleArtistObject["url"]);
@@ -119,6 +122,7 @@ function displayPlaylistSongs(rootID, songList) {
 
         let albumA = document.createElement("a");
         albumA.setAttribute("class", "black-text pointer underline");
+        albumA.setAttribute("hover-on-touch", "");
         albumA.innerText = album["name"];
         albumA.onclick = addOnclick(album["url"]);
 
@@ -131,20 +135,10 @@ function displayPlaylistSongs(rootID, songList) {
         let durationP = document.createElement("p");
         durationP.innerText = durationHumanReadable;
         durationDiv.appendChild(durationP);
-
-        /**
-         * Add return a onclick function with an independent url
-         * @param onclick_url The url that is supposed to be added to the url
-         * @returns {Function} The function that will be executed onclick
-         */
-        function addOnclick(onclick_url) {
-            let url = onclick_url;
-            return function () {
-                window.open(url)
-            }
-        }
     }
 
     root.style.display = "block";
-    document.getElementById("song-placeholder").style.display = "none"
+    document.getElementById("song-placeholder").style.display = "none";
+
+    hoverOnTouch.reinitialise();
 }

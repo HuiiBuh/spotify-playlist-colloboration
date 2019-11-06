@@ -12,7 +12,8 @@
           media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="/static/css/own/main.css"
           media="screen,projection"/>
-
+    <link type="text/css" rel="stylesheet" href="/static/css/own/hover.css"
+          media="screen,projection"/>
     {% block css %}{% endblock %}
 
     {% block javascript_variables %}{% endblock %}
@@ -88,14 +89,15 @@
                     <ul class="footer-links">
                         <li class="valign-wrapper">
                             <img class="footer-image" alt="" src="../static/icons/GitHub-120px-dark.png">
-                            <a class="grey-text text-lighten-3"
+                            <a class="grey-text text-lighten-3" hover-on-touch
                                href="https://github.com/HuiiBuh/spotify-playlist-colloboration">
                                 Fork on Github
                             </a>
                         </li>
                         <li class="valign-wrapper">
                             <img class="footer-image" alt="" src="../static/icons/GitHub-120px-dark.png">
-                            <a class="grey-text text-lighten-3" href="https://github.com/HuiiBuh/">HuiiBuh</a>
+                            <a class="grey-text text-lighten-3" hover-on-touch
+                               href="https://github.com/HuiiBuh/">HuiiBuh</a>
                         </li>
                     </ul>
                 </div>
@@ -113,19 +115,17 @@
         </div>
     </footer>
 
-    <script type="text/javascript">
-        window.onload = function () {
-            document.getElementById("copyright").innerText = "© " + new Date().getFullYear() + " HuiiBuh"
-        };
-    </script>
-
 {% endblock %}
 
 
 <script type="text/javascript" src="/static/js/libraries/materialize.min.js"></script>
-<script type="text/javascript">
-    M.AutoInit();
-</script>
+<script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
+<script type="text/javascript" src="/static/js/own/hoverontouch.js"></script>
+<script type="text/javascript" src="/static/js/own/init.js"></script>
+
+
+
+
 {% block javascript %}
 
 {% endblock %}

@@ -33,13 +33,13 @@
                 {% for playlist in playlist_list %}
                     <tr class="playlist" id="{{ playlist.id }}">
                         <td>
-                            <a class="pointer underline black-text playlist-name"
+                            <a class="pointer underline black-text playlist-name" hover-on-touch
                                onclick="window.open('{{ playlist.external_urls.spotify }}')">{{ playlist.name }}</a>
                         </td>
                         <td>{{ playlist.id }}</td>
                         <td>{{ playlist.tracks.total }}</td>
                         <td>
-                            <a class="pointer underline black-text"
+                            <a class="pointer underline black-text" hover-on-touch
                                onclick="window.open('{{ playlist.owner.external_urls.spotify }}')">{{ playlist.owner.display_name }}</a>
                         </td>
                         <td><i class="material-icons pointer primary-text-color">delete</i></td>
@@ -95,6 +95,4 @@
     <script type="text/javascript" src="/static/js/own/edit_user/add.js"></script>
     <script type="text/javascript" src="/static/js/own/edit_user/remove.js"></script>
     <script type="text/javascript" src="/static/js/own/edit_user/main.js"></script>
-    <script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
-
 {% endblock %}

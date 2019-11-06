@@ -63,10 +63,4 @@ function displayNewPlaylist(json) {
     deleteIcon.id = json["id"];
     deleteIcon.onclick = deletePlaylist(tr, json["id"]);
     deleteTd.appendChild(deleteIcon);
-
-    function addOnclick(url) {
-        return function () {
-            window.open(url)
-        };
-    }
 }

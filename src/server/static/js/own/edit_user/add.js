@@ -108,6 +108,7 @@ function displayPlaylists(playlistJSON) {
             deleteIcon.onclick = removePlaylistFromUser(playlistTr, playlist["id"], playlist["name"]);
             deleteTd.appendChild(deleteIcon);
         }
+        sort.refresh();
     }
 }
 

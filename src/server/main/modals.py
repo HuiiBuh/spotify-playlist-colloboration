@@ -21,6 +21,8 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.Text, nullable=False)
     playlists = db.relationship("Playlist", secondary=user_playlists, backref=db.backref("users", lazy="joined"))
 
+    __mapper_args__ = {"order_by": username}
+
     def set_password(self, password: str):
         """
         Hash the password and then set it as the user password
@@ -65,6 +67,8 @@ class SpotifyUser(db.Model):
     activated_at = db.Column(db.BigInteger)
     playlists = db.relationship('Playlist', backref='SpotifyUser', lazy="joined", cascade="all, delete, delete-orphan",
                                 passive_deletes=True)
+    
+    __mapper_args__ = {"order_by": id}
 
 
 class Playlist(db.Model):
@@ -74,3 +78,5 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
     spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id, ondelete="CASCADE"))
+
+    __mapper_args__ = {"order_by": id}

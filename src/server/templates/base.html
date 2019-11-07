@@ -24,6 +24,13 @@
           media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="/static/css/own/responsive_table.css"
           media="screen,projection"/>
+
+    {% if current_user.is_admin %}
+        <link type="text/css" rel="stylesheet" href="/static/css/libraries/tablesort.css"
+              media="screen,projection"/>
+    {% endif %}
+
+
     {% block css %}{% endblock %}
 
     {% block javascript_variables %}{% endblock %}
@@ -127,14 +134,21 @@
 
 {% endblock %}
 
-
 <script type="text/javascript" src="/static/js/libraries/materialize.min.js"></script>
 <script type="text/javascript" src="/static/js/own/useful_functions.js"></script>
 <script type="text/javascript" src="/static/js/own/hoverontouch.js"></script>
 <script type="text/javascript" src="/static/js/own/init.js"></script>
 
+{% if current_user.is_admin %}
+    <script type="text/javascript" src="/static/js/libraries/tablesort.min.js"></script>
+    <script type="text/javascript" src="/static/js/libraries/tablesort.number.min.js "></script>
+    <script type="text/javascript">
+        let sort = new Tablesort(document.getElementsByTagName("table")[0]);
+    </script>
+{% endif %}
 
 {% block javascript %}
+
 
 {% endblock %}
 

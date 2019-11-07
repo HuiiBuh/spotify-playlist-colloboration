@@ -13,7 +13,7 @@ class Song {
      * @param cover The cover url of the song
      * @param title The title of the song
      */
-    constructor(id, album, url, artist, duration, cover, title) {
+    constructor(id, album, url, artist, duration, cover, title, albumArtist) {
         this._id = id;
         this._album = album;
         this._url = url;
@@ -21,6 +21,7 @@ class Song {
         this._duration = duration;
         this._cover = cover;
         this._title = title;
+        this._albumArtist = albumArtist;
         this._durationHumanReadable = "";
         this.durationHumanReadable = duration;
     }
@@ -44,6 +45,10 @@ class Song {
     set duration(value) {
         this._duration = value;
         this.durationHumanReadable(value)
+    }
+
+    set albumArtist(value) {
+        this._albumArtist = value
     }
 
     set durationHumanReadable(value) {
@@ -111,6 +116,10 @@ class Song {
 
     get title() {
         return this._title;
+    }
+
+    get albumArtist() {
+        return this._albumArtist;
     }
 
     get searchString() {

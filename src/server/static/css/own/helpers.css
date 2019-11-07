@@ -28,6 +28,21 @@
     display: inline-block;
 }
 
+.no-wrap {
+    white-space: nowrap
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.flex {
+    display: flex;
+}
+
+.no-shrink {
+    flex-shrink: 0;
+}
 
 /*Make a div a rectangle*/
 .rectangle {
@@ -77,6 +92,10 @@
 /*Margin*********************************/
 .no-margin-left {
     margin-left: 0 !important;
+}
+
+.no-margin-right {
+    margin-right: 0 !important;
 }
 
 .margin-auto {

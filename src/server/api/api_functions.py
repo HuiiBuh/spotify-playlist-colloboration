@@ -1,4 +1,5 @@
 from flask import abort
+
 from server import spotify, db, SpotifyAuthorisationToken
 from server.main.modals import SpotifyUser, Playlist, User
 from server.spotify.spotify import SpotifyError
@@ -199,8 +200,10 @@ def modify_track_json(track_list: dict, return_track_list=None) -> dict:
         return_track_list[track["id"]]["album"] = {}
         return_track_list[track["id"]]["album"]["name"] = track["album"]["name"]
         return_track_list[track["id"]]["album"]["url"] = track["album"]["external_urls"]["spotify"]
-        return_track_list[track["id"]]["album"]["artist"] = track["album"]["artists"][0]["name"]
-        return_track_list[track["id"]]["album"]["artist_url"] = track["album"]["artists"][0]["external_urls"]["spotify"]
+        return_track_list[track["id"]]["album"]["artist"] = {}
+        return_track_list[track["id"]]["album"]["artist"]["name"] = track["album"]["artists"][0]["name"]
+        return_track_list[track["id"]]["album"]["artist"]["url"] = track["album"]["artists"][0]["external_urls"][
+            "spotify"]
 
         return_track_list[track["id"]]["cover"] = track["album"]["images"][1]["url"]
 

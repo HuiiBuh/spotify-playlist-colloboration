@@ -26,3 +26,4 @@ sudo /etc/init.d/nginx start
 + [yrshaikh](https://jsfiddle.net/yrshaikh/241kvhjo/?utm_source=website&utm_medium=embed&utm_campaign=241kvhjo) for the image loading animation
 + [icons8](https://icons8.com/) for the favicon
 + [florantara](https://codepen.io/florantara/pen/dROvdb) for the responsive table
++ [Tristen Brown](https://github.com/tristen/tablesort/) for the sortable table

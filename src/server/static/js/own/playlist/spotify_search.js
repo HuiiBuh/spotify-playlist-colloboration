@@ -25,7 +25,8 @@ function songSearch(evt) {
 
             if (this.readyState === 4 && this.status === 200) {
                 let songList = jsonToSongList(JSON.parse(this.responseText), "search");
-                displaySearchPreview(songList, "search-preview");
+                // displaySearchPreview(songList, "search-preview");
+                displayPlaylistSongs("search-preview", songList, "spotify-search")
             } else if (this.readyState === 4 && this.status !== 200) {
                 M.toast({html: "No songs could be retrieved from spotify", classes: "bg-warning"})
             }
@@ -36,88 +37,6 @@ function songSearch(evt) {
         xhttp.send();
 
     }, 200);
-}
-
-/**
- * Display the search results
- * @param searchSongList The song onjects
- * @param rootID The id the songs are supposed to be added to
- */
-function displaySearchPreview(searchSongList, rootID) {
-    let root = document.getElementById(rootID);
-    root.innerText = "";
-
-    //Foreach song in the json
-    searchSongList.forEach(song => {
-        let {cover, title, url, artist: artistList, album, id} = song;
-
-        let songLi = document.createElement("li");
-        songLi.setAttribute("class", "search-song flex-v-center small-padding-bottom small-padding-top");
-        root.appendChild(songLi);
-
-        let coverDiv = document.createElement("div");
-        coverDiv.setAttribute("class", "col xs3 s2 l1 flex-v-center");
-        songLi.appendChild(coverDiv);
-
-        let coverImage = document.createElement("img");
-        coverImage.setAttribute("class", "search-song-image no-padding");
-        coverImage.src = cover;
-        coverDiv.appendChild(coverImage);
-
-        let infoDiv = document.createElement("div");
-        infoDiv.setAttribute("class", "col xs8 s9 m9 l10");
-        songLi.appendChild(infoDiv);
-
-        let titleDiv = document.createElement("div");
-        titleDiv.setAttribute("class", "s12");
-        infoDiv.appendChild(titleDiv);
-
-        let titleA = document.createElement("a");
-        titleA.setAttribute("class", "pointer underline black-text");
-        titleA.setAttribute("hover-on-touch", "");
-        titleA.onclick = addOnclick(url);
-        titleA.innerText = title;
-        titleDiv.appendChild(titleA);
-
-        artistList.forEach((artist, index) => {
-            let artistA = document.createElement("a");
-            artistA.setAttribute("class", "pointer underline black-text");
-            artistA.setAttribute("hover-on-touch", "");
-            artistA.onclick = addOnclick(artist["url"]);
-            artistA.innerText = artist["name"];
-            infoDiv.appendChild(artistA);
-
-            if (artistList.length > index + 1) {
-                let artistSeparationA = document.createElement("a");
-                artistSeparationA.setAttribute("class", "black-text small-padding-right");
-                artistSeparationA.innerText = ",";
-                infoDiv.appendChild(artistSeparationA)
-            }
-        });
-
-        let dividerA = document.createElement("a");
-        dividerA.setAttribute("class", "black-text small-padding-right small-padding-left");
-        dividerA.innerHTML = "&middot;";
-        infoDiv.appendChild(dividerA);
-
-        let albumA = document.createElement("a");
-        albumA.setAttribute("class", "pointer underline black-text");
-        albumA.setAttribute("hover-on-touch", "");
-        albumA.onclick = addOnclick(album["url"]);
-        albumA.innerText = album["name"];
-        infoDiv.appendChild(albumA);
-
-        let addPlaylistDiv = document.createElement("div");
-        addPlaylistDiv.setAttribute("class", "col xs1 s2 m2 l1 flex-end  flex-v-center");
-        songLi.appendChild(addPlaylistDiv);
-
-        let addPlaylistIcon = document.createElement("i");
-        addPlaylistIcon.setAttribute("class", "material-icons pointer");
-        addPlaylistIcon.setAttribute("song-id", id);
-        addPlaylistIcon.onclick = addToAddPlaylist(song);
-        addPlaylistIcon.innerText = "playlist_add";
-        addPlaylistDiv.appendChild(addPlaylistIcon);
-    });
 }
 
 /**
@@ -149,86 +68,13 @@ function addToAddPlaylist(song) {
         if (add) {
             evt.currentTarget.classList.add("success");
             addPlaylist.addSong(song);
-            displayAddSongPlaylist(song, "add-song-list");
+            displayPlaylistSongs("add-song-list", [song], "add");
         } else {
             M.toast({html: "The Song already exists in the playlist", classes: "bg-warning"});
         }
     }
 }
 
-/**
- * Displays the songs that are supposed to be added
- * @param songObject The song object that is added
- * @param rootID The root ID the song is added to
- */
-function displayAddSongPlaylist(songObject, rootID) {
-    let root = document.getElementById(rootID);
-
-    let songDiv = document.createElement('div');
-    songDiv.setAttribute("class", "row flex-v-center song rounded add-song-list");
-    songDiv.setAttribute("hover-on-touch", "");
-    root.appendChild(songDiv);
-
-    let imageDiv = document.createElement("div");
-    imageDiv.setAttribute("class", "col xs3 s2 l1 flex-v-center");
-    songDiv.appendChild(imageDiv);
-
-    let image = document.createElement("img");
-    image.setAttribute("class", "song-image no-padding");
-    image.src = songObject.cover;
-    imageDiv.appendChild(image);
-
-    let infoDiv = document.createElement("div");
-    infoDiv.setAttribute("class", "col xs8 s9 l9");
-    songDiv.appendChild(infoDiv);
-
-    let titleDiv = document.createElement("div");
-    titleDiv.setAttribute("class", "s12 black-text pointer underline");
-    titleDiv.setAttribute("hover-on-touch", "");
-    titleDiv.innerText = songObject.title;
-    titleDiv.onclick = addOnclick(songObject.url);
-    infoDiv.appendChild(titleDiv);
-
-    songObject.artist.forEach((artist, index) => {
-        let interpretA = document.createElement("a");
-        interpretA.setAttribute("class", "black-text pointer underline");
-        interpretA.setAttribute("hover-on-touch", "");
-        interpretA.innerText = artist["name"];
-        interpretA.onclick = addOnclick(artist["url"]);
-        infoDiv.appendChild(interpretA);
-
-        if (songObject.artist.length > index + 1) {
-            let artistSeparationA = document.createElement("a");
-            artistSeparationA.setAttribute("class", "black-text small-padding-right");
-            artistSeparationA.innerText = ",";
-            infoDiv.appendChild(artistSeparationA)
-        }
-    });
-
-    let dividerA = document.createElement("a");
-    dividerA.setAttribute("class", "black-text small-padding-right small-padding-left");
-    dividerA.innerHTML = "&middot;";
-    infoDiv.appendChild(dividerA);
-
-    let albumA = document.createElement("a");
-    albumA.setAttribute("class", "black-text pointer underline");
-    albumA.setAttribute("hover-on-touch", "");
-    albumA.innerText = songObject.album["name"];
-    albumA.onclick = addOnclick(songObject.album["url"]);
-    infoDiv.appendChild(albumA);
-
-    let iconDiv = document.createElement("div");
-    iconDiv.setAttribute("class", "col xs1 s2 flex-v-center flex-end");
-    songDiv.appendChild(iconDiv);
-
-    let icon = document.createElement("i");
-    icon.setAttribute("class", "material-icons pointer primary-text-color");
-    icon.innerText = "delete";
-    icon.onclick = deleteAddSong(songObject);
-    iconDiv.appendChild(icon);
-
-    hoverOnTouch.reinitialise();
-}
 
 function deleteAddSong(song) {
     return function (evt) {

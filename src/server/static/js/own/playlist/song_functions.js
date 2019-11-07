@@ -39,7 +39,9 @@ function jsonToSongList(json, type, appendList = []) {
             songJSON["artists"],
             songJSON["duration"],
             songJSON["cover"],
-            songJSON["title"]);
+            songJSON["title"],
+            songJSON["album"]["artist"]
+        );
 
         if (type === "main")
             mainPlaylist.addSong(song);
@@ -65,14 +67,22 @@ function displayPlaylistSongs(rootID, songList, type) {
     songList.forEach(song => {
         let {cover, title, url, artist: artistList, album, durationHumanReadable, id} = song;
 
-        let songDiv = document.createElement("div");
-        songDiv.id = id;
-        songDiv.setAttribute("class", "row flex-v-center song rounded add-song-list");
-        songDiv.setAttribute("hover-on-touch", "");
-        root.appendChild(songDiv);
 
+        if (type === "spotify-search") {
+            var songDiv = document.createElement("li");
+            songDiv.id = id;
+            songDiv.setAttribute("class", "row flex-v-center song rounded add-song-list no-margin-left no-margin-right");
+            songDiv.setAttribute("hover-on-touch", "");
+            root.appendChild(songDiv);
+        } else {
+            var songDiv = document.createElement("div");
+            songDiv.id = id;
+            songDiv.setAttribute("class", "row flex-v-center song rounded add-song-list");
+            songDiv.setAttribute("hover-on-touch", "");
+            root.appendChild(songDiv);
+        }
         let imageDiv = document.createElement("div");
-        imageDiv.setAttribute("class", "col xs3 s2 l1 center flex-v-center song-cover-div");
+        imageDiv.setAttribute("class", "col s2 m1 center flex-v-center song-cover-div");
         songDiv.appendChild(imageDiv);
 
         let image = document.createElement("img");
@@ -81,59 +91,94 @@ function displayPlaylistSongs(rootID, songList, type) {
         imageDiv.appendChild(image);
 
         let informationDiv = document.createElement("div");
-        informationDiv.setAttribute("class", "col xs8 s9 l10");
+        informationDiv.setAttribute("class", "col s8 m10 to-long");
         songDiv.appendChild(informationDiv);
 
         let titleDiv = document.createElement("div");
-        titleDiv.setAttribute("class", "s12");
+        titleDiv.setAttribute("class", "s12 to-long");
         informationDiv.appendChild(titleDiv);
 
         let titleA = document.createElement("a");
-        titleA.setAttribute("class", " pointer underline black-text");
+        titleA.setAttribute("class", " pointer underline black-text no-wrap");
         titleA.setAttribute("hover-on-touch", "");
         titleA.innerText = title;
         titleA.onclick = addOnclick(url);
         titleDiv.appendChild(titleA);
 
+        let restDiv = document.createElement("div");
+        restDiv.setAttribute("class", "s12 to-long flex");
+        informationDiv.appendChild(restDiv);
+
         artistList.forEach((artist, index) => {
             let interpretA = document.createElement("a");
-            interpretA.setAttribute("class", "black-text pointer underline");
+            interpretA.setAttribute("class", "black-text pointer underline artist no-wrap to-long no-shrink");
             interpretA.setAttribute("hover-on-touch", "");
             interpretA.innerText = artist["name"];
 
             interpretA.onclick = addOnclick(artist["url"]);
 
-            informationDiv.appendChild(interpretA);
+            restDiv.appendChild(interpretA);
 
             // Append a ", " between the artists if it is not the last artist
             if (artistList.length > index + 1) {
                 let artistSeparationA = document.createElement("a");
-                artistSeparationA.setAttribute("class", "black-text small-padding-right");
+                artistSeparationA.setAttribute("class", "black-text small-padding-right artist-separator");
                 artistSeparationA.innerText = ",";
-                informationDiv.appendChild(artistSeparationA)
+                restDiv.appendChild(artistSeparationA)
             }
         });
+
+        let albumArtistA = document.createElement("a");
+        albumArtistA.setAttribute("class", "black-text pointer underline album-artist no-wrap to-long no-shrink");
+        albumArtistA.setAttribute("hover-on-touch", "");
+        albumArtistA.innerText = song.albumArtist["name"];
+        albumArtistA.onclick = addOnclick(song.albumArtist["url"]);
+        restDiv.appendChild(albumArtistA);
+
 
         let separationA = document.createElement("a");
         separationA.setAttribute("class", "black-text small-padding-right small-padding-left");
         separationA.innerHTML = "&bull;";
-        informationDiv.appendChild(separationA);
+        restDiv.appendChild(separationA);
 
         let albumA = document.createElement("a");
-        albumA.setAttribute("class", "black-text pointer underline");
+        albumA.setAttribute("class", "black-text pointer underline no-wrap to-long");
         albumA.setAttribute("hover-on-touch", "");
         albumA.innerText = album["name"];
         albumA.onclick = addOnclick(album["url"]);
 
-        informationDiv.appendChild(albumA);
+        restDiv.appendChild(albumA);
 
-        let durationDiv = document.createElement("div");
-        durationDiv.setAttribute("class", "col xs1 s1");
-        songDiv.appendChild(durationDiv);
+        if (type === "main" || type === "search") {
+            let durationDiv = document.createElement("div");
+            durationDiv.setAttribute("class", "col s2 m1");
+            songDiv.appendChild(durationDiv);
 
-        let durationP = document.createElement("p");
-        durationP.innerText = durationHumanReadable;
-        durationDiv.appendChild(durationP);
+            let durationP = document.createElement("p");
+            durationP.innerText = durationHumanReadable;
+            durationDiv.appendChild(durationP);
+        } else if (type === "add") {
+            let iconDiv = document.createElement("div");
+            iconDiv.setAttribute("class", "col s2 m1 flex-v-center flex-end");
+            songDiv.appendChild(iconDiv);
+
+            let icon = document.createElement("i");
+            icon.setAttribute("class", "material-icons pointer primary-text-color");
+            icon.innerText = "delete";
+            icon.onclick = deleteAddSong(song);
+            iconDiv.appendChild(icon);
+        } else if (type === "spotify-search") {
+            let addPlaylistDiv = document.createElement("div");
+            addPlaylistDiv.setAttribute("class", "col s2 m1 flex-end  flex-v-center");
+            songDiv.appendChild(addPlaylistDiv);
+
+            let addPlaylistIcon = document.createElement("i");
+            addPlaylistIcon.setAttribute("class", "material-icons pointer");
+            addPlaylistIcon.setAttribute("song-id", id);
+            addPlaylistIcon.onclick = addToAddPlaylist(song);
+            addPlaylistIcon.innerText = "playlist_add";
+            addPlaylistDiv.appendChild(addPlaylistIcon);
+        }
     });
 
     if (type === "main") {

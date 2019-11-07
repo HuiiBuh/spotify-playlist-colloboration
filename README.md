@@ -11,14 +11,7 @@ FLASK_APP=main.py
 
 ## Installation
 
-+ Install and configure Nginx
-
-```bash
-sudo apt-get install nginx
-# Allow some kind of traffic
-sudo ufw allow 'Nginx HTTPS'
-sudo /etc/init.d/nginx start
-```
+See [Install with docker](/docker)
 
 
 ## Credits

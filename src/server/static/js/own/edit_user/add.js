@@ -1,30 +1,39 @@
+/**
+ * Add the playlist to the user
+ */
 function addPlaylistsToUser() {
+    //Get the select of materialize
     let select = M.FormSelect.getInstance(document.getElementById("playlist-select"));
+    //Get the values of the select
     let selectValues = select.getSelectedValues();
 
+    //Filter the values
     let valueList = [];
     for (let valueNumber in selectValues) {
-        if (selectValues.hasOwnProperty(valueNumber)) {
-            let value = selectValues[valueNumber];
+        if (!selectValues.hasOwnProperty(valueNumber)) continue;
 
-            if (value !== "") {
-                valueList.push(value)
-            }
+        //Check if the value is != ""
+        let value = selectValues[valueNumber];
+        if (value !== "") {
+            valueList.push(value)
         }
     }
 
+    //CHeck if a playlist was selected
     if (valueList === []) {
         M.toast({html: "You did not select a playlist", colors: "bg-warning"});
         return
     }
 
+    //Create the data of the request
+    let requestData = {};
+    requestData["playlists"] = valueList;
 
-    let sendValue = {};
-    sendValue["playlists"] = valueList;
-
+    //Get the user id from the url
     let url_string = window.location.href;
     let url = new URL(url_string);
-    sendValue["user-id"] = url.searchParams.get("user-id");
+    requestData["user-id"] = url.searchParams.get("user-id");
+
 
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", addUserToPlaylistAPI, true);
@@ -33,23 +42,28 @@ function addPlaylistsToUser() {
     xhttp.onreadystatechange = function () {
         if (this.status === 200 && this.readyState === 4) {
             M.toast({html: "Success", classes: "bg-success"});
-            updatePlaylists(JSON.parse(this.responseText));
+            displayPlaylists(JSON.parse(this.responseText));
             updateSelect(JSON.parse(this.responseText))
         } else if (this.readyState === 4) {
             showErrorMessage(this)
         }
     };
-    xhttp.send(JSON.stringify(sendValue))
+    xhttp.send(JSON.stringify(requestData))
 }
 
-
-function updatePlaylists(playlistJSON) {
+/**
+ * Update the playlists
+ * @param playlistJSON The json of the playlist yo added
+ */
+function displayPlaylists(playlistJSON) {
     let root = document.getElementsByTagName("tbody")[0];
 
+    //Remove the placeholder if there is one
     if (document.getElementById("no-playlists-placeholder") !== null) {
         document.getElementById("no-playlists-placeholder").remove();
     }
 
+    //For every playlist display it
     for (let playlistNumber in playlistJSON) {
         if (playlistJSON.hasOwnProperty(playlistNumber)) {
             let playlist = playlistJSON[playlistNumber];
@@ -97,22 +111,28 @@ function updatePlaylists(playlistJSON) {
     }
 }
 
-
+/**
+ * Remove the playlists that have been added to the user
+ * @param playlistJSON The json of the playlists that have been added
+ */
 function updateSelect(playlistJSON) {
     let select = document.getElementById("playlist-select");
 
+    //For every playlist
     for (let playlistNumber in playlistJSON) {
-        if (playlistJSON.hasOwnProperty(playlistNumber)) {
+        if (!playlistJSON.hasOwnProperty(playlistNumber)) continue;
 
-            let playlistID = playlistJSON[playlistNumber]["id"];
-            let option = select.querySelector('[value="' + playlistID + '"]');
-            option.remove()
-        }
+        //Try to get the playlist in the option by the value and remove it
+        let playlistID = playlistJSON[playlistNumber]["id"];
+        let option = select.querySelector('[value="' + playlistID + '"]');
+        option.remove()
     }
 
+    //Check if the user has every playlist available
     if (select.childElementCount === 1) {
         select.getElementsByTagName("option")[0].innerText = "No Playlists available";
     }
 
+    //Reinit the select
     M.FormSelect.init(select);
 }

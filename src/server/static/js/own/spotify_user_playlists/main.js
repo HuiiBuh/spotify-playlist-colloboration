@@ -1,6 +1,5 @@
 window.onload = function () {
     addEventHandler()
-
 };
 
 function addEventHandler() {
@@ -8,11 +7,12 @@ function addEventHandler() {
 
     let playlistList = document.getElementsByClassName("playlist");
     for (let playlistNumber in playlistList) {
-        if (playlistList.hasOwnProperty(playlistNumber)) {
-            let playlist = playlistList[playlistNumber];
-            let deleteButton = playlist.getElementsByClassName("material-icons")[0];
-            deleteButton.onclick = deletePlaylist(playlist, deleteButton.id);
-        }
+
+        if (!playlistList.hasOwnProperty(playlistNumber)) continue;
+
+        let playlist = playlistList[playlistNumber];
+        let deleteButton = playlist.getElementsByClassName("material-icons")[0];
+        deleteButton.onclick = deletePlaylist(playlist, deleteButton.id);
     }
 }
 

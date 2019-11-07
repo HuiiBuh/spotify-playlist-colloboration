@@ -1,20 +1,3 @@
-let playlistPlaceholder = function () {
-    let tr = document.createElement("tr");
-    tr.id = "user-placeholder";
-
-    tr.appendChild(document.createElement("td"));
-    tr.appendChild(document.createElement("td"));
-
-    let td = document.createElement("td");
-    td.innerText = "No Users";
-    tr.appendChild(td);
-
-    tr.appendChild(document.createElement("td"));
-    tr.appendChild(document.createElement("td"));
-    tr.appendChild(document.createElement("td"));
-    return tr;
-}();
-
 window.onload = function () {
     addEventHandler()
 };
@@ -32,6 +15,33 @@ function addEventHandler() {
     }
 }
 
+/**
+ * The no user placeholder
+ * @type {HTMLTableRowElement}
+ */
+let playlistPlaceholder = function () {
+    let tr = document.createElement("tr");
+    tr.id = "user-placeholder";
+
+    tr.appendChild(document.createElement("td"));
+    tr.appendChild(document.createElement("td"));
+
+    let td = document.createElement("td");
+    td.innerText = "No Users";
+    tr.appendChild(td);
+
+    tr.appendChild(document.createElement("td"));
+    tr.appendChild(document.createElement("td"));
+    tr.appendChild(document.createElement("td"));
+    return tr;
+}();
+
+/**
+ * Delete a spotify user
+ * @param userNode The table row of the user
+ * @param userID The user id
+ * @returns {Function} The function that will be executed onclick
+ */
 function deleteSpotifyUser(userNode, userID) {
     return function () {
         let xhttp = new XMLHttpRequest();
@@ -52,11 +62,13 @@ function deleteSpotifyUser(userNode, userID) {
     }
 }
 
+/**
+ * Check if the table is empty and append the placeholder if this is the case
+ */
 function checkIfTableIsEmpty() {
     let body = document.getElementsByTagName("tbody")[0];
 
     if (body.innerText === "") {
         body.appendChild(playlistPlaceholder);
     }
-
 }

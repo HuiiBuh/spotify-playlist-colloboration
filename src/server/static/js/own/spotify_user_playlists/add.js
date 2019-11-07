@@ -1,14 +1,24 @@
+/**
+ * Add the playlist to the spotify user
+ * @returns {Promise<number>}
+ */
 async function addPlaylist() {
     let playlistID = document.getElementById("playlist-id").value;
 
+    //Check if the playlist is empty
     if (playlistID === "" || /^ *$/.test(playlistID)) {
-        return 0
+        M.toast({html: "You passed an empty playlist", classes: "bg-warning"})
     }
 
+    //Add the playlist to the user
     addPlaylistToUser(playlistID)
 }
 
 
+/**
+ * Add the playlist
+ * @param playlistID The id of the playlist that is supposed to be added
+ */
 function addPlaylistToUser(playlistID) {
     let xhttp = new XMLHttpRequest();
     let url = addPlaylistAPI + playlistID;
@@ -17,7 +27,6 @@ function addPlaylistToUser(playlistID) {
         if (this.readyState === 4 && this.status === 200) {
             M.toast({html: "Success", classes: "bg-success"});
             displayNewPlaylist(JSON.parse(this.responseText));
-            return
         } else if (this.readyState === 4) {
             showErrorMessage(this);
         }
@@ -27,8 +36,11 @@ function addPlaylistToUser(playlistID) {
     xhttp.send();
 }
 
+/**
+ * Display the successfully added playlist
+ * @param json The json of the new playlist
+ */
 function displayNewPlaylist(json) {
-
     if (document.getElementById("no-playlists-placeholder") !== null) {
         document.getElementById("no-playlists-placeholder").remove();
     }

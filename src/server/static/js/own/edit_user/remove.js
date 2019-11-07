@@ -1,3 +1,7 @@
+/**
+ * The playlist placeholder
+ * @type {HTMLTableRowElement}
+ */
 let playlistPlaceholder = function () {
     let tr = document.createElement("tr");
     tr.id = "no-playlists-placeholder";
@@ -15,8 +19,16 @@ let playlistPlaceholder = function () {
     return tr;
 }();
 
+/**
+ * Remove the Playlist from the User
+ * @param playlistNode The node of the playlist
+ * @param playlistID The id of the playlist
+ * @param name The name of the playlist
+ * @returns {Function} The function that will be executed onclick
+ */
 function removePlaylistFromUser(playlistNode, playlistID, name) {
     return function () {
+
         let xhttp = new XMLHttpRequest();
         xhttp.open("POST", removePlaylistFromUserAPI, true);
         xhttp.setRequestHeader("Content-Type", "application/json");
@@ -31,19 +43,23 @@ function removePlaylistFromUser(playlistNode, playlistID, name) {
             }
         };
 
+        //Get the user id from the url
         let url_string = window.location.href;
         let url = new URL(url_string);
         let userID = url.searchParams.get("user-id");
 
-        let sendValue = {};
-        sendValue["user-id"] = userID;
-        sendValue["playlist-id"] = playlistID;
+        let requestData = {};
+        requestData["user-id"] = userID;
+        requestData["playlist-id"] = playlistID;
 
 
-        xhttp.send(JSON.stringify(sendValue));
+        xhttp.send(JSON.stringify(requestData));
     }
 }
 
+/**
+ * Check if the table is empty and display the placeholders
+ */
 function checkIfTableIsEmpty() {
     let table = document.getElementsByTagName("tbody")[0];
 
@@ -52,15 +68,23 @@ function checkIfTableIsEmpty() {
     }
 }
 
+/**
+ * Add the Playlist that has been removed to the select
+ * @param playlistID The id of the playlist
+ * @param name The name of the playlist
+ */
 function addPlaylistToSelect(playlistID, name) {
     let select = document.getElementById("playlist-select");
 
+    //Update the placeholder of the select
     select.querySelectorAll("[disabled]")[0].innerText = "Select a Playlist";
 
-
+    //Create a new option and append it to the select
     let option = document.createElement("option");
     option.setAttribute("value", playlistID);
     option.innerText = name;
     select.appendChild(option);
+
+    //Reinit the select
     M.FormSelect.init(select);
 }

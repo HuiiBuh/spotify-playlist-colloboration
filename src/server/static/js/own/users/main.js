@@ -1,25 +1,32 @@
 window.onload = function () {
     addEventHandler()
-
 };
 
-
 function addEventHandler() {
-
+    //Get all users
     let userList = document.getElementsByClassName("user");
-    for (let userNumber in userList) {
-        if (userList.hasOwnProperty(userNumber)) {
-            let user = userList[userNumber];
-            let deleteIcon = user.getElementsByClassName("material-icons")[1];
+    //For every user
 
-            deleteIcon.onclick = deleteUser(user, deleteIcon.id)
-        }
+    for (let userID in userList) {
+        if (!userList.hasOwnProperty(userID)) continue;
+
+        // Add a event on the delete icon
+        let user = userList[userID];
+        let deleteIcon = user.getElementsByClassName("material-icons")[1];
+        deleteIcon.onclick = deleteUser(user, deleteIcon.id)
+
     }
-
 }
 
+/**
+ * Delete the user
+ * @param userNode The node of the user row
+ * @param userID The user id
+ * @returns {Function} The function that will be executed onclick
+ */
 function deleteUser(userNode, userID) {
     return function () {
+
         let xhttp = new XMLHttpRequest();
         let url = deleteUserAPI + userID;
 

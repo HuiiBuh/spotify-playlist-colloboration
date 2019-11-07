@@ -1,3 +1,9 @@
+/**
+ * Delete the playlist
+ * @param playlistNode The row of the playlist
+ * @param playlistID The id of the playlist
+ * @returns {Function} The function that will be executed
+ */
 function deletePlaylist(playlistNode, playlistID) {
     return function () {
         let xhttp = new XMLHttpRequest();
@@ -16,18 +22,21 @@ function deletePlaylist(playlistNode, playlistID) {
     }
 }
 
-
+/**
+ * Check if the table is empty and append the placeholder to it
+ */
 function checkIfTableIsEmpty() {
     let table = document.getElementsByTagName("tbody")[0];
 
-
     if (table.innerText === "") {
-
         table.appendChild(playlistPlaceholder);
-
     }
 }
 
+/**
+ * The playlist placeholder
+ * @type {HTMLTableRowElement}
+ */
 let playlistPlaceholder = function () {
     let tr = document.createElement("tr");
     tr.id = "no-playlists-placeholder";

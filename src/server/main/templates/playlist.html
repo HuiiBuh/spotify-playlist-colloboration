@@ -126,15 +126,16 @@
 
             <div class="row">
                 <div class="col s12">
-                    <div class="chip">artist:Eminem<i class="close material-icons">close</i></div>
-                    <div class="chip">track:Lose Yourself<i class="close material-icons">close</i></div>
-                    <div class="chip">album:8 Mile<i class="close material-icons">close</i></div>
-                    <div class="chip">year:2002<i class="close material-icons">close</i></div>
+                    <div class="chip small-hide-chip">artist:Eminem<i class="close material-icons">close</i></div>
+                    <div class="chip small-hide-chip">track:Lose Yourself<i class="close material-icons">close</i></div>
+                    <div class="chip small-hide-chip">album:8 Mile<i class="close material-icons">close</i></div>
+                    <div class="chip small-hide-chip">year:2002<i class="close material-icons">close</i></div>
                 </div>
                 <div class="input-field col s12" id="click-exception">
                     <i class="material-icons prefix" id="search-song-icon">search</i>
                     <label for="new-song-search">Song search</label>
-                    <input id="new-song-search" type="text">
+                    <input id="new-song-search" placeholder="artist:** track:** album: ** year:**"
+                           type="text">
 
                     <ul class="show-autocomplete dropdown-content" id="search-preview" tabindex="0">
 
@@ -149,8 +150,8 @@
         </div>
 
         <div class="modal-footer" id="add-song-footer">
-            <a class="modal-close waves-effect waves-green btn-flat left" style="margin-left: 28px;">Cancel</a>
-            <a class="modal-close waves-effect waves-green btn-flat" id="add-song-button">Add Songs</a>
+            <a class="modal-close waves-effect btn-flat left" style="margin-left: 28px;">Cancel</a>
+            <a class="modal-close waves-effect btn-flat" id="add-song-button">Add Songs</a>
         </div>
     </div>
 

@@ -82,3 +82,12 @@
         display: inline-block;
     }
 }
+
+.small-hide-chip {
+}
+
+@media screen and (max-width: 800px) {
+    .small-hide-chip {
+        display: none;
+    }
+}

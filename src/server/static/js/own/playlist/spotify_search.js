@@ -75,7 +75,11 @@ function addToAddPlaylist(song) {
     }
 }
 
-
+/**
+ * Delete a song from the add song playlist
+ * @param song The song that is supposed to be deleted
+ * @returns {Function}
+ */
 function deleteAddSong(song) {
     return function (evt) {
         evt.target.parentElement.parentElement.remove();

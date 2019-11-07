@@ -24,3 +24,26 @@ function addOnclick(onclick_url) {
         window.open(onclick_url)
     }
 }
+
+/**
+ * Pad a string with a number of leading characters (default 0)
+ * @param value The item that is supposed to be padded
+ * @param width The number of padings
+ * @param characters What character should pad
+ * @returns {string} The padded value
+ */
+function pad(value, width, characters) {
+    characters = characters || '0';
+    value += '';
+    return value.length >= width ? value : new Array(width - value.length + 1).join(characters) + value;
+}
+
+/**
+ * Clean a string for a regex search
+ * @param regexString The regex string
+ * @returns {string} The cleaned regex string
+ */
+function cleanForRegex(regexString) {
+    if (typeof (regexString) === "string")
+        return regexString.replace(/[\\^$*+?.()|[\]{}]/g, '');
+}

@@ -1,5 +1,5 @@
 let addTimeouts = null;
-let addPlaylist = new Playlist("main", "web", 0, null, null, "add")
+let addPlaylist = new Playlist("main", "web", 0, null, null, "add");
 
 function songSearch(evt) {
     // Clear timeout
@@ -7,9 +7,8 @@ function songSearch(evt) {
         clearTimeout(addTimeouts);
     }
 
-    // Get the search value
+    // Get the search value and clean it
     let searchValue = evt.currentTarget.value;
-    // Remove invalid singns
     searchValue = cleanForRegex(searchValue);
 
     // Check if the search value is valid
@@ -25,12 +24,14 @@ function songSearch(evt) {
         xhttp.onreadystatechange = function () {
 
             if (this.readyState === 4 && this.status === 200) {
-                let songList = createSongs(JSON.parse(this.responseText), type = "search");
+                let songList = jsonToSongList(JSON.parse(this.responseText), "search");
                 displaySearchPreview(songList, "search-preview");
+            } else if (this.readyState === 4 && this.status !== 200) {
+                M.toast({html: "No songs could be retrieved from spotify", classes: "bg-warning"})
             }
         };
-        let url = searchAPI + searchValue;
 
+        let url = searchAPI + searchValue;
         xhttp.open("GET", url, true);
         xhttp.send();
 
@@ -39,15 +40,16 @@ function songSearch(evt) {
 
 /**
  * Display the search results
- * @param searchSongList The songs in json
+ * @param searchSongList The song onjects
  * @param rootID The id the songs are supposed to be added to
  */
 function displaySearchPreview(searchSongList, rootID) {
     let root = document.getElementById(rootID);
     root.innerText = "";
 
-    for (let songNumber in searchSongList) {
-        let {cover, title, url, artist, album, id} = searchSongList[songNumber];
+    //Foreach song in the json
+    searchSongList.forEach(song => {
+        let {cover, title, url, artist: artistList, album, id} = song;
 
         let songLi = document.createElement("li");
         songLi.setAttribute("class", "search-song flex-v-center small-padding-bottom small-padding-top");
@@ -77,22 +79,21 @@ function displaySearchPreview(searchSongList, rootID) {
         titleA.innerText = title;
         titleDiv.appendChild(titleA);
 
-
-        for (let artistNumber in artist) {
+        artistList.forEach((artist, index) => {
             let artistA = document.createElement("a");
             artistA.setAttribute("class", "pointer underline black-text");
             artistA.setAttribute("hover-on-touch", "");
-            artistA.innerText = artist[artistNumber]["name"];
+            artistA.onclick = addOnclick(artist["url"]);
+            artistA.innerText = artist["name"];
             infoDiv.appendChild(artistA);
 
-            if (artist.length > parseInt(artistNumber) + 1) {
+            if (artistList.length > index + 1) {
                 let artistSeparationA = document.createElement("a");
                 artistSeparationA.setAttribute("class", "black-text small-padding-right");
                 artistSeparationA.innerText = ",";
                 infoDiv.appendChild(artistSeparationA)
             }
-
-        }
+        });
 
         let dividerA = document.createElement("a");
         dividerA.setAttribute("class", "black-text small-padding-right small-padding-left");
@@ -102,6 +103,7 @@ function displaySearchPreview(searchSongList, rootID) {
         let albumA = document.createElement("a");
         albumA.setAttribute("class", "pointer underline black-text");
         albumA.setAttribute("hover-on-touch", "");
+        albumA.onclick = addOnclick(album["url"]);
         albumA.innerText = album["name"];
         infoDiv.appendChild(albumA);
 
@@ -112,10 +114,10 @@ function displaySearchPreview(searchSongList, rootID) {
         let addPlaylistIcon = document.createElement("i");
         addPlaylistIcon.setAttribute("class", "material-icons pointer");
         addPlaylistIcon.setAttribute("song-id", id);
-        addPlaylistIcon.onclick = addToAddPlaylist(searchSongList[songNumber]);
+        addPlaylistIcon.onclick = addToAddPlaylist(song);
         addPlaylistIcon.innerText = "playlist_add";
         addPlaylistDiv.appendChild(addPlaylistIcon);
-    }
+    });
 }
 
 /**
@@ -125,38 +127,32 @@ function displaySearchPreview(searchSongList, rootID) {
  */
 function addToAddPlaylist(song) {
 
-    let songObject = song;
     return function (evt) {
+        let add = true;
+        [mainPlaylist.songList, addPlaylist.songList].forEach(playlist => {
+            playlist.forEach(playlistSong => {
+                let artistSearch = "";
+                song.artist.forEach(artist => {
+                    artistSearch += artist["name"];
+                });
 
-        let songList = mainPlaylist.songList;
-        for (let song in songList) {
+                let artistRegex = new RegExp(cleanForRegex(artistSearch), "gi");
+                let titleRegex = new RegExp(cleanForRegex(song.title), "gi");
+                let albumRegex = new RegExp(cleanForRegex(song.album), "gi");
 
-            if (songList.hasOwnProperty(song))
-                song = songList[song];
-
-            let artists = songObject.artist;
-            let artistSearch = "";
-            for (let artistNumber in artists) {
-                if (artists.hasOwnProperty(artistNumber))
-                    artistSearch += artists[artistNumber]["name"];
-            }
-
-            let artistRegex = new RegExp(cleanForRegex(artistSearch), "gi");
-            let titleRegex = new RegExp(cleanForRegex(songObject.title), "gi");
-            let albumRegex = new RegExp(cleanForRegex(songObject.album), "gi");
-
-            if (artistRegex.test(song.searchString) && titleRegex.test(song.searchString) && albumRegex.test(song.searchString)) {
-                let toastHTML = '<p style="text-align: center; width:100%">The Song already exists in the playlist</p>';
-                M.toast({html: toastHTML, classes:"bg-warning"});
-                return
-            }
+                let playlistSongSearchString = playlistSong.searchString;
+                if (artistRegex.test(playlistSongSearchString) && titleRegex.test(playlistSongSearchString) && albumRegex.test(playlistSongSearchString)) {
+                    add = false;
+                }
+            });
+        });
+        if (add) {
+            evt.currentTarget.classList.add("success");
+            addPlaylist.addSong(song);
+            displayAddSongPlaylist(song, "add-song-list");
+        } else {
+            M.toast({html: "The Song already exists in the playlist", classes: "bg-warning"});
         }
-
-        evt.currentTarget.classList.add("success");
-
-        addPlaylist.addSong(songObject);
-        displayAddSongPlaylist(songObject, "add-song-list");
-
     }
 }
 
@@ -193,9 +189,7 @@ function displayAddSongPlaylist(songObject, rootID) {
     titleDiv.onclick = addOnclick(songObject.url);
     infoDiv.appendChild(titleDiv);
 
-    for (let artistNumber in songObject.artist) {
-        let artist = songObject.artist[artistNumber];
-
+    songObject.artist.forEach((artist, index) => {
         let interpretA = document.createElement("a");
         interpretA.setAttribute("class", "black-text pointer underline");
         interpretA.setAttribute("hover-on-touch", "");
@@ -203,13 +197,13 @@ function displayAddSongPlaylist(songObject, rootID) {
         interpretA.onclick = addOnclick(artist["url"]);
         infoDiv.appendChild(interpretA);
 
-        if (songObject.artist.length > parseInt(artistNumber) + 1) {
+        if (songObject.artist.length > index + 1) {
             let artistSeparationA = document.createElement("a");
             artistSeparationA.setAttribute("class", "black-text small-padding-right");
             artistSeparationA.innerText = ",";
             infoDiv.appendChild(artistSeparationA)
         }
-    }
+    });
 
     let dividerA = document.createElement("a");
     dividerA.setAttribute("class", "black-text small-padding-right small-padding-left");
@@ -237,7 +231,6 @@ function displayAddSongPlaylist(songObject, rootID) {
 }
 
 function deleteAddSong(song) {
-
     return function (evt) {
         evt.target.parentElement.parentElement.remove();
         addPlaylist.removeSong(song)
@@ -250,27 +243,32 @@ function deleteAddSong(song) {
  */
 function addSongsToPlaylist() {
 
+    //Fill all song ids in one list
     let songList = [];
+    addPlaylist.songList.forEach(song => {
+        songList.push(song.id);
+    });
 
-    // Create the id list
-    let songObjectList = addPlaylist.songList;
-    for (let songId in songObjectList) {
-        songList.push(songObjectList[songId].id);
-    }
 
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", playlistAddTracksAPI, true);
 
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 201) {
+
+            //Display the songs in the playlist
+            displayPlaylistSongs("playlist-songs", addPlaylist.songList, "main");
+
+            //Add the songs to the main playlist
+            addPlaylist.songList.forEach(song => {
+                mainPlaylist.addSong(song);
+            });
+
+            //Clear the addSongs playlist preview
             document.getElementById("add-song-list").innerText = "";
-            displayPlaylistSongs("playlist-songs", addPlaylist.songList);
-
-            for (let songId in songObjectList) {
-                mainPlaylist.addSong(songObjectList[songId])
-            }
-
             addPlaylist = new Playlist("main", "web", 0, null, null, "add")
+        } else if (this.readyState === 4 && this.status !== 200) {
+            M.toast({html: "An error occurred <br> The tracks could not bea added", classes: "bg-warning"})
         }
     };
 

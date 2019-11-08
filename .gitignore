@@ -9,3 +9,6 @@ src/settings_production.json
 src/migrations/
 src/server/spotify/key_template_production.py
 src/server/settings/settings_production.json
+docker/flask/src/
+stale_outputs_checked
+

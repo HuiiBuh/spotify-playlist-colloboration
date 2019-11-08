@@ -1,5 +1,19 @@
+/**
+ * The song class
+ */
 class Song {
-    constructor(id, album, url, artist, duration, cover, title) {
+
+    /**
+     * Creates a new song
+     * @param id The spotify id of the song
+     * @param album The album of the song
+     * @param url The url of the song
+     * @param artist The artist of a song
+     * @param duration The duration of the song in ms
+     * @param cover The cover url of the song
+     * @param title The title of the song
+     */
+    constructor(id, album, url, artist, duration, cover, title, albumArtist) {
         this._id = id;
         this._album = album;
         this._url = url;
@@ -7,6 +21,7 @@ class Song {
         this._duration = duration;
         this._cover = cover;
         this._title = title;
+        this._albumArtist = albumArtist;
         this._durationHumanReadable = "";
         this.durationHumanReadable = duration;
     }
@@ -32,25 +47,34 @@ class Song {
         this.durationHumanReadable(value)
     }
 
+    set albumArtist(value) {
+        this._albumArtist = value
+    }
+
     set durationHumanReadable(value) {
 
+        //The human readable duration
         let hDuration = "";
 
+        //Get the seconds and fill the missing 0s
         let seconds = parseInt((value / 1000) % 60).toString();
         seconds = pad(seconds, 2);
         let minutes = (parseInt((value / (1000 * 60) % 60))).toString();
         let hours = (parseInt((value / (1000 * 60 * 60)) % 60)).toString();
 
+        //Pad leading 0s if the hour is not 0
         if (hours !== "0") {
             hours = pad(hours, 2);
             hDuration += hours + ":"
         }
+
+        //pad 0s if the hour and minute of a song is 0
         if (hours !== "0" || minutes !== "0") {
             minutes = pad(minutes, 2);
             hDuration += minutes + ":"
         }
-        hDuration += seconds;
 
+        hDuration += seconds;
         this._durationHumanReadable = hDuration;
     }
 
@@ -94,11 +118,16 @@ class Song {
         return this._title;
     }
 
+    get albumArtist() {
+        return this._albumArtist;
+    }
+
     get searchString() {
         let artists = "";
-        for (let artistNumber in this.artist) {
-            artists += this.artist[artistNumber]["name"];
-        }
+
+        this.artist.forEach(artist => {
+            artists += artist.name;
+        });
 
         return this._title + " " + artists + " " + this._album + this._id;
     }

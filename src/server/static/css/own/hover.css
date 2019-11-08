@@ -1,0 +1,41 @@
+/*Add this code if the client can process hover events*/
+@media (pointer: fine) {
+    .underline:hover {
+        text-decoration: underline;
+    }
+
+    .footer-links > li > a:hover {
+        text-decoration: underline;
+        transition: text-decoration .1s ease-in;
+    }
+
+    .song:hover {
+        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
+    .select-playlist:hover {
+        box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        transition: box-shadow 0.2s ease-in-out;
+    }
+}
+
+/*The simulated hover for touch devices*/
+.current-touch.underline {
+    text-decoration: underline;
+}
+
+.current-touch.footer-links > li > a {
+    text-decoration: underline;
+    transition: text-decoration .1s ease-in;
+}
+
+.current-touch.song {
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.current-touch.select-playlist {
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.2s ease-in-out;
+}

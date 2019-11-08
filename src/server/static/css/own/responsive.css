@@ -1,0 +1,93 @@
+/*Change the width of the main container************************/
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 95%;
+    }
+}
+
+@media only screen and (min-width: 601px) {
+    .container {
+        width: 90%
+    }
+}
+
+@media only screen and (min-width: 993px) {
+    .container {
+        width: 80%
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .container {
+        width: 80%
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .hide-medium {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 601px) {
+    .hide-large {
+        display: none;
+    }
+}
+
+
+/*Make the modal more space efficient for smaller devices*/
+@media (max-width: 460px) {
+    /*Make the padding smaller*/
+    .modal .modal-content {
+        padding: 10px;
+    }
+
+    /*Put the label at thr right place*/
+    .input-field .prefix ~ label {
+        margin-left: 0;
+    }
+
+    /*Dont display the search icon*/
+    #search-song-icon {
+        display: none;
+    }
+
+    /*Change the width of the input so it uses the width of the icon as well*/
+    #new-song-search {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    /*Make the label equally large as the search*/
+    #new-song-search + label {
+        width: 99%;
+        margin-left: 0;
+    }
+
+    /*Change the width of the autocomplete*/
+    .show-autocomplete {
+        width: calc(100% - 1.5rem);
+        left: .76rem;
+    }
+}
+
+/*Hide the artist if the screen gets too small */
+@media screen and (max-width: 660px) {
+    .artist, .artist-separator {
+        display: none;
+    }
+
+    .album-artist {
+        display: inline-block;
+    }
+}
+
+.small-hide-chip {
+}
+
+@media screen and (max-width: 800px) {
+    .small-hide-chip {
+        display: none;
+    }
+}

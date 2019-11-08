@@ -1,0 +1,128 @@
+/*Round the left corner*/
+.rounded-left {
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+
+/*Round the right corner*/
+.rounded-right {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+/*Round the element*/
+.rounded {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+
+/*Make the contend bold*/
+.bold {
+    font-weight: bold;
+}
+
+/*Display inline block*/
+.inline {
+    display: inline-block;
+}
+
+.no-wrap {
+    white-space: nowrap
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.flex {
+    display: flex;
+}
+
+.no-shrink {
+    flex-shrink: 0;
+}
+
+/*Make a div a rectangle*/
+.rectangle {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+}
+
+/*Make the cursor a pointer*/
+.pointer {
+    cursor: pointer;
+}
+
+/*Center child elements*/
+.flex-v-center {
+    display: flex;
+    align-items: center;
+}
+
+/*Move element to the end*/
+.flex-end {
+    justify-content: flex-end;
+}
+
+/*Padding********************************/
+.no-padding {
+    padding: 0 !important;
+}
+
+.small-padding {
+    padding: .5em;
+}
+
+.small-padding-top {
+    padding-top: .5em;
+}
+
+.small-padding-right {
+    padding-right: .5em;
+}
+
+.small-padding-left {
+    padding-left: .5em !important;
+}
+
+
+/*Margin*********************************/
+.no-margin-left {
+    margin-left: 0 !important;
+}
+
+.no-margin-right {
+    margin-right: 0 !important;
+}
+
+.margin-auto {
+    margin: auto !important;
+}
+
+.small-margin-bottom {
+    margin-bottom: .5em;
+}
+
+.margin-top {
+    margin-top: 1em;
+}
+
+.margin-bottom {
+    margin-bottom: 1em;
+}
+
+.small-padding-bottom {
+    padding-bottom: .5em;
+}
+
+.small-margin-top {
+    margin-top: .5em;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+

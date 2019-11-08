@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block javascript_variables %}
+    <script>
+        let deleteSpotifyUserAPI = "{{ url_for("api.remove_spotify_user") }}?spotify-user-id=";
+    </script>
+{% endblock %}
+
+{% block main %}
+
+    <div class="center">
+
+        <h3>Spotify Users</h3>
+
+        <div class="table-wrapper">
+            <table class="striped highlight own-responsive-table">
+                <thead>
+                <tr>
+                    <th data-sort-default>Username</th>
+                    <th>Country</th>
+                    <th data-sort-method='number'>Playlists</th>
+                    <th data-sort-method='number'>Followers</th>
+                    <th style="width: 1px" data-sort-method='none'></th>
+                    <th style="width: 1px" data-sort-method='none'></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {# Check if there are spotify users#}
+                {% if spotify_users != {} %}
+
+                    {# For every user create a row #}
+                    {% for user_id, user in spotify_users.items() %}
+
+                        <tr class="spotify-user">
+                            <td>
+                                <a class="black-text pointer underline" hover-on-touch
+                                   onclick="window.open('{{ user.external_urls.spotify }}')">{{ user.display_name }}</a>
+                            </td>
+                            <td>{{ user.country }}</td>
+                            <td>{{ user.playlist_count }}</td>
+                            <td>{{ user.followers.total }}</td>
+                            <td><a class="material-icons pointer black-text"
+                                   href="{{ url_for("admin.spotify_users") }}?spotify-user-id={{ user.id }}">edit</a>
+                            </td>
+                            <td><i class="material-icons pointer primary-text-color" id="{{ user_id }}">delete</i></td>
+                        </tr>
+
+                    {% endfor %}
+
+                    {# Show that no playlists are availabel #}
+                {% else %}
+
+                    <tr id="user-placeholder">
+
+                        <td></td>
+                        <td></td>
+                        <td>No Users</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
+
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {# Show floating button that redirects the user to spotify #}
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large" href="{{ url_for("api.authorize") }}">
+            <i class="very-large large material-icons">add</i>
+        </a>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="/static/js/own/spotify_users/main.js"></script>
+{% endblock %}

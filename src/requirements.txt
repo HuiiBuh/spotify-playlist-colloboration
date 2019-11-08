@@ -1,6 +1,10 @@
-six
-requests
 Flask==1.1.1
+
+# Base64 encoding
+six==1.12.0
+
+# Make api calls
+requests
 
 # To use the .flaskenv file
 python-dotenv==0.10.3
@@ -22,4 +26,4 @@ argon2-cffi
 schedule==0.6.0
 
 # production server
-uwsgi
+uWSGI

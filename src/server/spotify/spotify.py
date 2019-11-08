@@ -145,8 +145,6 @@ class Spotify:
         if "error" in reauthorization_request.json():
             raise SpotifyError(f"There was an error: {reauthorization_request.json()}")
 
-        a = reauthorization_request.json()
-
         try:
             access_token: str = reauthorization_request.json()["access_token"]
         except KeyError:

@@ -1,18 +1,41 @@
+/*The github footer image*/
 .footer-image {
     height: 1em;
     margin-right: 5px;
 }
 
-.footer-links > li > a:hover {
-    text-decoration: underline;
-    transition: text-decoration .1s ease-in;
+/*Make the table less high*/
+td, th {
+    padding: 7px 7px;
 }
 
+.to-long {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*Hide the album artist until the screen gets ot small*/
+.album-artist {
+    display: none
+}
+
+/*Underline the links in the footer*/
 .footer-links > li > a {
     text-decoration: underline solid transparent;
     transition: text-decoration .1s ease-in;
 }
 
+/*The logo in the mobile off canvas*/
+.nav-logo {
+    height: 26%;
+    width: 100%;
+    background: url(/static/icons/Spotify.svg);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/*Add a icon behind a input*/
 .postfix {
     position: absolute;
     width: 3rem;
@@ -22,46 +45,58 @@
     cursor: pointer;
 }
 
+/*Class that has to be added to the input if a postfix should be added*/
 .postfix-input {
     margin-right: 3rem !important;
     width: calc(100% - 3rem) !important;
 }
 
+/*Padding for each song cover in a playlist*/
 .song-cover-div {
     padding-left: 5px !important;
     padding-right: 0 !important;
 }
 
+/*Force chrome to contain the image*/
+.song-cover-div > img {
+    max-width: 100%;
+}
+
+/*Add padding to the copyright*/
 #copyright {
     padding: 0 .75rem;
 }
 
+/*Center all toast messages*/
 #toast-container {
-    width: 100%;
-    right: 0;
-    top: auto;
-    max-width: 100% !important;
-    bottom: 5% !important;
+    left: calc(-50vw + 50%);
+    right: calc(-50vw + 50%);
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/*Make the toast message only use the width of the message*/
 .toast {
     width: max-content;
     text-align: center;
     margin: 1em auto auto;
+    min-width: 20%;
     max-width: 70%;
 }
 
+/*Calculate the height of the main box where all the contend is in.*/
 #main-box {
-    min-height: calc(100vh - 14px);
+    min-height: calc(100vh - 56px - 2em);
 }
 
-#playlist-box {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-bottom: 1px;
-    margin-bottom: 1.5rem;
+/*Calculate the height of the main box where all the contend is in.*/
+@media only screen and (min-width: 601px) {
+    #main-box {
+        min-height: calc(100vh - 64px - 2em);
+    }
 }
 
+/*The image of the songs you want to add to the playlist*/
 .song-image {
     max-width: 100px;
     max-height: 60px;
@@ -71,6 +106,7 @@
     width: auto;
 }
 
+/*The spotify search preview*/
 .search-song-image {
     max-width: 40px;
     max-height: 40px;
@@ -80,30 +116,35 @@
     width: auto;
 }
 
-.cover-image {
-    background-color: gray;
-    max-width: 200px;
-    cursor: default;
-    height: auto;
-}
-
+/*Add a shadow transition to every song in the playlist*/
 .song {
     transition: box-shadow 0.2s ease-in-out;
 }
 
+/*Make a large floating button*/
 i.very-large {
     font-size: 3rem;
 }
 
-.song:hover {
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+/*Hide the border in the last table row*/
+tr:last-child {
+    border-bottom: none;
+}
+
+/*List is inside the div*/
+li {
+    list-style-position: inside;
+}
+
+
+/*Shadow for every playlist a use can select*/
+.select-playlist {
+    border-radius: 7px;
     transition: box-shadow 0.2s ease-in-out;
 }
 
-.dropdown-content li {
-    cursor: default;
-}
 
+/*Background image for every playlist the user can select*/
 .background-image {
     position: absolute;
     background-position: center !important;
@@ -115,14 +156,17 @@ i.very-large {
     right: 0;
 }
 
+/*Border radius for every image*/
 img {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
 }
 
+
+/*Show the autocomplete*/
 .show-autocomplete {
-    max-height: 436%;
+    max-height: calc(0.5 * 80vh);
     display: block;
     width: calc(100% - 4.5rem);
     left: 3.76rem;
@@ -132,238 +176,44 @@ img {
     transform: scaleX(1) scaleY(1);
 }
 
-
-.bold{
-    font-weight: bold;
-}
-
+/*Footer for the Add song modal*/
 #add-song-footer {
     padding-right: 34px;
     position: sticky;
     bottom: 0;
 }
 
+/*Change the min height of the add song modal*/
 #song-modal .modal-content {
     min-height: 62vh;
     padding-bottom: 0;
 }
 
-@media (max-width: 460px) {
-
-    .modal .modal-content {
-        padding: 10px;
-    }
-
-    #search-song-icon {
-        display: none;
-    }
-
-    #new-song-search {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    #new-song-search + label {
-        width: 99%;
-        margin-left: 0;
-    }
-
-    .show-autocomplete {
-        width: calc(100% - 1.5rem);
-        left: .76rem;
-    }
-
+/*Change the max heights of modals*/
+.modal {
+    max-height: 80%;
 }
 
+/*Give a max height of 140 to every playlist cover in main page*/
+.height-140, .height-140 * {
+    max-height: 140px;
+}
+
+/*The list of songs you want to add*/
 #add-song-list {
     overflow: auto;
     padding: 5px;
 }
 
-
-/*Helpers**************************************************************************************************************/
-
-.inline {
-    display: inline-block;
-}
-
-.margin-auto {
-    margin: auto !important;
-}
-
-.small-margin-bottom {
-    margin-bottom: .5em;
-}
-
-.rectangle {
-    position: relative;
-    width: 100%;
-    padding-top: 100%;
-}
-
-.underline:hover {
-    text-decoration: underline;
-}
-
-.pointer {
-    cursor: pointer;
-}
-
-.flex-v-center {
-    display: flex;
-    align-items: center;
-}
-
-.flex-end {
-    justify-content: flex-end;
-}
-
-.no-padding {
-    padding: 0 !important;
-}
-
-.small-padding-top {
-    padding-top: .5em;
-}
-
-.small-padding-right {
-    padding-right: .5em;
-}
-
-.small-padding-left {
-    padding-left: .5em !important;
-}
-
-.margin-top {
-    margin-top: 1em;
-}
-
-.margin-bottom {
-    margin-bottom: 1em;
-}
-
-.small-padding-bottom {
-    padding-bottom: .5em;
-}
-
-.small-margin-top {
-    margin-top: .5em;
-}
-
-.no-margin-bottom {
-    margin-bottom: 0;
-}
-
-.rounded {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-}
-
-
-/*Container************************************************************************************************************/
-
-
-@media only screen and (max-width: 415px) {
-    .xs1 {
-        width: calc(100% / 12)
-    }
-
-    .xs3 {
-        width: calc(100% / 12);
-    }
-
-    .xs8 {
-        width: calc(100% / 12 * 8);
-    }
-
-    #playlist-box {
-        padding-right: 1em;
-        padding-left: 1em;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    .container {
-        width: 95%;
-    }
-}
-
-@media only screen and (min-width: 601px) {
-    .container {
-        width: 90%
-    }
-}
-
-@media only screen and (min-width: 993px) {
-    .container {
-        width: 80%
-    }
-}
-
-@media only screen and (min-width: 1200px) {
-    .container {
-        width: 80%
-    }
-}
-
-
-/*Label checkbox*******************************************************************************************************/
-[type="checkbox"]:not(.filled-in) + label:not(.lever)::after {
-    border: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-}
-
-[type="checkbox"] + label:not(.lever)::before, [type="checkbox"]:not(.filled-in) + label:not(.lever)::after {
-    content: '';
+/*Center the main image of one playlist*/
+.loading-card > .image {
     position: absolute;
+    background: #e9ebee;
+    background-position: center !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
     top: 0;
     left: 0;
-    width: 18px;
-    height: 18px;
-    z-index: 0;
-    border: 2px solid #5a5a5a;
-    border-radius: 1px;
-    margin-top: 3px;
-    -webkit-transition: .2s;
-    transition: .2s;
+    bottom: 0;
+    right: 0;
 }
-
-[type="checkbox"]:checked + label:not(.lever)::before {
-    top: -4px;
-    left: -5px;
-    width: 12px;
-    height: 22px;
-    border-top: 2px solid transparent;
-    border-left: 2px solid transparent;
-    border-right: 2px solid #26a69a;
-    border-bottom: 2px solid #26a69a;
-    -webkit-transform: rotate(40deg);
-    transform: rotate(40deg);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transform-origin: 100% 100%;
-    transform-origin: 100% 100%;
-}
-
-[type="checkbox"] + label:not(.lever) {
-    position: relative;
-    padding-left: 35px;
-    cursor: pointer;
-    display: inline-block;
-    height: 25px;
-    line-height: 25px;
-    font-size: 1rem;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-*, ::before, ::after {
-    -webkit-box-sizing: inherit;
-    box-sizing: inherit;
-}
-
-/*Label checkbox*******************************************************************************************************/

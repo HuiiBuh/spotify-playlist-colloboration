@@ -1,19 +1,183 @@
 import time
 
-from flask import Blueprint, jsonify, request, Response, redirect, abort
-from flask_login import login_required
+from flask import Blueprint, jsonify, request, Response, abort, make_response, redirect, url_for
+from flask_login import login_required, current_user
 
-from server import spotify, spotify_info
-from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_user, \
-    get_token_by_playlist
-from server.spotify import SpotifyAuthorisationToken
+from server import spotify, db, SpotifyAuthorisationToken, spotify_info
+from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_spotify_user, \
+    get_token_by_playlist, add_playlist_to_spotify_user, assign_playlists_to_user
+from server.main.modals import Playlist, SpotifyUser, User
 
 mod = Blueprint("api", __name__)
 
 
+@mod.route("/spotify/search")
+@login_required
+def search_for_songs():
+    """
+    Search for songs and artists
+    :return: The search results as json
+    """
+
+    playlist_id = request.args.get('playlist-id')
+
+    if not playlist_id:
+        return abort(400, "You did not give a playlist-id")
+
+    auth_token = get_token_by_playlist(playlist_id)
+
+    if not auth_token:
+        return abort(400, "No playlist with this id found")
+
+    # Check if expired and update the user
+    if auth_token.is_expired():
+        auth_token = spotify.reauthorize(auth_token)
+        user_id = spotify.me(auth_token)["id"]
+        update_spotify_user(user_id, auth_token)
+
+    search_term = request.args.get('searchterm')
+
+    if search_term is None or search_term is "":
+        return abort(400)
+
+    search_results = spotify.search(search_term, "track", auth_token, limit=10)
+
+    return_search_results = modify_track_json(search_results["tracks"])
+    return return_search_results
+
+
+@mod.route("/spotify/playlist")
+@login_required
+def get_playlist():
+    """
+    Get a playlist
+    :return: The json of the playlist
+    """
+
+    playlist_id = request.args.get('playlist-id')
+
+    if not playlist_id:
+        return abort(400, "You did not give a playlist-id")
+
+    auth_token = get_token_by_playlist(playlist_id)
+
+    if not auth_token:
+        return abort(400, "No playlist with this id found")
+
+    # Check if expired and update the user
+    if auth_token.is_expired():
+        auth_token = spotify.reauthorize(auth_token)
+        user_id = spotify.me(auth_token)["id"]
+        update_spotify_user(user_id, auth_token)
+
+    playlist = spotify.playlist(playlist_id=playlist_id, auth_token=auth_token)
+    modified_playlist = modify_playlist_json(playlist)
+
+    return modified_playlist
+
+
+@mod.route("/spotify/playlist/tracks")
+@login_required
+def get_playlist_tracks():
+    """
+    Get the tracks of a playlist
+    :return: The tracks of the playlist as json
+    """
+
+    playlist_id = request.args.get('playlist-id')
+
+    if not playlist_id:
+        return abort(400, "You did not give a playlist-id")
+
+    auth_token = get_token_by_playlist(playlist_id)
+
+    if not auth_token:
+        return abort(400, "No playlist with this id found")
+
+    # Check if expired and update the user
+    if auth_token.is_expired():
+        auth_token = spotify.reauthorize(auth_token)
+        user_id = spotify.me(auth_token)["id"]
+        update_spotify_user(user_id, auth_token)
+
+    modified_tracks = collect_tracks(playlist_id, auth_token)
+
+    return jsonify(modified_tracks)
+
+
+@mod.route("/spotify/playlist/add", methods=['POST', 'GET'])
+@login_required
+def add_track_to_playlist():
+    """
+    Add tracks to the playlist
+    :return: status 201, or 400
+    """
+
+    playlist_id = request.args.get('playlist-id')
+
+    if not playlist_id:
+        return abort(400, "You did not give a playlist-id")
+
+    auth_token = get_token_by_playlist(playlist_id)
+
+    if not auth_token:
+        return abort(400, "No playlist with this id found")
+
+    # Check if expired and update the user
+    if auth_token.is_expired():
+        auth_token = spotify.reauthorize(auth_token)
+        user_id = spotify.me(auth_token)["id"]
+        update_spotify_user(user_id, auth_token)
+
+    json = request.get_json()
+
+    if "track-list" in json:
+        spotify.add_playlist_tracks(playlist_id, json["track-list"], auth_token)
+        return Response(status=201)
+    else:
+        return abort(400, "Your request body has not track-list")
+
+
+@mod.route("/spotify/me")
+@login_required
+def me():
+    """
+    Get information about the auth token for the playlist
+    :return: Information about the playlist spotify user
+    """
+
+    playlist_id = request.args.get('playlist-id')
+
+    if not playlist_id:
+        return abort(400, "You did not give a playlist-id")
+
+    auth_token = get_token_by_playlist(playlist_id)
+
+    if not auth_token:
+        return abort(400, "No playlist with this id found")
+
+    # Check if expired and update the user
+    if auth_token.is_expired():
+        auth_token = spotify.reauthorize(auth_token)
+        user_id = spotify.me(auth_token)["id"]
+        update_spotify_user(user_id, auth_token)
+
+    return spotify.me(auth_token=auth_token)
+
+
+# ADMIN ################################################################################################################
+
 @mod.route("/authorize")
 @login_required
 def authorize():
+    """
+    Authorize a new spotify user
+    :return: A redirect to the right spotify url, 403
+    """
+
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
+
     url = spotify.build_authorize_url(show_dialog=False)
     return redirect(url)
 
@@ -21,6 +185,14 @@ def authorize():
 @mod.route("/callback/")
 @login_required
 def callback():
+    """
+    Callback that will be called if the user authorizes the first time
+    :return: A redirect to the spotify user home page, 403
+    """
+
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
+
     if request.args.get("error"):
         return jsonify(dict(error=request.args.get("error_description")))
     else:
@@ -37,14 +209,23 @@ def callback():
     auth_token = spotify.reauthorize(auth_token, grant_type="authorization_code")
     auth_token = spotify.reauthorize(auth_token)
     user_id = spotify.me(auth_token)["id"]
-    update_user(user_id, auth_token)
+    update_spotify_user(user_id, auth_token)
 
-    return jsonify(OAuth_Token=auth_token.token, Reauthorization_Token=auth_token.refresh_token)
+    # return jsonify(OAuth_Token=auth_token.token, Reauthorization_Token=auth_token.refresh_token)
+    return redirect(url_for("admin.spotify_users"))
 
 
 @mod.route("/reauthorize")
 @login_required
 def reauthorize():
+    """
+    Reauthorize the spotify oauth code
+    :return: The tokens, 400, 403
+    """
+
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
+
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
@@ -58,130 +239,160 @@ def reauthorize():
     return jsonify(OAuth_Token=spotify.reauthorize(auth_token).token)
 
 
-@mod.route("/spotify/search")
+@mod.route("playlist/user/add", methods=["POST", "GET"])
 @login_required
-def search_for_songs():
-    playlist_id = request.args.get('playlist-id')
+def add_playlists_to_user():
+    """
+    Add a user to a spotify playlist
+    :return: 200, 400, 403
+    """
 
-    if not playlist_id:
-        return abort(400, "You did not give a playlist-id")
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
 
-    auth_token = get_token_by_playlist(playlist_id)
+    request_json = request.get_json()
 
-    if not auth_token:
-        return abort(400, "No playlist with this id found")
+    if not request_json or ("playlists" and "user-id") not in request_json:
+        return abort(400, "You did not pass a playlist or user-id")
 
-    # Check if expired and update the user
-    if auth_token.is_expired():
-        auth_token = spotify.reauthorize(auth_token)
-        user_id = spotify.me(auth_token)["id"]
-        update_user(user_id, auth_token)
+    playlist_list: list = request_json["playlists"]
 
-    search_term = request.args.get('searchterm')
+    if not playlist_list:
+        return abort(400, "You did not select a playlist")
 
-    if search_term is None or search_term is "":
-        return abort(400)
+    user_id = request_json["user-id"]
 
-    search_results = spotify.search(search_term, "track", auth_token, limit=10)
-
-    return_search_results = modify_track_json(search_results["tracks"])
-    return return_search_results
+    status, data = assign_playlists_to_user(playlist_list, user_id)
+    return make_response(jsonify(data), status)
 
 
-@mod.route("/spotify/playlist")
+@mod.route("/playlist/user/remove", methods=["POST", "GET"])
 @login_required
-def get_playlist():
-    playlist_id = request.args.get('playlist-id')
+def remove_playlist_from_user():
+    """
+    Removes a playlist from a user
+    :return: 200, 400, 403
+    """
 
-    if not playlist_id:
-        return abort(400, "You did not give a playlist-id")
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
 
-    auth_token = get_token_by_playlist(playlist_id)
+    request_json: dict = request.get_json()
 
-    if not auth_token:
-        return abort(400, "No playlist with this id found")
+    if not request_json or "playlist-id" not in request_json and "user-id" not in request_json:
+        return abort(400, "You did not provide a playlist id or a user id")
 
-    # Check if expired and update the user
-    if auth_token.is_expired():
-        auth_token = spotify.reauthorize(auth_token)
-        user_id = spotify.me(auth_token)["id"]
-        update_user(user_id, auth_token)
+    playlist_id: str = request_json["playlist-id"]
+    user_id: str = request_json["user-id"]
 
-    playlist = spotify.playlist(playlist_id=playlist_id, auth_token=auth_token)
-    modified_playlist = modify_playlist_json(playlist)
+    user: User = User.query.filter(User.id == user_id).first()
+    if not user:
+        return abort(400, "You did not provide a valid user")
 
-    return modified_playlist
+    playlist: Playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+    if not playlist:
+        return abort(400, "You did not provide a valid playlist")
+
+    playlist_list: list = user.playlists
+
+    if playlist not in playlist_list:
+        return abort(400, "The use has your playlist not assigned to him")
+
+    user.playlists.remove(playlist)
+    db.session.commit()
+
+    return ""
 
 
-@mod.route("/spotify/playlist/tracks")
+@mod.route("playlist/add", methods=['POST', 'GET'])
 @login_required
-def get_playlist_tracks():
-    playlist_id = request.args.get('playlist-id')
+def add_playlist():
+    """
+    Add a playlist to a spotify user
+    :return: The playlist json or 400, 403
+    """
 
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
+
+    playlist_id = request.args.get("playlist-id")
     if not playlist_id:
-        return abort(400, "You did not give a playlist-id")
+        return abort(400, "You passed an empty playlist")
 
-    auth_token = get_token_by_playlist(playlist_id)
-
-    if not auth_token:
-        return abort(400, "No playlist with this id found")
-
-    # Check if expired and update the user
-    if auth_token.is_expired():
-        auth_token = spotify.reauthorize(auth_token)
-        user_id = spotify.me(auth_token)["id"]
-        update_user(user_id, auth_token)
-
-    modified_tracks = collect_tracks(playlist_id, auth_token)
-
-    return jsonify(modified_tracks)
+    return add_playlist_to_spotify_user(playlist_id)
 
 
-@mod.route("/spotify/playlist/add", methods=['POST', 'GET'])
+@mod.route("playlist/remove")
 @login_required
-def add_track_to_playlist():
-    playlist_id = request.args.get('playlist-id')
+def remove_playlist():
+    """
+    Remove playlist form a spotify user
+    :return: status 400, 200
+    """
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
 
+    playlist_id = request.args.get("playlist-id")
     if not playlist_id:
-        return abort(400, "You did not give a playlist-id")
+        return abort(400, "You passed an empty playlist")
 
-    auth_token = get_token_by_playlist(playlist_id)
+    playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+    if not playlist:
+        return abort(400, "The playlist id you provided does not exist")
 
-    if not auth_token:
-        return abort(400, "No playlist with this id found")
-
-    # Check if expired and update the user
-    if auth_token.is_expired():
-        auth_token = spotify.reauthorize(auth_token)
-        user_id = spotify.me(auth_token)["id"]
-        update_user(user_id, auth_token)
-
-    json = request.get_json()
-
-    if "track-list" in json:
-        spotify.add_playlist_tracks(playlist_id, json["track-list"], auth_token)
-        return Response(status=201)
-    else:
-        return abort(400, "Your request body has not track-list")
+    db.session.delete(playlist)
+    db.session.commit()
+    return ""
 
 
-@mod.route("/spotify/me")
+@mod.route("/spotify-user/remove")
 @login_required
-def me():
-    playlist_id = request.args.get('playlist-id')
+def remove_spotify_user():
+    """
+    Remove a spotify user
+    :return: status 400, 200
+    """
 
-    if not playlist_id:
-        return abort(400, "You did not give a playlist-id")
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
 
-    auth_token = get_token_by_playlist(playlist_id)
+    spotify_user_id = request.args.get("spotify-user-id")
+    if not spotify_user_id:
+        return abort(400, "You did not pass a spotify user")
 
-    if not auth_token:
-        return abort(400, "No playlist with this id found")
+    spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
 
-    # Check if expired and update the user
-    if auth_token.is_expired():
-        auth_token = spotify.reauthorize(auth_token)
-        user_id = spotify.me(auth_token)["id"]
-        update_user(user_id, auth_token)
+    if not spotify_user:
+        return abort(400, "The spotify user id you provided does not exist")
 
-    return spotify.me(auth_token=auth_token)
+    db.session.delete(spotify_user)
+    db.session.commit()
+    return ""
+
+
+@mod.route("/user/remove")
+@login_required
+def remove_user():
+    """
+    Remove a user
+    :return: status 400, 200
+    """
+
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
+
+    user_id = request.args.get("user-id")
+
+    if not user_id:
+        return abort(400, "You did not pass a user")
+
+    user = User.query.filter(User.id == user_id).first()
+
+    if not user:
+        return abort(400, "The user id you provided does not exist")
+
+    db.session.delete(user)
+    db.session.commit()
+    return ""
+
+########################################################################################################################

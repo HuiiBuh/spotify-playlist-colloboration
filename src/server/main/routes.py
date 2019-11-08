@@ -11,12 +11,18 @@ mod = Blueprint("main", __name__, template_folder='templates')
 
 @mod.route("/")
 @login_required
-def home():
+def home() -> render_template:
+    """
+    The default rote that lets you select a playlist
+    :return: A template
+    """
+
     playlist_id = request.args.get('playlist-id')
 
+    # Check if the playlist id is present
     if not playlist_id:
         user = current_user.id
-        playlist_list = Playlist.query.filter(Playlist.user == user).all()
+        playlist_list = Playlist.query.join(User.playlists).filter(User.id == user).all()
 
         playlist_list_json = {}
         for playlist in playlist_list:
@@ -26,16 +32,25 @@ def home():
 
         return render_template("select.html", title="Select Playlist", playlist_list_json=playlist_list_json)
 
+    # Get a playlist from the database
     spotify_playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
 
+    # If the playlist is not in the db render the resource not found
     if not spotify_playlist:
-        return redirect("404")
+        return render_template("resource_not_found.html")
 
+    # Render the playlist page
     return render_template("playlist.html", title="Home", playlist_id=playlist_id)
 
 
 @mod.route("/login", methods=["GET", "POST"])
-def login():
+def login() -> redirect:
+    """
+    Login page
+    :return: A redirect
+    """
+
+    # Redirect the user to home if he is authenticated
     if current_user.is_authenticated:
         return redirect(url_for("main.home"))
 
@@ -62,6 +77,7 @@ def login():
         else:
             return redirect(url_for("main.home"))
 
+    # Handle invalid form
     if request.method == "POST":
         flash("You missed to fill some fields")
         return render_template('login.html', title='Sign In', form=form)
@@ -72,5 +88,9 @@ def login():
 @mod.route("/logout")
 @login_required
 def logout():
+    """
+    Logout the user
+    :return:
+    """
     logout_user()
-    return redirect(url_for('main.home'))
+    return redirect(url_for('main.login'))

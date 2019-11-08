@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 
-{% block nav %}
-
+{% block css %}
+    <style>
+        #main-box > div {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 {% endblock %}
+
+{% block nav %}{% endblock %}
 
 {% block main %}
     <form action="" method="post">
@@ -10,7 +17,6 @@
             <div class="modal-content">
                 <h4>Login</h4>
 
-                {{ form.hidden_tag() }}
                 {{ form.csrf_token }}
 
                 <div class="row">
@@ -40,8 +46,7 @@
     </form>
 {% endblock %}
 
-{% block footer %}
-{% endblock %}
+{% block footer %}{% endblock %}
 
 
 {% block javascript %}

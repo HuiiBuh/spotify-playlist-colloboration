@@ -4,6 +4,12 @@ from flask_login import UserMixin
 
 from server import db, login
 
+user_playlists = db.Table(
+    "playlist_user",
+    db.Column("user_id", db.Integer, db.ForeignKey("user.id")),
+    db.Column("playlist_id", db.Integer, db.ForeignKey("playlist.id"))
+)
+
 
 class User(db.Model, UserMixin):
     """
@@ -13,7 +19,9 @@ class User(db.Model, UserMixin):
     is_admin = db.Column(db.Boolean, nullable=False)
     username = db.Column(db.String(64), nullable=False, index=True, unique=True)
     password_hash = db.Column(db.Text, nullable=False)
-    db.relationship('Playlist', backref='User')
+    playlists = db.relationship("Playlist", secondary=user_playlists, backref=db.backref("users", lazy="joined"))
+
+    __mapper_args__ = {"order_by": username}
 
     def set_password(self, password: str):
         """
@@ -57,8 +65,10 @@ class SpotifyUser(db.Model):
     refresh_token = db.Column(db.Text)
     oauth_token = db.Column(db.Text)
     activated_at = db.Column(db.BigInteger)
-
-    db.relationship('Playlist', backref='SpotifyUser', lazy="joined")
+    playlists = db.relationship('Playlist', backref='SpotifyUser', lazy="joined", cascade="all, delete, delete-orphan",
+                                passive_deletes=True)
+    
+    __mapper_args__ = {"order_by": id}
 
 
 class Playlist(db.Model):
@@ -67,5 +77,6 @@ class Playlist(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
-    spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id), nullable=False)
-    user = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id, ondelete="CASCADE"))
+
+    __mapper_args__ = {"order_by": id}

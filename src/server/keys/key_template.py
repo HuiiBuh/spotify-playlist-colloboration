@@ -9,3 +9,6 @@ class KEYS:
         "user-read-email",
         "user-read-private"
     ]
+
+    DATABASE_USERNAME = "<your username>"
+    DATABASE_PASSWORD = "<your password>"

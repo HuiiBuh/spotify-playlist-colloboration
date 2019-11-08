@@ -38,7 +38,7 @@
                            href="{{ url_for("admin.users") }}?user-id={{ user.id }}">edit</a>
                     </td>
                     <td>
-                        <a class="material-icons pointer primary-text-color" id="{{ user.id }}">delete</a>
+                        <a tabindex="0" class="material-icons pointer primary-text-color" id="{{ user.id }}">delete</a>
                     </td>
                 </tr>
 
@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="col s12">
                         <div style="float: right;">
-                            {{ form.is_admin() }}
+                            {{ form.is_admin(tabindex=-1) }}
                             {{ form.is_admin.label() }}
                         </div>
                     </div>
@@ -87,18 +87,18 @@
 
             <div class="modal-footer">
                 {# Cancel button #}
-                <a class="modal-close waves-effect btn-flat left">Cancel</a>
+                <button class="modal-close waves-effect btn-flat left">Cancel</button>
 
                 {# Submit button #}
-                {{ form.submit(class='btn-flat modal-close', id="add-playlists") }}
+                {{ form.submit(class='btn-flat modal-close tabable', id="add-playlists") }}
             </div>
         </form>
     </div>
 
     {# The add button #}
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large">
-            <i class="very-large large material-icons modal-trigger" data-target="add-modal">add</i>
+        <a tabindex="0" class="btn-floating btn-large  modal-trigger" href="#add-modal">
+            <i class="very-large large material-icons">add</i>
         </a>
     </div>
 

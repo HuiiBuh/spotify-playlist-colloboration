@@ -62,6 +62,15 @@ td, th {
     max-width: 100%;
 }
 
+button:active {
+    outline: 1px solid blue;
+}
+
+/*Show the current focused element*/
+button:focus, a:focus, i:focus, .tabable:focus {
+    box-shadow: 0 0 0 2pt rgb(209, 211, 255) !important;
+}
+
 /*Add padding to the copyright*/
 #copyright {
     padding: 0 .75rem;

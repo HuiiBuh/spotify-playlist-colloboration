@@ -47,3 +47,9 @@ function cleanForRegex(regexString) {
     if (typeof (regexString) === "string")
         return regexString.replace(/[\\^$*+?.()|[\]{}]/g, '');
 }
+
+function relocateOnEnter(evt) {
+    if (evt.code === "Enter" || evt.code === "NumpadEnter") {
+        window.location.href = evt.currentTarget.getAttribute("link");
+    }
+}

@@ -13,7 +13,12 @@ function addEventHandler() {
         // Add a event on the delete icon
         let user = userList[userID];
         let deleteIcon = user.getElementsByClassName("material-icons")[1];
-        deleteIcon.onclick = deleteUser(user, deleteIcon.id)
+        deleteIcon.onclick = deleteUser(user, deleteIcon.id);
+        deleteIcon.onkeypress = function (evt) {
+            if (evt.code === "Enter" || evt.code === "NumpadEnter") {
+                deleteUser(user, deleteIcon.id)();
+            }
+        }
 
     }
 }

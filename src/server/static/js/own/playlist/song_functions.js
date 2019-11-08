@@ -173,9 +173,15 @@ function displayPlaylistSongs(rootID, songList, type) {
             songDiv.appendChild(addPlaylistDiv);
 
             let addPlaylistIcon = document.createElement("i");
+            addPlaylistIcon.setAttribute("tabindex", "0");
             addPlaylistIcon.setAttribute("class", "material-icons pointer");
             addPlaylistIcon.setAttribute("song-id", id);
             addPlaylistIcon.onclick = addToAddPlaylist(song);
+            addPlaylistIcon.addEventListener("keypress", function (evt) {
+                if (evt.code === "Enter" || evt.code === "NumpadEnter") {
+                    addToAddPlaylist(song)(evt);
+                }
+            });
             addPlaylistIcon.innerText = "playlist_add";
             addPlaylistDiv.appendChild(addPlaylistIcon);
         }

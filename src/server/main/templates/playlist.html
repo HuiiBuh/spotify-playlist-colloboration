@@ -80,7 +80,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <input id="search-playlist-song" class="postfix-input" type="text">
-                    <i class="material-icons postfix prefix" id="clear-search-input">clear</i>
+                    <i tabindex="0" class="material-icons postfix prefix" id="clear-search-input">clear</i>
                     <label class="no-margin-left" for="search-playlist-song">Search</label>
                     <span class="helper-text postfix-input no-margin-left" data-error="wrong" data-success="right">Search for songs in the playlist</span>
                 </div>
@@ -150,8 +150,8 @@
         </div>
 
         <div class="modal-footer" id="add-song-footer">
-            <a class="modal-close waves-effect btn-flat left" style="margin-left: 28px;">Cancel</a>
-            <a class="modal-close waves-effect btn-flat" id="add-song-button">Add Songs</a>
+            <button class="modal-close waves-effect btn-flat left" style="margin-left: 28px;">Cancel</button>
+            <button class="modal-close waves-effect btn-flat" id="add-song-button">Add Songs</button>
         </div>
     </div>
 

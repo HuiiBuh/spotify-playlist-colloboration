@@ -43,7 +43,9 @@
                             <td><a class="material-icons pointer black-text"
                                    href="{{ url_for("admin.spotify_users") }}?spotify-user-id={{ user.id }}">edit</a>
                             </td>
-                            <td><i class="material-icons pointer primary-text-color" id="{{ user_id }}">delete</i></td>
+                            <td>
+                                <i tabindex="0" class="material-icons pointer primary-text-color" id="{{ user_id }}">delete</i>
+                            </td>
                         </tr>
 
                     {% endfor %}

@@ -1,10 +1,11 @@
-KEYS = {
-    "SPOTIFY_CLIENT_ID": "<client id>",
-    "SPOTIFY_CLIENT_SECRET": "<client secret>",
-    "SPOTIFY_REDIRECT_URI": "<callback url>",
-    "SPOTIFY_SCOPES": [
+class KEYS:
+    SPOTIFY_CLIENT_ID = "<client id>"
+    SPOTIFY_CLIENT_SECRET = "<client secret>"
+    SPOTIFY_REDIRECT_URI = "<callback url>"
+    SPOTIFY_STATE = "HuiBuh"
+    SPOTIFY_SCOPES = [
         "playlist-modify-private",
         "playlist-modify-public",
-        "<more scopes>"
+        "user-read-email",
+        "user-read-private"
     ]
-}

@@ -13,8 +13,9 @@ class KEYS:
         "user-read-private"
     ]
 
-    DATABASE_USERNAME = os.environ["DATABASE_USERNAME"]
-    DATABASE_PASSWORD = os.environ["DATABASE_PASSWORD"]
+    DATABASE_USERNAME = os.environ["MYSQL_USER"]
+    DATABASE_PASSWORD = os.environ["MYSQL_PASSWORD"]
+    DATABASE_NAME = os.environ["MYSQL_DATABASE"]
 
     DATABASE_IP = os.environ["DATABASE_IP"]
 

@@ -73,6 +73,7 @@ td, th {
     right: calc(-50vw + 50%);
     margin-left: auto;
     margin-right: auto;
+    bottom: 10%;
 }
 
 /*Make the toast message only use the width of the message*/

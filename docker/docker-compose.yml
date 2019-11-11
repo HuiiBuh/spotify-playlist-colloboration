@@ -12,3 +12,13 @@ services:
     restart: always
     ports:
       - "8080:8080"
+  mysql:
+    build: mysql
+    container_name: database
+    environment:
+      - DATABASE_USER=<your_user>
+      - DATABASE_USER_PASSWORD=<your_password>
+      - FLASK_USER=<your_flask_user>
+      - FLASK_USER_PASSWORD=<flask_user_password>
+    restart: always
+

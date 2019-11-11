@@ -10,7 +10,12 @@ function addEventHandler() {
             let user = userList[userNumber];
             let deleteIcon = user.getElementsByClassName("material-icons")[1];
 
-            deleteIcon.onclick = deleteSpotifyUser(user, deleteIcon.id)
+            deleteIcon.onclick = deleteSpotifyUser(user, deleteIcon.id);
+            deleteIcon.onkeypress = function (evt) {
+                if (evt.code === "Enter" || evt.code === "NumpadEnter") {
+                    deleteSpotifyUser(user, deleteIcon.id)();
+                }
+            }
         }
     }
 }

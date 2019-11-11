@@ -47,7 +47,7 @@
                             <a class="pointer underline black-text" hover-on-touch
                                onclick="window.open('{{ playlist.owner.external_urls.spotify }}')">{{ playlist.owner.display_name }}</a>
                         </td>
-                        <td><i class="material-icons pointer primary-text-color">delete</i></td>
+                        <td><i tabindex="0" class="material-icons pointer primary-text-color">delete</i></td>
                     </tr>
                 {% endfor %}
 
@@ -97,7 +97,7 @@
 
     {# The add button for the playlists #}
     <div class="right-align">
-        <a class="waves-effect btn-flat" id="add-playlist">Add</a>
+        <button class="waves-effect btn-flat" id="add-playlist">Add</button>
     </div>
 
 

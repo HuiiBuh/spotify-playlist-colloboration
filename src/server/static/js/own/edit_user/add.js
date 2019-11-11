@@ -104,8 +104,14 @@ function displayPlaylists(playlistJSON) {
 
             let deleteIcon = document.createElement("i");
             deleteIcon.setAttribute("class", "material-icons pointer primary-text-color");
+            deleteIcon.setAttribute("tabindex", "0");
             deleteIcon.innerText = "delete";
             deleteIcon.onclick = removePlaylistFromUser(playlistTr, playlist["id"], playlist["name"]);
+            deleteIcon.onkeydown = function (event) {
+                if (event.code === "Enter" || event.code === "NumpadEnter") {
+                    removePlaylistFromUser(playlistTr, playlist["id"], playlist["name"])();
+                }
+            };
             deleteTd.appendChild(deleteIcon);
         }
         sort.refresh();

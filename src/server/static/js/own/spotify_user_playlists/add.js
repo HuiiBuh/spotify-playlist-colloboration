@@ -26,6 +26,7 @@ function addPlaylistToUser(playlistID) {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             M.toast({html: "Successfully added an new playlist", classes: "bg-success"});
+            document.getElementById("playlist-id").value = null;
             displayNewPlaylist(JSON.parse(this.responseText));
         } else if (this.readyState === 4) {
             showErrorMessage(this);

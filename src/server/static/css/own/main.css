@@ -79,6 +79,7 @@ button:active {
     margin-left: auto;
     margin-right: auto;
     bottom: 10%;
+    top: auto !important;
 }
 
 /*Make the toast message only use the width of the message*/

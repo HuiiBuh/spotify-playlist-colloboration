@@ -1,24 +1,39 @@
 version: "3"
 services:
+
+  # The database container
+  mysql:
+    build: mysql
+    container_name: database
+    environment:
+      - DATABASE_ROOT_PASSWORD=<root_user_password>
+      - MYSQL_USER=<your_user>
+      - MYSQL_PASSWORD=<your_password>
+      - MYSQL_DATABASE=spotify_playlist
+    restart: always
+
+  # The flask container in which the app runs
   flask:
     build: flask
     container_name: flask
+    links:
+      - mysql
+    environment:
+      - SPOTIFY_CLIENT_ID=<client id>
+      - SPOTIFY_CLIENT_SECRET=<client secret>
+      - SPOTIFY_REDIRECT_URI=<callback url>
+      - SPOTIFY_STATE=<state>
+      - DATABASE_USER=<your_database_user>
+      - DATABASE_PASSWORD=<database_user_password>
+
     restart: always
     expose:
       - 5555
+
+  # The server that hosts the files
   nginx:
     build: nginx
     container_name: nginx
     restart: always
     ports:
       - "8080:8080"
-  mysql:
-    build: mysql
-    container_name: database
-    environment:
-      - DATABASE_USER=<your_user>
-      - DATABASE_USER_PASSWORD=<your_password>
-      - FLASK_USER=<your_flask_user>
-      - FLASK_USER_PASSWORD=<flask_user_password>
-    restart: always
-

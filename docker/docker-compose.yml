@@ -23,8 +23,10 @@ services:
       - SPOTIFY_CLIENT_SECRET=<client secret>
       - SPOTIFY_REDIRECT_URI=<callback url>
       - SPOTIFY_STATE=<state>
-      - DATABASE_USER=<your_database_user>
+      - DATABASE_USERNAME=<your_database_user>
       - DATABASE_PASSWORD=<database_user_password>
+      - DEFAULT_USER=<default_user_password>
+      - DEFAULT_USER_PASSWORD=<default_user_password>
 
     restart: always
     expose:

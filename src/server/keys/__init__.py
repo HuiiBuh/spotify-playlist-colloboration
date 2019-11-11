@@ -1,1 +1,1 @@
-from .key_template_production import KEYS
+from .keys import KEYS

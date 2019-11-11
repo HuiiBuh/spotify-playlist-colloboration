@@ -1,7 +1,9 @@
+import os
+
 import sqlalchemy
 from argon2 import PasswordHasher, Type
 
-from server import db
+from server import db, KEYS
 from server.main.modals import User
 
 
@@ -19,5 +21,5 @@ def create_user(username, password, admin):
         print("The user already exists")
 
 
-create_user(username="default", password="default", admin=True)
+create_user(username=KEYS.DEFAULT_USER, password=KEYS.DEFAULT_USER_PASSWORD, admin=True)
 print("Success")

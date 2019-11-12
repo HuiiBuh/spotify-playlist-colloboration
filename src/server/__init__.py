@@ -1,4 +1,3 @@
-import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -6,16 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 import server.admin
 import server.api
-from create_default_user import create_user
 from server.config import Config
 from server.keys import KEYS
 from server.spotify import Spotify, SpotifyAppInfo, SpotifyAuthorisationToken
-
-os.system("flask db init")
-os.system("flask db migrate")
-os.system("flask db upgrade")
-
-create_user(KEYS.DEFAULT_USER, KEYS.DEFAULT_USER_PASSWORD)
 
 
 # create flask app

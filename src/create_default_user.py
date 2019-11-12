@@ -1,5 +1,3 @@
-import os
-
 import sqlalchemy
 from argon2 import PasswordHasher, Type
 
@@ -21,5 +19,6 @@ def create_user(username, password, admin):
         print("The user already exists")
 
 
-create_user(username=KEYS.DEFAULT_USER, password=KEYS.DEFAULT_USER_PASSWORD, admin=True)
-print("Success")
+if __name__ == "__main__":
+    create_user(username=KEYS.DEFAULT_USER, password=KEYS.DEFAULT_USER_PASSWORD, admin=True)
+    print("Success")

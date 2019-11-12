@@ -22,3 +22,5 @@ class KEYS:
 
     DEFAULT_USER = os.environ["DEFAULT_USER"]
     DEFAULT_USER_PASSWORD = os.environ["DEFAULT_USER_PASSWORD"]
+
+    SECRET_KEY = os.environ["SECRET_KEY"]

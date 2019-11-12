@@ -17,8 +17,10 @@ flask-wtf==0.14.2
 # database
 flask-sqlalchemy==2.4.1
 flask-migrate==2.5.2
-mysqlclient
 
+mysqlclient
+PyMySQL
+SQLAlchemy
 
 # login and passwords
 flask-login

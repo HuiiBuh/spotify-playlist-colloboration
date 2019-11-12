@@ -2,13 +2,6 @@
 
 This Web application lets users add tracks to a spotify playlist. 
 
-# Set env Variables
-
-```bash
-FLASK_APP=main.py
-```
-
-
 ## Installation
 
 See [Install with docker](/docker)

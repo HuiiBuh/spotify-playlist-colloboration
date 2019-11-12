@@ -56,7 +56,11 @@
                 {# Cover image of the playlist #}
                 <div class="col s4 m2 center no-padding height-140">
                     <div class="rectangle pulse">
-                        <div class="image background-image" onclick="location.href = '?playlist-id={{ id }}'"
+                        <div tabindex="0" class="image tabable background-image"
+                             onclick="location.href = '?playlist-id={{ id }}'"
+                             onkeydown="relocateOnEnter(event)"
+                             link="?playlist-id={{ id }}"
+                             onkeydown=""
                              style="background-image: url('{{ playlist["image_url"] }}'); cursor: pointer"></div>
                     </div>
                 </div>

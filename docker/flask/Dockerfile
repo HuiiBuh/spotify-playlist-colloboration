@@ -1,10 +1,21 @@
 FROM python:3.7.3-stretch
+
 WORKDIR /app
-COPY ./src/ /app
-COPY app.ini /app
-# flask db init
-# flask db migrate
-# flask db upgrade
-# python3 edit_database.py
-RUN pip install -r ./requirements.txt
-CMD ["uwsgi","app.ini"]
+RUN pip install --upgrade pip
+
+# Clone the github repo
+RUN git clone https://github.com/HuiiBuh/spotify-playlist-colloboration.git /app
+
+# Remove the static files
+RUN rm -r /app/src/server/static
+# Install the requirements
+RUN pip install -r ./src/requirements.txt
+# Copy the wsgi ini file
+COPY app.ini /app/src
+
+WORKDIR /app/src
+RUN cd /app/src
+
+# Server the application
+RUN  chmod +x start.sh
+CMD ./start.sh

@@ -62,6 +62,11 @@ td, th {
     max-width: 100%;
 }
 
+button:active {
+    outline: 1px solid blue;
+}
+
+
 /*Add padding to the copyright*/
 #copyright {
     padding: 0 .75rem;
@@ -73,6 +78,8 @@ td, th {
     right: calc(-50vw + 50%);
     margin-left: auto;
     margin-right: auto;
+    bottom: 10%;
+    top: auto !important;
 }
 
 /*Make the toast message only use the width of the message*/

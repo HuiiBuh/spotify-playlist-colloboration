@@ -1,13 +1,13 @@
 /**
  * Add the playlist to the spotify user
- * @returns {Promise<number>}
  */
-async function addPlaylist() {
+function addPlaylist() {
     let playlistID = document.getElementById("playlist-id").value;
 
     //Check if the playlist is empty
     if (playlistID === "" || /^ *$/.test(playlistID)) {
-        M.toast({html: "You passed an empty playlist", classes: "bg-warning"})
+        M.toast({html: "You passed an empty playlist", classes: "bg-warning"});
+        return;
     }
 
     //Add the playlist to the user
@@ -25,7 +25,8 @@ function addPlaylistToUser(playlistID) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            M.toast({html: "Success", classes: "bg-success"});
+            M.toast({html: "Successfully added an new playlist", classes: "bg-success"});
+            document.getElementById("playlist-id").value = null;
             displayNewPlaylist(JSON.parse(this.responseText));
         } else if (this.readyState === 4) {
             showErrorMessage(this);
@@ -71,9 +72,15 @@ function displayNewPlaylist(json) {
 
     let deleteIcon = document.createElement("i");
     deleteIcon.setAttribute("class", "material-icons  pointer primary-text-color");
+    deleteIcon.setAttribute("tabindex", "0");
     deleteIcon.innerText = "delete";
     deleteIcon.id = json["id"];
     deleteIcon.onclick = deletePlaylist(tr, json["id"]);
+    deleteIcon.onkeypress = function (evt) {
+        if (evt.code === "Enter" || evt.code === "NumpadEnter") {
+            deletePlaylist(tr, json["id"])();
+        }
+    };
     deleteTd.appendChild(deleteIcon);
     sort.refresh();
 }

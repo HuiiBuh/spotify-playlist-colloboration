@@ -17,6 +17,10 @@ function addEventHandler() {
         let deleteIcon = playlist.getElementsByClassName("material-icons")[0];
         let name = playlist.getElementsByClassName("playlist-name")[0].innerText;
         deleteIcon.onclick = removePlaylistFromUser(playlist, playlist["id"], name);
-
+        deleteIcon.onkeypress = function (evt) {
+            if (evt.code === "Enter" || evt.code === "NumpadEnter") {
+                removePlaylistFromUser(playlist, playlist["id"], name)();
+            }
+        }
     }
 }

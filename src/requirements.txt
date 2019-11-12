@@ -18,6 +18,11 @@ flask-wtf==0.14.2
 flask-sqlalchemy==2.4.1
 flask-migrate==2.5.2
 
+mysqlclient
+PyMySQL
+SQLAlchemy
+cryptography
+
 # login and passwords
 flask-login
 argon2-cffi

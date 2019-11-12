@@ -1,9 +1,8 @@
-import os
-
-base_dir = os.path.abspath(os.path.dirname(__file__))
+from server.keys import KEYS
 
 
 class Config(object):
-    SECRET_KEY = "HuiBuh"
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(base_dir, 'app.db')
+    SECRET_KEY = KEYS.SECRET_KEY
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{KEYS.DATABASE_USERNAME}:{KEYS.DATABASE_PASSWORD}@{KEYS.DATABASE_IP}:" \
+                              f"{KEYS.DATABASE_PORT}/{KEYS.DATABASE_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False

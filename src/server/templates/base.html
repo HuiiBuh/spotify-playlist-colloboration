@@ -66,9 +66,9 @@
 
             <li class="divider"></li>
 
-            <li><a href="{{ url_for("admin.spotify_users") }}">Spotify Users</a></li>
-            <li><a href="{{ url_for("admin.users") }}">Users</a></li>
-            <li><a href="{{ url_for("main.logout") }}">Logout</a></li>
+            <li><a href="{{ url_for("admin.spotify_users") }}" tabindex="-1">Spotify Users</a></li>
+            <li><a href="{{ url_for("admin.users") }}" tabindex="-1">Users</a></li>
+            <li><a href="{{ url_for("main.logout") }}" tabindex="-1">Logout</a></li>
         </ul>
 
     {% else %}
@@ -143,7 +143,12 @@
     <script type="text/javascript" src="/static/js/libraries/tablesort.min.js"></script>
     <script type="text/javascript" src="/static/js/libraries/tablesort.number.min.js "></script>
     <script type="text/javascript">
-        let sort = new Tablesort(document.getElementsByTagName("table")[0]);
+        let sort;
+        try {
+            sort = new Tablesort(document.getElementsByTagName("table")[0]);
+        } catch (Error) {
+
+        }
     </script>
 {% endif %}
 

@@ -15,13 +15,13 @@
     </div>
 
     <div class="table-wrapper">
-        <table class="striped highlight own-responsive-table" >
+        <table class="striped highlight own-responsive-table">
             <thead>
             <tr>
                 <th data-sort-default>Name</th>
                 <th>Author</th>
                 <th data-sort-method='number'>Track count</th>
-                <th style="width: 1px" data-sort-method='none'></th>
+                <th  style="width: 1px" data-sort-method='none'></th>
             </tr>
             </thead>
             <tbody id="insert">
@@ -41,7 +41,7 @@
                                onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
                         </td>
                         <td>{{ playlist.track_count }}</td>
-                        <td><i class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i>
+                        <td><i tabindex="0" class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i>
                         </td>
                     </tr>
                 {% endfor %}
@@ -65,7 +65,7 @@
 
     <div class="row flex-v-center">
         <div class="input-field col s10">
-            <input id="playlist-id" type="text" class="validate">
+            <input id="playlist-id" type="text">
             <label for="playlist-id">Playlist ID</label>
         </div>
         <button class="btn-flat col s2 primary-bg-color white-text" id="add-button">Add</button>

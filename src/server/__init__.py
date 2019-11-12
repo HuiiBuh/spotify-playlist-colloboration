@@ -1,14 +1,14 @@
 from flask import Flask
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
-from server.spotify import Spotify, SpotifyAppInfo, SpotifyAuthorisationToken, KEYS
+from flask_sqlalchemy import SQLAlchemy
 
 import server.admin
 import server.api
-
 from server.config import Config
+from server.keys import KEYS
+from server.spotify import Spotify, SpotifyAppInfo, SpotifyAuthorisationToken
+
 
 # create flask app
 app = Flask(__name__)

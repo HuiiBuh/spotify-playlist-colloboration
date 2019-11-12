@@ -1,12 +1,14 @@
-echo "Init" /dev/stdout
+sleep 10
+
+echo "Init************************************************************"
 flask db init
-echo "Migrate" /dev/stdout
+echo "Migrate************************************************************"
 flask db migrate
-echo "Upgrade" /dev/stdout
+echo "Upgrade************************************************************"
 flask db upgrade
 
-echo "Create user" /dev/stdout
+echo "Create user************************************************************"
 python3 create_default_user.py
 
-echo "Start" /dev/stdout
+echo "Start************************************************************************"
 uwsgi app.ini

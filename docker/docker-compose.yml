@@ -41,8 +41,11 @@ services:
     build: nginx
     restart: always
 
+    environment:
+      - SSL_PORT=9999
+
     depends_on:
       - spotify_flask
 
     ports:
-      - "8888:80"
+      - "9999:2222"

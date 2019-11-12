@@ -1,11 +1,16 @@
-/*Add the pulse class to make a elment pulse*/
-.pulse {
+/*Add the pulse class to make a element pulse*/
+.own-pulse {
     animation: pulse 1s ease-in;
     margin: 0 auto;
     display: table;
     animation-direction: alternate;
     -webkit-animation-name: pulse;
     animation-name: pulse;
+}
+
+/*Stop materialize adding own css to pulse*/
+.own-pulse::before {
+    content: none !important;
 }
 
 /*Scale the image*/

@@ -21,6 +21,7 @@ flask-migrate==2.5.2
 mysqlclient
 PyMySQL
 SQLAlchemy
+cryptography
 
 # login and passwords
 flask-login

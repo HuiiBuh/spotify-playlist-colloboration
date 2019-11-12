@@ -92,7 +92,7 @@ function displayPlaylistSongs(rootID, songList, type) {
 
         let image = document.createElement("img");
         image.setAttribute("alt", "cover");
-        image.src = cover;
+        image.setAttribute("data-src", cover);
         imageDiv.appendChild(image);
 
         let informationDiv = document.createElement("div");
@@ -215,4 +215,8 @@ function displayPlaylistSongs(rootID, songList, type) {
 
     //Update the hover on touch so every song gets picked up
     hoverOnTouch.reinitialise();
+
+    // Start the lazy loading of the images
+    let images = document.getElementsByTagName("img");
+    lazyload(images);
 }

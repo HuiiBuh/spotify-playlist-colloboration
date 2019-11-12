@@ -21,3 +21,4 @@ See [Install with docker](/docker)
 + [florantara](https://codepen.io/florantara/pen/dROvdb) for the responsive table
 + [Tristen Brown](https://github.com/tristen/tablesort/) for the sortable table
 + [David Gilbertson](https://medium.com/hackernoon/removing-that-ugly-focus-ring-and-keeping-it-too-6c8727fefcd2) for the inspiration in the focus solution
++ [Mika Tuupola](https://github.com/tuupola/lazyload) for the lazy loading images

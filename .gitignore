@@ -11,4 +11,5 @@ src/server/keys/key_template_production.py
 src/server/settings/settings_production.json
 docker/flask/src/
 stale_outputs_checked
-
+src/environment_own.sh
+docker/.env

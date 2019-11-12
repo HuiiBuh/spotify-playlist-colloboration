@@ -1,7 +1,7 @@
 # Installation with docker
 
 + Replace the key_template file with the key_template_production file in the spotify module and insert your app data.
-+ 
++ To update a container `docker-compose up -d --no-deps --build <service_name>`
 
 
 ## MySQL:

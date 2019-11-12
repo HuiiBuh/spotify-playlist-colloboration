@@ -17,6 +17,7 @@ class KEYS:
     DATABASE_PASSWORD = os.environ["MYSQL_PASSWORD"]
     DATABASE_NAME = os.environ["MYSQL_DATABASE"]
 
+    DATABASE_PORT = os.environ["DATABASE_PORT"]
     DATABASE_IP = os.environ["DATABASE_IP"]
 
     DEFAULT_USER = os.environ["DEFAULT_USER"]

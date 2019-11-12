@@ -6,9 +6,6 @@ RUN pip install --upgrade pip
 # Clone the github repo
 RUN git clone https://github.com/HuiiBuh/spotify-playlist-colloboration.git /app
 
-#TODO remove later
-RUN git checkout dev
-
 # Remove the static files
 RUN rm -r /app/src/server/static
 # Install the requirements

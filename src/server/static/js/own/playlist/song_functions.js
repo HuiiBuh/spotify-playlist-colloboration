@@ -64,9 +64,13 @@ function jsonToSongList(json, type, appendList = []) {
 function displayPlaylistSongs(rootID, songList, type) {
     let root = document.getElementById(rootID);
 
+    if (type === "spotify-search") {
+        root.style.height = "100vh";
+        root.innerText = "";
+    }
+
     songList.forEach(song => {
         let {cover, title, url, artist: artistList, album, durationHumanReadable, id} = song;
-
 
         if (type === "spotify-search") {
             var songDiv = document.createElement("li");
@@ -81,6 +85,7 @@ function displayPlaylistSongs(rootID, songList, type) {
             songDiv.setAttribute("hover-on-touch", "");
             root.appendChild(songDiv);
         }
+
         let imageDiv = document.createElement("div");
         imageDiv.setAttribute("class", "col s2 m1 center flex-v-center song-cover-div");
         songDiv.appendChild(imageDiv);
@@ -168,6 +173,7 @@ function displayPlaylistSongs(rootID, songList, type) {
             icon.onclick = deleteAddSong(song);
             iconDiv.appendChild(icon);
         } else if (type === "spotify-search") {
+
             let addPlaylistDiv = document.createElement("div");
             addPlaylistDiv.setAttribute("class", "col s2 m1 flex-end  flex-v-center");
             songDiv.appendChild(addPlaylistDiv);
@@ -186,6 +192,21 @@ function displayPlaylistSongs(rootID, songList, type) {
             addPlaylistDiv.appendChild(addPlaylistIcon);
         }
     });
+
+    if (type === "spotify-search") {
+        root.style.height = "auto";
+
+        if (songList.length <= 0) {
+            let nothingFound = document.createElement("li");
+            root.appendChild(nothingFound);
+
+            let messageSpan = document.createElement("span");
+            messageSpan.innerText = "Nothing was found";
+            messageSpan.style.color = "black";
+            nothingFound.appendChild(messageSpan);
+        }
+
+    }
 
     if (type === "main") {
         root.style.display = "block";

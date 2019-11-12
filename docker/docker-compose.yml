@@ -2,32 +2,47 @@ version: "3"
 services:
 
   # The database container
-  mysql:
-    env_file:
-      - database.env
+  spotify_database:
     container_name: spotify_database
     build: mysql
     restart: always
 
-  # The flask container in which the app runs
-  flask:
     env_file:
-      - flask.env
-      - database.env
+      - .env
+
+    expose:
+      - 3306
+
+  # The flask container in which the app runs
+  spotify_flask:
+    container_name: spotify_flask
+    build: flask
+    restart: always
+
+    env_file:
+      - .env
 
     environment:
-      - DATABASE_IP=mysql
+      - DATABASE_IP=spotify_database
+      - DATABASE_PORT=3306
 
-    container_name: spotify_flask
-    restart: always
-    build: flask
+    links:
+      - spotify_database
+
+    depends_on:
+      - spotify_database
+
     expose:
       - 5555
 
   # The server that hosts the files
-  nginx:
+  spotify_nginx:
     container_name: spotify_nginx
-    restart: always
     build: nginx
+    restart: always
+
+    depends_on:
+      - spotify_flask
+
     ports:
-      - "8080:8080"
+      - "8888:80"

@@ -244,6 +244,6 @@ def modify_playlist_json(playlist_json: dict) -> dict:
     try:
         return_playlist["image_url"] = playlist_json["images"][0]["url"]
     except IndexError:
-        return_playlist["image_url"] = "/static/icons/Playlist_Placeholder.svg"
+        return_playlist["image_url"] = "/static/icons/default_playlist_cover.png"
 
     return return_playlist

@@ -35,6 +35,15 @@ td, th {
     background-repeat: no-repeat;
 }
 
+/*Css to measure the width of the scrollbar*/
+.scrollbar-measure {
+    width: 100px;
+    height: 100px;
+    overflow: scroll;
+    position: absolute;
+    top: -9999px;
+}
+
 /*Add a icon behind a input*/
 .postfix {
     position: absolute;
@@ -62,10 +71,10 @@ td, th {
     max-width: 100%;
 }
 
-button:active {
-    outline: 1px solid blue;
+/*Remove outline from elements*/
+*:active, *:focus {
+    outline: none;
 }
-
 
 /*Add padding to the copyright*/
 #copyright {

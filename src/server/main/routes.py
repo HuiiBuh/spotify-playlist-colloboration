@@ -27,8 +27,10 @@ def home() -> render_template:
         playlist_list_json = {}
         for playlist in playlist_list:
             auth_token = get_token_by_playlist(playlist.spotify_id)
-            playlist_list_json[playlist.spotify_id] = \
-                modify_playlist_json(spotify.playlist(playlist.spotify_id, auth_token))
+
+            if auth_token:
+                playlist_list_json[playlist.spotify_id] = \
+                    modify_playlist_json(spotify.playlist(playlist.spotify_id, auth_token))
 
         return render_template("select.html", title="Select Playlist", playlist_list_json=playlist_list_json)
 

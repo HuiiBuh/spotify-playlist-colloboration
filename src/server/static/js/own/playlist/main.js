@@ -11,6 +11,8 @@ window.onload = function () {
     getPlaylistInfo();
     getPlaylistSongs();
     addEventHandler();
+    addScrollSearch();
+    getScrollbarWidth();
 };
 
 /**
@@ -43,4 +45,11 @@ function addEventHandler() {
             document.getElementById("search-preview").innerText = ""
         }
     });
+
+    let modal = M.Modal.init(document.getElementById("song-modal"), {"onOpenEnd": removeTransform})
+
+}
+
+function removeTransform() {
+    document.getElementById("song-modal").style.transform = "none";
 }

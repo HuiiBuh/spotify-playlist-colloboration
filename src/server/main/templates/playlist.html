@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block css %}
-    <link type="text/css" rel="stylesheet" href="/static/css/own/loading.css"
-          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/loading.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/search_modal.css" media="screen,projection"/>
 {% endblock %}
 
 {% block javascript_variables %}
@@ -121,6 +121,7 @@
 
 
     <div id="song-modal" class="modal">
+        <i class="custom-close modal-close material-icons" style="margin-right: 6px; margin-top:6px; font-size:3em">close</i>
         <div class="modal-content">
             <h4>Search for Songs</h4>
 
@@ -131,6 +132,7 @@
                     <div class="chip small-hide-chip">album:8 Mile<i class="close material-icons">close</i></div>
                     <div class="chip small-hide-chip">year:2002<i class="close material-icons">close</i></div>
                 </div>
+                <div class="col s12" id="sticky-indicator"></div>
                 <div class="input-field col s12" id="click-exception">
                     <i class="material-icons prefix" id="search-song-icon">search</i>
                     <label for="new-song-search">Song search</label>
@@ -165,5 +167,6 @@
     <script type="text/javascript" src="/static/js/own/playlist/song_functions.js"></script>
     <script type="text/javascript" src="/static/js/own/playlist/search_playlist.js"></script>
     <script type="text/javascript" src="/static/js/own/playlist/spotify_search.js"></script>
+    <script type="text/javascript" src="/static/js/own/playlist/scroll_search.js"></script>
     <script type="text/javascript" src="/static/js/own/playlist/main.js"></script>
 {% endblock %}

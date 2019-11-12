@@ -36,42 +36,6 @@
 }
 
 
-/*Make the modal more space efficient for smaller devices*/
-@media (max-width: 460px) {
-    /*Make the padding smaller*/
-    .modal .modal-content {
-        padding: 10px;
-    }
-
-    /*Put the label at thr right place*/
-    .input-field .prefix ~ label {
-        margin-left: 0;
-    }
-
-    /*Dont display the search icon*/
-    #search-song-icon {
-        display: none;
-    }
-
-    /*Change the width of the input so it uses the width of the icon as well*/
-    #new-song-search {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    /*Make the label equally large as the search*/
-    #new-song-search + label {
-        width: 99%;
-        margin-left: 0;
-    }
-
-    /*Change the width of the autocomplete*/
-    .show-autocomplete {
-        width: calc(100% - 1.5rem);
-        left: .76rem;
-    }
-}
-
 /*Hide the artist if the screen gets too small */
 @media screen and (max-width: 660px) {
     .artist, .artist-separator {
@@ -89,5 +53,70 @@
 @media screen and (max-width: 800px) {
     .small-hide-chip {
         display: none;
+    }
+}
+
+
+.custom-close {
+    display: none
+}
+
+.modal {
+    transition: 0.15s all ease-out;
+    -webkit-transition: 0.15s all ease-out;
+}
+
+@media screen and (max-width: 600px) {
+    .modal {
+        max-height: 100%;
+        width: 100%;
+        height: 100%;
+        top: 0 !important;
+        border-radius: 0;
+
+        transition: 0.15s all ease-out;
+        -webkit-transition: 0.15s all ease-out;
+    }
+
+    #add-song-footer {
+        position: fixed !important;
+    }
+
+    #song-modal .modal-content {
+        max-height: calc(100vh - 56px);
+    }
+
+    /*For the sticky search*/
+    .sticky {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        right: 0 !important;
+        left: 0 !important;
+        background: #fafafa;
+    }
+
+    .sticky:before {
+        content: "";
+        background-color: #fafafa;
+        height: 1rem;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+
+    .sticky > .show-autocomplete {
+        right: 0;
+        width: auto;
+    }
+
+    .custom-close {
+        position: fixed;
+        display: block;
+        top: 0;
+        right: var(--scrollbar-width);
+        z-index: 10;
     }
 }

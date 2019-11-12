@@ -1,0 +1,35 @@
+/*Make the modal more space efficient for smaller devices*/
+@media (max-width: 460px) {
+    /*Make the padding smaller*/
+    .modal .modal-content {
+        padding: 10px;
+    }
+
+    /*Put the label at thr right place*/
+    .input-field .prefix ~ label {
+        margin-left: 0;
+    }
+
+    /*Dont display the search icon*/
+    #search-song-icon {
+        display: none;
+    }
+
+    /*Change the width of the input so it uses the width of the icon as well*/
+    #new-song-search {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    /*Make the label equally large as the search*/
+    #new-song-search + label {
+        width: 99%;
+        margin-left: 0;
+    }
+
+    /*Change the width of the autocomplete*/
+    .show-autocomplete {
+        width: calc(100% - 1.5rem);
+        left: .76rem;
+    }
+}

@@ -391,6 +391,12 @@ def remove_user():
     if not user:
         return abort(400, "The user id you provided does not exist")
 
+    if user.is_admin and not current_user.is_root:
+        return abort(400, "You can not remove admin users")
+
+    if user.is_root:
+        return abort(400, "You can not delete the root user")
+
     db.session.delete(user)
     db.session.commit()
     return ""

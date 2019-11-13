@@ -101,7 +101,7 @@
     </div>
 
 
-    {% if current_user_id == user_id %}
+    {% if current_user_id == user_id or current_user.is_root %}
 
         {# Modal to change the users password#}
         <div id="edit-password" class="modal">
@@ -115,11 +115,14 @@
                     <h4>Change user password</h4>
                     <div class="row flex-v-center">
 
-                        {# Current password #}
-                        <div class="input-field col s12">
-                            {{ form.current_password(size=32) }}
-                            {{ form.current_password.label }}
-                        </div>
+                        {% if not current_user.is_root or (user_id == current_user.id and current_user.is_admin) %}
+                            {# Current password #}
+                            <div class="input-field col s12">
+                                {{ form.current_password(size=32) }}
+                                {{ form.current_password.label }}
+                            </div>
+                        {% endif %}
+
                     </div>
 
                     {# Checkbox admin #}
@@ -127,12 +130,12 @@
 
                         {# New password #}
                         <div class="input-field col s6">
-                            {{ form.new_password(size=32) }}
+                            {{ form.new_password() }}
                             {{ form.new_password.label }}
                         </div>
 
                         <div class="input-field col s6">
-                            {{ form.confirmed_new_password(size=32) }}
+                            {{ form.confirmed_new_password() }}
                             {{ form.confirmed_new_password.label }}
                         </div>
                     </div>

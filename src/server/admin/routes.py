@@ -70,7 +70,7 @@ def edit_user() -> redirect:
     if not user_id:
         return "No user id was provided"
 
-    if current_user.id != int(user_id):
+    if current_user.id != int(user_id) and not current_user.is_root:
         return render_template("authorisation_error.html", title="403")
 
     # Create a password hasher
@@ -82,12 +82,14 @@ def edit_user() -> redirect:
         return "You did not input all the required forms"
 
     # checks if all relevant data filed have been filled
-    if current_user.check_password(form.current_password.data):
+    if current_user.check_password(form.current_password.data) or \
+            (current_user.is_root and not current_user.id == int(user_id)):
 
         if form.new_password.data == form.confirmed_new_password.data:
-            current_user.password_hash = ph.hash(form.confirmed_new_password.data)
+            user = User.query.filter(User.id == int(user_id)).first()
+            user.password_hash = ph.hash(form.confirmed_new_password.data)
             db.session.commit()
-            return redirect(url_for("admin.users") + f"user-id={current_user.id}")
+            return redirect(url_for("admin.users") + f"?user-id={user.id}")
         else:
             return "The passwords did not match"
     else:

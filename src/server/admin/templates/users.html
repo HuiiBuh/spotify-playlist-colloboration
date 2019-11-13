@@ -19,8 +19,8 @@
                 <th data-sort-default>Username</th>
                 <th>Admin</th>
                 <th data-sort-method='number'>Playlists</th>
-                <th  style="width: 1px" data-sort-method='none'></th>
-                <th  style="width: 1px" data-sort-method='none'></th>
+                <th style="width: 1px" data-sort-method='none'></th>
+                <th style="width: 1px" data-sort-method='none'></th>
             </tr>
             </thead>
             <tbody>
@@ -66,7 +66,10 @@
                         {{ form.username.label }}
                     </div>
 
-
+                    <div class="input-field col s6">
+                        {{ form.password }}
+                        {{ form.password.label }}
+                    </div>
                 </div>
 
                 {# Checkbox admin #}

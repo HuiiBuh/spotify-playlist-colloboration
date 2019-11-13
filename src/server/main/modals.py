@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     """
     id = db.Column(db.Integer, primary_key=True)
     is_admin = db.Column(db.Boolean, nullable=False)
+    is_root = db.Column(db.Boolean, default=False)
     username = db.Column(db.String(64), nullable=False, index=True, unique=True)
     password_hash = db.Column(db.Text, nullable=False)
     playlists = db.relationship("Playlist", secondary=user_playlists, backref=db.backref("users", lazy="joined"))
@@ -67,7 +68,7 @@ class SpotifyUser(db.Model):
     activated_at = db.Column(db.BigInteger)
     playlists = db.relationship('Playlist', backref='SpotifyUser', lazy="joined", cascade="all, delete, delete-orphan",
                                 passive_deletes=True)
-    
+
     __mapper_args__ = {"order_by": id}
 
 

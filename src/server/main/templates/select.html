@@ -3,12 +3,18 @@
 {% block css %}
     <link type="text/css" rel="stylesheet" href="/static/css/own/pulse.css"
           media="screen,projection"/>
+
+    <style>
+        .z-depth-3 {
+            box-shadow: none;
+        }
+    </style>
 {% endblock %}
 
 {% block main %}
 
     <div class="center">
-        <h3>Select a Playlist</h3>
+        <h3 style="text-align: left; padding-left: .75rem">Select a Playlist</h3>
 
         {# If the user has not playlists #}
         {% if playlist_list_json == {} %}
@@ -18,62 +24,28 @@
             <h6 class="margin-top">Your user currently has no playlist assigned to him</h6>
         {% endif %}
 
-        {# For every playlist of the user #}
-        {% for id, playlist in playlist_list_json.items() %}
+        <div class="row flex-center">
 
-            {# Playlist #}
-            <div class="row flex-v-center select-playlist" hover-on-touch>
-                {# Information of the playlist #}
-                <div class="col s8 m10">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td class="bold">Title</td>
-                            <td class="bold">
-                                <a class="pointer underline  black-text" hover-on-touch
-                                   onclick="window.open('{{ playlist["url"] }}')">{{ playlist["name"] }}</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Author</td>
-                            <td>
-                                <a class="pointer underline  black-text" hover-on-touch
-                                   onclick="window.open('{{ playlist["author"]["url"] }}')">
-                                    {{ playlist["author"]["name"] }}
-                                </a></td>
-                        </tr>
-                        <tr class="hide-medium">
-                            <td>Song Count</td>
-                            <td>{{ playlist.track_count }}</td>
-                        </tr>
-                        <tr class="hide-medium">
-                            <td>ID</td>
-                            <td>{{ id }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                {# Cover image of the playlist #}
-                <div class="col s4 m2 center no-padding height-140">
-                    <div class="rectangle own-pulse">
-                        <div tabindex="0" class="image tabable background-image"
-                             onclick="location.href = '?playlist-id={{ id }}'"
-                             onkeydown="relocateOnEnter(event)"
-                             link="?playlist-id={{ id }}"
-                             onkeydown=""
-                             style="background-image: url('{{ playlist["image_url"] }}'); cursor: pointer"></div>
+
+            {# For every playlist of the user #}
+            {% for id, playlist in playlist_list_json.items() %}
+
+                <div class="col s5 m4 l3 xl2 small-margin-bottom">
+                    <div class="card">
+                        <div class="card-image pointer" onclick="location.href = '?playlist-id={{ id }}'">
+                            <img alt="cover image" src="{{ playlist["image_url"] }}">
+                        </div>
+                        <div class="card-content">
+                            <a class="card-title black-text underline pointer"
+                               href="?playlist-id={{ id }}">{{ playlist["name"] }}</a>
+                            <a class="pointer black-text underline"
+                               href="{{ playlist["url"] }}">{{ playlist["author"]["name"] }}</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {# Add a divider between the playlists#}
-            {% if playlist_list_json | first == id  and playlist_list_json | length > 1 %}
-                <ul>
-                    <li class="divider"></li>
-                </ul>
-            {% endif %}
+            {% endfor %}
 
-        {% endfor %}
-
+        </div>
     </div>
 {% endblock %}

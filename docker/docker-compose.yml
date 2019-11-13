@@ -4,7 +4,7 @@ services:
   # The database container
   spotify_database:
     container_name: spotify_database
-    build: mysql
+    image: mysql:latest
     restart: always
 
     env_file:

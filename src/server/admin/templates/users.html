@@ -66,11 +66,7 @@
                         {{ form.username.label }}
                     </div>
 
-                    {# Password #}
-                    <div class="input-field col s6">
-                        {{ form.password(size=32) }}
-                        {{ form.password.label }}
-                    </div>
+
                 </div>
 
                 {# Checkbox admin #}
@@ -78,7 +74,7 @@
                     <div class="col s12">
                         <div style="float: right;">
                             {{ form.is_admin(tabindex=-1) }}
-                            {{ form.is_admin.label() }}
+                            {{ form.is_admin.label(tabindex=1) }}
                         </div>
                     </div>
                 </div>

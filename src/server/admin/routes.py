@@ -5,6 +5,7 @@ from flask_login import login_required, current_user
 from server import db
 from server.admin.admin_functions import display_all_spotify_users, display_spotify_user_playlists, display_user, \
     display_all_users
+from server.admin.forms import ChangePasswordForm
 from server.main.modals import User
 
 mod = Blueprint("admin", __name__, template_folder='templates')
@@ -50,6 +51,47 @@ def users() -> render_template:
         return display_user(user_id)
 
     return display_all_users()
+
+
+@mod.route("/user/change_password", methods=["POST", "GET"])
+def edit_user() -> redirect:
+    """
+    Edit the user password
+    :return: a redirect to the user page
+    """
+
+    if not current_user.is_admin:
+        return render_template("authorisation_error.html", title="403")
+
+    # Get the user-id from the url
+    user_id = request.args.get("user-id")
+
+    # Check if a user id is given in the url
+    if not user_id:
+        return "No user id was provided"
+
+    if current_user.id != int(user_id):
+        return render_template("authorisation_error.html", title="403")
+
+    # Create a password hasher
+    ph = PasswordHasher(type=Type.ID)
+    form = ChangePasswordForm()
+
+    if form.confirmed_new_password.data == (None or "") and form.new_password.data == (None or "") \
+            and form.current_password.data == (None or ""):
+        return "You did not input all the required forms"
+
+    # checks if all relevant data filed have been filled
+    if current_user.check_password(form.current_password.data):
+
+        if form.new_password.data == form.confirmed_new_password.data:
+            current_user.password_hash = ph.hash(form.confirmed_new_password.data)
+            db.session.commit()
+            return redirect(url_for("admin.users") + f"user-id={current_user.id}")
+        else:
+            return "The passwords did not match"
+    else:
+        return "You provided the wrong password"
 
 
 @mod.route("/user/add", methods=["POST", "GET"])

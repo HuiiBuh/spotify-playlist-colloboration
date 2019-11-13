@@ -32,20 +32,14 @@ services:
     depends_on:
       - spotify_database
 
-    expose:
-      - 5555
-
   # The server that hosts the files
   spotify_nginx:
     container_name: spotify_nginx
     build: nginx
     restart: always
 
-    environment:
-      - SSL_PORT=9999
-
     depends_on:
       - spotify_flask
 
-    ports:
-      - "9999:2222"
+    expose:
+      - 80

@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     The User Model
     """
     id = db.Column(db.Integer, primary_key=True)
-    is_admin = db.Column(db.Boolean, nullable=False)
+    is_admin = db.Column(db.Boolean, default=False, nullable=False)
     is_root = db.Column(db.Boolean, default=False)
     username = db.Column(db.String(64), nullable=False, index=True, unique=True)
     password_hash = db.Column(db.Text, nullable=False)

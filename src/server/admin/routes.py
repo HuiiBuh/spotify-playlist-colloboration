@@ -73,8 +73,6 @@ def edit_user() -> redirect:
     if current_user.id != int(user_id) and not current_user.is_root:
         return render_template("authorisation_error.html", title="403")
 
-    # Create a password hasher
-    ph = PasswordHasher(type=Type.ID)
     form = ChangePasswordForm()
 
     if form.confirmed_new_password.data == (None or "") and form.new_password.data == (None or "") \
@@ -87,7 +85,7 @@ def edit_user() -> redirect:
 
         if form.new_password.data == form.confirmed_new_password.data:
             user = User.query.filter(User.id == int(user_id)).first()
-            user.password_hash = ph.hash(form.confirmed_new_password.data)
+            user.set_password(form.confirmed_new_password.data)
             db.session.commit()
             return redirect(url_for("admin.users") + f"?user-id={user.id}")
         else:

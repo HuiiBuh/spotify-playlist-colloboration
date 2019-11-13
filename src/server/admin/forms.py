@@ -11,3 +11,13 @@ class AddUserForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     is_admin = BooleanField('Admin')
     submit = SubmitField('Add user')
+
+
+class ChangePasswordForm(FlaskForm):
+    """
+    A Form to change the password of the current user
+    """
+    current_password = PasswordField("Current Password", validators=[DataRequired])
+    new_password = PasswordField("New Password", validators=[DataRequired])
+    confirmed_new_password = PasswordField("Confirm New Password", validators=[DataRequired])
+    submit = SubmitField('Change password')

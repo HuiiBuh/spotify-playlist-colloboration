@@ -25,7 +25,7 @@
                 <th>ID</th>
                 <th data-sort-method='number'>Tracks</th>
                 <th>Author</th>
-                <th  style="width: 1px" data-sort-method='none'></th>
+                <th style="width: 1px" data-sort-method='none'></th>
             </tr>
             </thead>
 
@@ -100,6 +100,67 @@
         <button class="waves-effect btn-flat" id="add-playlist">Add</button>
     </div>
 
+
+    {% if current_user_id == user_id or current_user.is_root %}
+
+        {# Modal to change the users password#}
+        <div id="edit-password" class="modal">
+            <form action="{{ url_for("admin.edit_user") }}?user-id={{ user.id }}" method="post">
+
+                {# CSRF Token #}
+                {{ form.csrf_token }}
+
+                {# The contend of the modal #}
+                <div class="modal-content">
+                    <h4>Change user password</h4>
+                    <div class="row flex-v-center">
+
+                        {% if not current_user.is_root or (user_id == current_user.id and current_user.is_admin) %}
+                            {# Current password #}
+                            <div class="input-field col s12">
+                                {{ form.current_password(size=32) }}
+                                {{ form.current_password.label }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                    {# Checkbox admin #}
+                    <div class="row">
+
+                        {# New password #}
+                        <div class="input-field col s6">
+                            {{ form.new_password() }}
+                            {{ form.new_password.label }}
+                        </div>
+
+                        <div class="input-field col s6">
+                            {{ form.confirmed_new_password() }}
+                            {{ form.confirmed_new_password.label }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    {# Cancel button #}
+                    <button class="modal-close waves-effect btn-flat left">Cancel</button>
+
+                    {# Submit button #}
+                    {{ form.submit(class='btn-flat modal-close tabable', id="add-playlists") }}
+                </div>
+            </form>
+        </div>
+
+
+        {# The change password button #}
+        <div class="fixed-action-btn">
+            <a tabindex="0" class="btn-floating btn-large  modal-trigger" href="#edit-password">
+                <i class="large material-icons">vpn_key</i>
+            </a>
+        </div>
+
+    {% endif %}
 
 {% endblock %}
 

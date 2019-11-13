@@ -1,7 +1,8 @@
 from flask import render_template
+from flask_login import current_user
 
 from server import SpotifyAuthorisationToken, spotify
-from server.admin.forms import AddUserForm
+from server.admin.forms import AddUserForm, ChangePasswordForm
 from server.api.api_functions import update_spotify_user, modify_playlist_json, get_token_by_playlist
 from server.main.modals import SpotifyUser, Playlist, User
 
@@ -141,7 +142,9 @@ def display_user(user_id: str):
                     p_json = spotify.playlist(playlist.spotify_id, auth_token)
                     all_playlists_list.append(p_json)
 
+        form = ChangePasswordForm()
         return render_template("edit_user.html", title="Edit Users", user=user, playlist_list=playlist_json,
-                               all_playlists_list=all_playlists_list)
+                               all_playlists_list=all_playlists_list, form=form, user_id=int(user_id),
+                               current_user_id=current_user.id)
     else:
         return render_template("resource_not_found.html")

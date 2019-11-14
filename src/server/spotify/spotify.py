@@ -20,6 +20,7 @@ class SpotifyUrls:
     PLAYLIST = "https://api.spotify.com/v1/playlists/{playlist_id}"
     SEARCH = "https://api.spotify.com/v1/search?q={query}"
     ME = "https://api.spotify.com/v1/me"
+    ME_PLAYLISTS = "https://api.spotify.com/v1/me/playlists"
 
 
 class SpotifyAppInfo:
@@ -345,6 +346,24 @@ class Spotify:
             request_json["email"] = "***censored***"
 
         return request_json
+
+    def user_playlists(self, auth_token: SpotifyAuthorisationToken) -> dict:
+
+        url: str = SpotifyUrls.ME_PLAYLISTS
+
+        if auth_token is None:
+            raise SpotifyError("You have to provide a valid auth token")
+
+        headers: dict = self._get_headers(auth_token)
+        request = requests.get(url=url, headers=headers)
+
+        if "error" in request.json():
+            raise SpotifyError(request.json())
+
+        request_json = request.json()
+        return request_json
+
+        pass
 
     @staticmethod
     def _get_headers(auth_token: SpotifyAuthorisationToken) -> dict:

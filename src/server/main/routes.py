@@ -65,7 +65,7 @@ def login() -> redirect:
 
         # if the user does not exist or has the wrong password
         if user is None or not user.check_password(form.password.data):
-            flash("Invalid username or password")
+            flash({"contend": "Invalid username or password", "type": "bg-warning"})
             return redirect(url_for("main.login"))
 
         # login the user
@@ -81,7 +81,7 @@ def login() -> redirect:
 
     # Handle invalid form
     if request.method == "POST":
-        flash("You missed to fill some fields")
+        flash({"contend": "You missed some input fields", "type": "bg-warning"})
         return render_template('login.html', title='Sign In', form=form)
 
     return render_template('login.html', title='Sign In', form=form)

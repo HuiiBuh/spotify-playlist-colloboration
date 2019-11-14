@@ -1,10 +1,10 @@
 from argon2 import PasswordHasher, Type
-from flask import Blueprint, request, render_template, redirect, url_for
+from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 
 from server import db
 from server.admin.admin_functions import display_all_spotify_users, display_spotify_user_playlists, display_user, \
-    display_all_users
+    display_all_users, password_complex_enough
 from server.admin.forms import ChangePasswordForm
 from server.main.modals import User
 
@@ -68,32 +68,39 @@ def edit_user() -> redirect:
 
     # Check if a user id is given in the url
     if not user_id:
-        return "No user id was provided"
+        flash({"contend": "No user id was provided", "type": "bg-warning"})
+        return redirect(url_for("admin.users"))
 
     if current_user.id != int(user_id) and not current_user.is_root:
         return render_template("authorisation_error.html", title="403")
 
-    # Create a password hasher
-    ph = PasswordHasher(type=Type.ID)
     form = ChangePasswordForm()
 
     if form.confirmed_new_password.data == (None or "") and form.new_password.data == (None or "") \
             and form.current_password.data == (None or ""):
-        return "You did not input all the required forms"
+        flash({"contend": "You did not input all the required forms", "type": "bg-warning"})
+        return redirect(url_for("admin.users") + f"?user-if={user_id}")
 
     # checks if all relevant data filed have been filled
     if current_user.check_password(form.current_password.data) or \
             (current_user.is_root and not current_user.id == int(user_id)):
 
         if form.new_password.data == form.confirmed_new_password.data:
+
+            if not password_complex_enough(form.new_password.data):
+                flash({"contend": "The password is not complex enough. (Upper + Lower + Digits)", "type": "bg-warning"})
+
             user = User.query.filter(User.id == int(user_id)).first()
-            user.password_hash = ph.hash(form.confirmed_new_password.data)
+            user.set_password(form.confirmed_new_password.data)
             db.session.commit()
             return redirect(url_for("admin.users") + f"?user-id={user.id}")
         else:
-            return "The passwords did not match"
+            flash({"contend": "The passwords did not match", "type": "bg-warning"})
+            return redirect(url_for("admin.users") + f"?user-id={user_id}")
+
     else:
-        return "You provided the wrong password"
+        flash({"contend": "You provided the wrong password", "type": "bg-warning"})
+        return redirect(url_for("admin.users") + f"?user-id={user_id}")
 
 
 @mod.route("/user/add", methods=["POST", "GET"])
@@ -111,7 +118,7 @@ def add_user() -> redirect:
     ph = PasswordHasher(type=Type.ID)
 
     # Hash the password
-    password = ph.hash(request.form["password"])
+    password = ph.hash(request.form["password"].data)
     username = request.form["username"]
 
     # Check if the user should be a admin
@@ -120,8 +127,14 @@ def add_user() -> redirect:
     else:
         admin = False
 
+    if request.form["password"].data is not None and request.form["username"].data is not None and \
+            request.form["username"].data != "":
+        flash({"contend": "You did not fill a username or password", "type": "bg-warning"})
+        return redirect(url_for("admin.users"))
+
     # Check if the username already exists and do nothing if the user exists
     if User.query.filter(User.username == username).first():
+        flash({"contend": "The user already exists", "type": "bg-warning"})
         return redirect(url_for("admin.users"))
 
     # Create the neu user and add it into the database

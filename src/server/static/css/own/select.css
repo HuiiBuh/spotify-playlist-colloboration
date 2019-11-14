@@ -1,0 +1,18 @@
+@media only screen and (max-width: 600px) {
+    .row .col.s5 {
+        width: 48.666667%;
+    }
+}
+
+@media only screen and (min-width: 1201px) {
+    .row .col.xl2 {
+        width: 19.666667% !important;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    .row .col.xs12 {
+        width: 90%;
+    }
+
+}

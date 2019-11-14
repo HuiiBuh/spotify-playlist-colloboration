@@ -152,10 +152,19 @@
     </script>
 {% endif %}
 
-{% block javascript %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <script type="text/javascript">
+                M.toast({html: "{{ message.contend }}", classes: "{{message.type}}"});
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
 
-{% endblock %}
+
+{% block javascript %}{% endblock %}
 
 </body>
 </html>

@@ -21,7 +21,7 @@ function addPlaylistsToUser() {
 
     //CHeck if a playlist was selected
     if (valueList === []) {
-        M.toast({html: "You did not select a playlist", colors: "bg-warning"});
+        M.toast({html: "You did not select a playlist", classes: "bg-warning"});
         return
     }
 

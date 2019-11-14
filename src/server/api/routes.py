@@ -274,8 +274,8 @@ def remove_playlist_from_user():
     :return: 200, 400, 403
     """
 
-    if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+    if not current_user.is_root:
+        return abort(403, "Only root users can delete a spotify user")
 
     request_json: dict = request.get_json()
 

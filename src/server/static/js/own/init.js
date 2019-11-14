@@ -5,6 +5,18 @@ if (!window.location.pathname === "/login") {
     document.getElementById("copyright").innerText = "© " + new Date().getFullYear() + " HuiiBuh"
 }
 
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/pwa/service_worker.js', {scope: "/"})
+        .then(function () {
+            console.log("Service Worker registered successfully");
+        })
+        .catch(function (e) {
+            console.log("Service worker registration failed" + e)
+        });
+}
+
+
 //Create the hover emulation
 let hoverOnTouch = new HoverOnTouch();
 hoverOnTouch.start();

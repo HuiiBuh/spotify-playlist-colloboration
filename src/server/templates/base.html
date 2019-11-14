@@ -25,6 +25,7 @@
     <link type="text/css" rel="stylesheet" href="/static/css/own/responsive_table.css"
           media="screen,projection"/>
 
+
     {% if current_user.is_admin %}
         <link type="text/css" rel="stylesheet" href="/static/css/libraries/tablesort.css"
               media="screen,projection"/>
@@ -39,6 +40,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="Description" content="A website made to collaborate on multible spotify playlists">
     <meta charset="UTF-8">
+
+
+    <link rel="manifest" href="/static/pwa/manifest.json">
+
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="blue">
+    <meta name="apple-mobile-web-app-title" content="With Manifest">
+
+    <link rel="apple-touch-icon" href="/static/pwa/images/icons/icon-152x152.png" sizes="152x152">
 
 </head>
 <body>

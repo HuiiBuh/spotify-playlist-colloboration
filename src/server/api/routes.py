@@ -316,10 +316,12 @@ def add_playlist():
         return abort(403, "You are not authorized to visit the page")
 
     playlist_id = request.args.get("playlist-id")
-    if not playlist_id:
-        return abort(400, "You passed an empty playlist")
+    spotify_user_id = request.args.get("spotify-user-id")
 
-    return add_playlist_to_spotify_user(playlist_id)
+    if not playlist_id or not spotify_user_id:
+        return abort(400, "You passed an empty playlistor spotify user")
+
+    return add_playlist_to_spotify_user(playlist_id, spotify_user_id)
 
 
 @mod.route("playlist/remove")

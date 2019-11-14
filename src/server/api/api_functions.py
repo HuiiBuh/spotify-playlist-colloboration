@@ -70,9 +70,10 @@ def assign_playlists_to_user(playlist_list: list, user_id: str) -> tuple:
     return 200, playlist_json_list
 
 
-def add_playlist_to_spotify_user(playlist_id: str):
+def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str):
     """
     Add a new spotify playlist to a user
+    :param spotify_user_id: The spotify user id of the playlist owner
     :param playlist_id: The playlist id
     :return: Status 400 or the playlist json
     """
@@ -82,7 +83,7 @@ def add_playlist_to_spotify_user(playlist_id: str):
         return abort(400, "The playlist does already exist")
 
     # Get a random spotify user for a auth token
-    temp_user: SpotifyUser = SpotifyUser.query.first()
+    temp_user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
     auth_token = SpotifyAuthorisationToken(temp_user.refresh_token, temp_user.activated_at,
                                            temp_user.oauth_token)
 

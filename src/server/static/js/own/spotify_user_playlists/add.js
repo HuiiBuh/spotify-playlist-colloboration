@@ -21,7 +21,12 @@ function addPlaylist() {
  */
 function addPlaylistToUser(playlistID) {
     let xhttp = new XMLHttpRequest();
-    let url = addPlaylistAPI + playlistID;
+
+    let url_string = window.location.href;
+    let currentUrl = new URL(url_string);
+    let spotifyUserID = currentUrl.searchParams.get("spotify-user-id");
+
+    let url = addPlaylistAPI + playlistID + "&spotify-user-id=" + spotifyUserID;
 
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {

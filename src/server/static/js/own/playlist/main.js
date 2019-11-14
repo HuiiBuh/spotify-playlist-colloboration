@@ -46,7 +46,15 @@ function addEventHandler() {
         }
     });
 
-    let modal = M.Modal.init(document.getElementById("song-modal"), {"onOpenEnd": removeTransform})
+    M.Modal.init(document.getElementById("song-modal"), {"onOpenEnd": removeTransform});
+
+    window.onkeydown = function (evt) {
+        if ((evt.which === 70 && (evt.metaKey || evt.ctrlKey))) {
+            evt.preventDefault();
+            document.getElementById("search-playlist-song").focus();
+            document.getElementById("search-playlist-song").select();
+        }
+    };
 
 }
 

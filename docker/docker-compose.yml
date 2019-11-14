@@ -1,4 +1,8 @@
 version: "3"
+
+volumes:
+   mysql_data:
+
 services:
 
   # The database container
@@ -6,6 +10,8 @@ services:
     container_name: spotify_database
     image: mysql:latest
     restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
 
     env_file:
       - .env

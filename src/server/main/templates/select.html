@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block css %}
-    <link type="text/css" rel="stylesheet" href="/static/css/own/pulse.css"
-          media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/static/css/own/select.css" media="screen,projection"/>
 
     <style>
         .z-depth-3 {
@@ -30,9 +29,9 @@
             {# For every playlist of the user #}
             {% for id, playlist in playlist_list_json.items() %}
 
-                <div class="col s5 m4 l3 xl2 small-margin-bottom">
+                <div class="col xs12 s5 m4 l3 xl2 small-margin-bottom">
                     <div class="card">
-                        <div class="card-image pointer hover-on-touch"
+                        <div class="card-image pointer" hover-on-touch
                              onclick="location.href = '?playlist-id={{ id }}'">
                             <img alt="cover image" src="{{ playlist["image_url"] }}">
                         </div>

@@ -9,6 +9,7 @@ class KEYS:
     SPOTIFY_SCOPES = [
         "playlist-modify-private",
         "playlist-modify-public",
+        "playlist-read-private",
         "user-read-email",
         "user-read-private"
     ]

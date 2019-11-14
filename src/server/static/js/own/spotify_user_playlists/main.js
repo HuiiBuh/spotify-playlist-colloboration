@@ -24,5 +24,10 @@ function addEventHandler() {
             }
         }
     }
+
+    let element = document.querySelectorAll('.autocomplete')[0];
+    let instance = M.Autocomplete.getInstance(element);
+    instance.updateData(autocomplete);
+
 }
 

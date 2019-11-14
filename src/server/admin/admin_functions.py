@@ -1,4 +1,7 @@
-from flask import render_template
+import json
+import re
+
+from flask import render_template, jsonify
 from flask_login import current_user
 
 from server import SpotifyAuthorisationToken, spotify
@@ -96,8 +99,20 @@ def display_spotify_user_playlists(spotify_user_id: str):
     # Get the username of the spotify user
     user_name = spotify.me(oauth_token)['display_name']
 
-    return render_template("spotify_user_playlists.html", playlist_list_json=playlist_list_json,
-                           user_name=user_name, title=f"{user_name}'s Playlists")
+    playlist_list = spotify.user_playlists(oauth_token)["items"]
+
+    updated_playlist_list = {}
+    for playlist in playlist_list:
+        if playlist["owner"]["id"] == spotify_user_id:
+            try:
+                updated_playlist_list[playlist["id"]] = playlist["images"][2]["url"]
+            except IndexError:
+                updated_playlist_list[playlist["id"]] = "/static/icons/default_playlist_cover.png"
+
+    return render_template("spotify_user_playlists.html",
+                           playlist_list_json=playlist_list_json,
+                           user_name=user_name, title=f"{user_name}'s Playlists",
+                           updated_playlist_list=updated_playlist_list)
 
 
 def display_user(user_id: str):
@@ -148,3 +163,21 @@ def display_user(user_id: str):
                                current_user_id=current_user.id)
     else:
         return render_template("resource_not_found.html")
+
+
+def password_complex_enough(password: str) -> bool:
+    """
+    Check if the password is complex enough
+    :param password: The password that is supposed to be checked
+    :return: Is the password complex enough
+    """
+    good_complexity = 12
+
+    complexity = len(password)
+
+    complexity += 2 if re.search(r"[A-Z]", password) and re.search(r"[a-z]", password) else 0
+
+    complexity += 2 if re.search(r"\d", password) else 0
+    complexity += 2 if re.search(r"\W", password) else 0
+
+    return False if good_complexity > complexity else True

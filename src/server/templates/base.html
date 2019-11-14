@@ -156,7 +156,7 @@
     {% if messages %}
         {% for message in messages %}
             <script type="text/javascript">
-                M.toast({html: "{{ message }}"});
+                M.toast({html: "{{ message.contend }}", classes: "{{message.type}}"});
             </script>
         {% endfor %}
     {% endif %}

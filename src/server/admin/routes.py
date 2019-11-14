@@ -114,11 +114,7 @@ def add_user() -> redirect:
     if not current_user.is_admin:
         return render_template("authorisation_error.html", title="403")
 
-    # Create a password hasher
-    ph = PasswordHasher(type=Type.ID)
-
-    # Hash the password
-    password = ph.hash(request.form["password"].data)
+    password = request.form["password"]
     username = request.form["username"]
 
     # Check if the user should be a admin
@@ -127,8 +123,7 @@ def add_user() -> redirect:
     else:
         admin = False
 
-    if request.form["password"].data is not None and request.form["username"].data is not None and \
-            request.form["username"].data != "":
+    if password is None or username is None or username == "":
         flash({"contend": "You did not fill a username or password", "type": "bg-warning"})
         return redirect(url_for("admin.users"))
 
@@ -137,8 +132,17 @@ def add_user() -> redirect:
         flash({"contend": "The user already exists", "type": "bg-warning"})
         return redirect(url_for("admin.users"))
 
+    # Create a password hasher
+    ph = PasswordHasher(type=Type.ID)
+
+    if not password_complex_enough(password):
+        flash({"contend": "The password is not complex enough. (Upper + Lower + Digits)", "type": "bg-warning"})
+        return redirect(url_for("admin.users"))
+
+    password_hash = ph.hash(password)
+
     # Create the neu user and add it into the database
-    user = User(username=username, password_hash=password, is_admin=admin)
+    user = User(username=username, password_hash=password_hash, is_admin=admin)
     db.session.add(user)
     db.session.commit()
 

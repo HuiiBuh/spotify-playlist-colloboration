@@ -16,7 +16,9 @@ RUN openssl req -newkey rsa:2048 -nodes -keyout /keys/nginx.key -x509 -days 365 
 RUN git clone https://github.com/HuiiBuh/spotify-playlist-colloboration.git /tmp/spotify-playlist-colloboration
 RUN mkdir /static
 
+# Move the files and clean
 RUN mv /tmp/spotify-playlist-colloboration/src/server/static /static
+RUN mkdir /worker && mv /static/static/pwa/service_worker.js /worker
 RUN rm -r tmp/spotify-playlist-colloboration
 
 # Copy the nginx config

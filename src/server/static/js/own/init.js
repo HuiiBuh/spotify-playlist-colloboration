@@ -7,7 +7,7 @@ if (!window.location.pathname === "/login") {
 
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/static/pwa/service_worker.js', {scope: "/"})
+    navigator.serviceWorker.register('/worker/service_worker.js', {scope: "/"})
         .then(function () {
             console.log("Service Worker registered successfully");
         })

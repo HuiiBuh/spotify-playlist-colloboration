@@ -10,10 +10,12 @@ function addPlaylist() {
         return;
     }
 
-    playlistID = playlistID.split(" - ")[1];
+    if (playlistID.search(" - ") !== -1) {
+        playlistID = playlistID.split(" - ")[1];
+    }
 
     //Add the playlist to the user
-    addPlaylistToUser(playlistID)
+    addPlaylistToUser(playlistID);
 }
 
 

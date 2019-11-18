@@ -37,7 +37,7 @@ def search_for_songs():
 
     search_term = request.args.get('searchterm')
 
-    if search_term is None or search_term is "":
+    if search_term is None or search_term == "":
         return abort(400)
 
     search_results = spotify.search(search_term, "track", auth_token, limit=10)

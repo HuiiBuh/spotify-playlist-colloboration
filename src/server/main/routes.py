@@ -72,7 +72,7 @@ def login() -> redirect:
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get("next")
         if next_page:
-            if not next_page[0] is "/":
+            if not next_page[0] == "/":
                 next_page = "/" + next_page
 
             return redirect(f"{next_page}")

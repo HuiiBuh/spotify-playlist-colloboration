@@ -130,10 +130,10 @@ class Spotify:
             "grant_type": grant_type,
         }
 
-        if grant_type is "refresh_token":
+        if grant_type == "refresh_token":
             body["refresh_token"] = spotify_auth_token.refresh_token
 
-        if grant_type is "authorization_code":
+        if grant_type == "authorization_code":
             body["code"] = spotify_auth_token.refresh_token
             body["redirect_uri"] = self.app_info.redirect_url
 

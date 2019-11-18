@@ -105,9 +105,10 @@ def display_spotify_user_playlists(spotify_user_id: str):
     for playlist in playlist_list:
         if playlist["owner"]["id"] == spotify_user_id:
             try:
-                updated_playlist_list[playlist["id"]] = playlist["images"][2]["url"]
+                updated_playlist_list[playlist["name"] + " - " + playlist["id"]] = playlist["images"][2]["url"]
             except IndexError:
-                updated_playlist_list[playlist["id"]] = "/static/icons/default_playlist_cover.png"
+                updated_playlist_list[
+                    playlist["name"] + " - " + playlist["id"]] = "/static/icons/default_playlist_cover.png"
 
     return render_template("spotify_user_playlists.html",
                            playlist_list_json=playlist_list_json,

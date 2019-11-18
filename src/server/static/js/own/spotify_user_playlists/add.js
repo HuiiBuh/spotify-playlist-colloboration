@@ -10,6 +10,8 @@ function addPlaylist() {
         return;
     }
 
+    playlistID = playlistID.split(" - ")[1];
+
     //Add the playlist to the user
     addPlaylistToUser(playlistID)
 }

@@ -68,15 +68,22 @@ function displayNewPlaylist(json) {
     root.appendChild(tr);
 
     let name = document.createElement("td");
-    name.innerText = json["name"];
-
-    name.onclick = addOnclick(json["external_urls"]["spotify"]);
     tr.appendChild(name);
 
+    let nameA = document.createElement("a");
+    nameA.setAttribute("class", "black-text pointer underline");
+    nameA.innerText = json["name"];
+    nameA.onclick = addOnclick(json["external_urls"]["spotify"]);
+    name.appendChild(nameA);
+
     let author = document.createElement("td");
-    author.innerText = json["owner"]["display_name"];
-    author.onclick = addOnclick(json["owner"]["external_urls"]["spotify"]);
     tr.appendChild(author);
+
+    let authorA = document.createElement("a");
+    authorA.innerText = json["owner"]["display_name"];
+    authorA.setAttribute("class", "black-text pointer underline");
+    authorA.onclick = addOnclick(json["owner"]["external_urls"]["spotify"]);
+    author.appendChild(authorA);
 
     let trackCount = document.createElement("td");
     trackCount.innerText = json["tracks"]["total"];

@@ -1,8 +1,8 @@
 from flask import abort
 
-from server import spotify, db, SpotifyAuthorisationToken
+from server import spotify, db
 from server.main.modals import SpotifyUser, Playlist, User
-from server.spotify.spotify import SpotifyError
+from server.spotify.spotify import SpotifyError, SpotifyAuthorisationToken
 
 
 def collect_tracks(playlist_id: str, auth_token: SpotifyAuthorisationToken, count=0, offset=0,

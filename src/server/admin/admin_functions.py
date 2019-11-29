@@ -3,10 +3,11 @@ import re
 from flask import render_template
 from flask_login import current_user
 
-from server import SpotifyAuthorisationToken, spotify
+from server import spotify
 from server.admin.forms import AddUserForm, ChangePasswordForm
 from server.api.api_functions import update_spotify_user, modify_playlist_json, get_token_by_playlist
 from server.main.modals import SpotifyUser, Playlist, User
+from server.spotify import SpotifyAuthorisationToken
 
 
 def display_all_spotify_users() -> render_template:

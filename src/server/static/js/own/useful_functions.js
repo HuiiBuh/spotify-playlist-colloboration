@@ -61,7 +61,9 @@ function onlyNumbers(evt) {
     }
 
     // F1 to F12
-    if (112 <= theEvent.keyCode && theEvent.keyCode <= 123 || 37 <= theEvent.keyCode && theEvent.keyCode <= 40) return;
+    if (112 <= theEvent.keyCode && theEvent.keyCode <= 123) return;
+    // Direction keys
+    if (37 <= theEvent.keyCode && theEvent.keyCode <= 40) return;
 
 
     let number = parseInt(theEvent.key);

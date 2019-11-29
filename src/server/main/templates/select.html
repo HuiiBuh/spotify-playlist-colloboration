@@ -36,10 +36,10 @@
                             <img alt="cover image" src="{{ playlist["image_url"] }}">
                         </div>
                         <div class="card-content">
-                            <a class="card-title black-text underline pointer"
-                               href="?playlist-id={{ id }}">{{ playlist["name"] }}</a>
-                            <a class="pointer black-text underline"
-                               href="{{ playlist["url"] }}">{{ playlist["author"]["name"] }}</a>
+                            <a class="card-title to-long  black-text underline pointer"
+                               href="?playlist-id={{ id }}">{{ playlist["name"] }} </a>
+                            <a class="pointer to-long  black-text underline"
+                               href="{{ playlist["url"] }}" target="_blank">{{ playlist["author"]["name"] }}</a>
                         </div>
                     </div>
                 </div>

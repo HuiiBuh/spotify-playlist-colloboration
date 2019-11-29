@@ -70,9 +70,10 @@ def assign_playlists_to_user(playlist_list: list, user_id: str) -> tuple:
     return 200, playlist_json_list
 
 
-def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str):
+def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str, song_length: int):
     """
     Add a new spotify playlist to a user
+    :param song_length: The max song length
     :param spotify_user_id: The spotify user id of the playlist owner
     :param playlist_id: The playlist id
     :return: Status 400 or the playlist json
@@ -96,6 +97,7 @@ def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str):
     playlist_json = {}
     try:
         playlist_json = spotify.playlist(playlist_id, auth_token)
+        playlist_json["duration"] = song_length
     except SpotifyError as e:
         if "Invalid playlist Id" in str(e):
             return abort(400, "The Playlist ID you passed is not valid")
@@ -113,7 +115,8 @@ def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str):
                           f"You have to create it manually.")
 
     # Create the playlist and add it to the database
-    database_playlist = Playlist(spotify_id=playlist_id, spotify_user=spotify_user_object.id, users=[])
+    database_playlist = Playlist(spotify_id=playlist_id, spotify_user=spotify_user_object.id, users=[],
+                                 max_song_length=song_length)
     db.session.add(database_playlist)
     db.session.commit()
     return playlist_json
@@ -248,3 +251,33 @@ def modify_playlist_json(playlist_json: dict) -> dict:
         return_playlist["image_url"] = "/static/icons/default_playlist_cover.png"
 
     return return_playlist
+
+
+def check_songs(song_list: list, auth_token: SpotifyAuthorisationToken, playlist_id):
+    """
+    Check if the songs are to long
+    :param playlist_id: The playlist id the songs should be added to
+    :param auth_token: The auth
+    :param song_list: A list of song ids
+    :return:
+    """
+
+    playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id)
+    if not playlist:
+        return []
+
+    p_duration = playlist.first().max_song_length
+    if p_duration == 0:
+        return song_list
+
+    updated_track_list = []
+
+    for track_id in song_list:
+        try:
+            s_duration = int(spotify.track(track_id, auth_token)["duration_ms"])
+            if not p_duration * 1000 < s_duration:
+                updated_track_list.append(track_id)
+        except SpotifyError:
+            pass
+
+    return updated_track_list

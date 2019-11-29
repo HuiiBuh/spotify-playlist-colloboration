@@ -4,10 +4,16 @@ window.onload = function () {
 
 function addEventHandler() {
     document.getElementById("add-button").onclick = addPlaylist;
+
     document.getElementById("playlist-id").addEventListener("keyup", function (evt) {
         if (evt.code === "Enter" || evt.code === "NumpadEnter") {
             addPlaylist();
         }
+    });
+
+    let durationFields = [...document.getElementsByTagName("table")[0].getElementsByTagName("input")];
+    durationFields.forEach(input => {
+        input.onkeydown = updatePlaylistDuration();
     });
 
     let playlistList = document.getElementsByClassName("playlist");

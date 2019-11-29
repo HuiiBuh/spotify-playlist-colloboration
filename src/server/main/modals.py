@@ -79,5 +79,6 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
     spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id, ondelete="CASCADE"))
+    max_song_length = db.Column(db.BigInteger, nullable=False, default=0)
 
     __mapper_args__ = {"order_by": id}

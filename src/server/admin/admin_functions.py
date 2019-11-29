@@ -1,7 +1,6 @@
-import json
 import re
 
-from flask import render_template, jsonify
+from flask import render_template
 from flask_login import current_user
 
 from server import SpotifyAuthorisationToken, spotify
@@ -39,7 +38,7 @@ def display_all_spotify_users() -> render_template:
             Playlist.spotify_user == spotify_user.id).count()
 
     # Return the rendered template
-    return render_template("spotify_users.html", spotify_users=user_json_list, title="Spotify Users")
+    return render_template("spotify_user/spotify_users.html", spotify_users=user_json_list, title="Spotify Users")
 
 
 def display_all_users() -> render_template:
@@ -60,7 +59,7 @@ def display_all_users() -> render_template:
         user.playlist_count = len(playlist_count)
         updated_user_list.append(user)
 
-    return render_template("users.html", title="Users", user_list=updated_user_list, form=form)
+    return render_template("user/users.html", title="Users", user_list=updated_user_list, form=form)
 
 
 def display_spotify_user_playlists(spotify_user_id: str):
@@ -95,25 +94,27 @@ def display_spotify_user_playlists(spotify_user_id: str):
     for playlist in playlist_list:
         playlist_list_json[playlist.spotify_id] = modify_playlist_json(
             spotify.playlist(playlist.spotify_id, oauth_token))
+        playlist_list_json[playlist.spotify_id]["max_song_duration"] = playlist.max_song_length
 
     # Get the username of the spotify user
     user_name = spotify.me(oauth_token)['display_name']
 
     playlist_list = spotify.user_playlists(oauth_token)["items"]
 
-    updated_playlist_list = {}
+    autocomplete_playlist_list = {}
     for playlist in playlist_list:
         if playlist["owner"]["id"] == spotify_user_id:
             try:
-                updated_playlist_list[playlist["name"] + " - " + playlist["id"]] = playlist["images"][2]["url"]
+                autocomplete_playlist_list[playlist["name"] + " - " + playlist["id"]] = playlist["images"][2]["url"]
             except IndexError:
-                updated_playlist_list[
+                autocomplete_playlist_list[
                     playlist["name"] + " - " + playlist["id"]] = "/static/icons/default_playlist_cover.png"
 
-    return render_template("spotify_user_playlists.html",
+    return render_template("spotify_user/spotify_user_playlists.html",
                            playlist_list_json=playlist_list_json,
-                           user_name=user_name, title=f"{user_name}'s Playlists",
-                           updated_playlist_list=updated_playlist_list)
+                           user_name=user_name,
+                           title=f"{user_name}'s Playlists",
+                           autocomplete_playlist_list=autocomplete_playlist_list)
 
 
 def display_user(user_id: str):
@@ -159,7 +160,7 @@ def display_user(user_id: str):
                     all_playlists_list.append(p_json)
 
         form = ChangePasswordForm()
-        return render_template("edit_user.html", title="Edit Users", user=user, playlist_list=playlist_json,
+        return render_template("user/edit_user.html", title="Edit Users", user=user, playlist_list=playlist_json,
                                all_playlists_list=all_playlists_list, form=form, user_id=int(user_id),
                                current_user_id=current_user.id)
     else:

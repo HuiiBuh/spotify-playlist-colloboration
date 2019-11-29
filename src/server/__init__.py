@@ -9,7 +9,6 @@ from server.config import Config
 from server.keys import KEYS
 from server.spotify import Spotify, SpotifyAppInfo, SpotifyAuthorisationToken
 
-
 # create flask app
 app = Flask(__name__)
 # configure the app from the object
@@ -37,11 +36,11 @@ state = "HuiiBuh"
 
 # import the modal at the end so the db the modals depend on are already created
 import server.routes
-from server.main.routes import mod
+from server.main.routes import mod as main_mod
 from server.main import modals
-from server.admin.routes import mod
-from server.api.routes import mod
+from server.admin.routes import mod as admin_mod
+from server.api.routes import mod as api_mod
 
-app.register_blueprint(admin.routes.mod, url_prefix="/admin")
-app.register_blueprint(api.routes.mod, url_prefix="/api")
-app.register_blueprint(main.routes.mod)
+app.register_blueprint(admin_mod, url_prefix="/admin")
+app.register_blueprint(api_mod, url_prefix="/api")
+app.register_blueprint(main_mod)

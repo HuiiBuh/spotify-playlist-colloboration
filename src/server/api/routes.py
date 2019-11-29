@@ -138,6 +138,9 @@ def add_track_to_playlist():
 
     track_list = check_songs(track_list, auth_token, playlist_id)
 
+    if not track_list:
+        return abort(400, "You passed an empty message")
+
     spotify.add_playlist_tracks(playlist_id, track_list, auth_token)
     return Response(status=201)
 
@@ -325,7 +328,10 @@ def add_playlist():
 
     if not song_length or not song_length.isdigit():
         song_length = "0"
-    song_length: int = int(song_length)
+    song_length: int = abs(int(song_length))
+
+    if song_length.bit_length() >= 63:
+        song_length: int = 0
 
     if not playlist_id or not spotify_user_id:
         return abort(400, "You passed an empty playlistor spotify user")
@@ -367,6 +373,9 @@ def remove_spotify_user():
     if not current_user.is_admin:
         return abort(403, "You are not authorized to visit the page")
 
+    if not current_user.is_root:
+        return abort(403, "You have to bee root to remove spotify users")
+
     spotify_user_id = request.args.get("spotify-user-id")
     if not spotify_user_id:
         return abort(400, "You did not pass a spotify user")
@@ -377,6 +386,40 @@ def remove_spotify_user():
         return abort(400, "The spotify user id you provided does not exist")
 
     db.session.delete(spotify_user)
+    db.session.commit()
+    return ""
+
+
+@mod.route("/playlist/duration")
+@login_required
+def update_playlist_duration():
+    """
+    Updates the duration of the playlist
+    :return: status 400, 200
+    """
+
+    if not current_user.is_admin:
+        return abort(403, "You are not authorized to visit the page")
+
+    playlist_id = request.args.get("playlist-id")
+    duration: str = request.args.get("duration")
+
+    if not duration or not playlist_id:
+        return abort(400, "You did not provide a playlist id or duration")
+
+    if not duration.isdigit():
+        return abort(400, "The duration you provided is not a digit but " + duration)
+
+    duration: int = abs(int(duration))
+
+    if duration.bit_length() > 63:
+        duration: int = 0
+
+    playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+    if not playlist:
+        return abort(400, f"The playlist {playlist_id} id you provided was not found")
+
+    playlist.max_song_length = duration
     db.session.commit()
     return ""
 

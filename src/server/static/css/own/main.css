@@ -44,6 +44,10 @@ td, th {
     top: -9999px;
 }
 
+.toast {
+    flex-direction: column;
+}
+
 /*Add a icon behind a input*/
 .postfix {
     position: absolute;
@@ -95,9 +99,11 @@ td, th {
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
 }
+
 input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
+    -moz-appearance: textfield; /* Firefox */
 }
+
 input::-webkit-inner-spin-button {
     -webkit-appearance: inner-spin-button;
     display: inline-block;

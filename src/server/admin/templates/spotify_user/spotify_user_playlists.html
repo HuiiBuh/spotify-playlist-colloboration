@@ -5,8 +5,9 @@
         let removePlaylistAPI = "{{ url_for("api.remove_playlist") }}?playlist-id=";
         let addPlaylistAPI = "{{ url_for("api.add_playlist") }}?playlist-id=";
         let playlistAPI = "{{ url_for("api.get_playlist") }}?playlist-id=";
+        let playlistDurationAPI = "{{ url_for("api.update_playlist_duration")}}?playlist-id=";
         let autocomplete = {
-            {%   for key, value in updated_playlist_list.items() %}
+            {%   for key, value in autocomplete_playlist_list.items() %}
                 "{{ key }}": "{{ value }}",
             {% endfor %}
         };
@@ -48,9 +49,13 @@
                         </td>
                         <td>{{ playlist.track_count }}</td>
                         <td class="song-length no-padding">
-                            <input onkeydown="onlyNumbers()" class="no-margin" type="number">
+                            <input onkeydown="onlyNumbers()" class="no-margin" type="number"
+                                   id="{{ playlist_id }}-input" autocomplete="off"
+                                   default-duration="{{ playlist.max_song_duration }}"
+                                   value="{{ playlist.max_song_duration }}">
                         </td>
-                        <td><i tabindex="0" class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i>
+                        <td>
+                            <i tabindex="0" class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i>
                         </td>
                     </tr>
                 {% endfor %}
@@ -78,7 +83,7 @@
             <label for="playlist-id">Playlist ID</label>
         </div>
         <div class="input-field col s5">
-            <input id="songlength-id" type="number" onkeydown="onlyNumbers(event)">
+            <input id="songlength-id" type="number" value="0" autocomplete="off" onkeydown="onlyNumbers(event)">
             <label for="songlength-id">Song Length in sec</label>
         </div>
         <button class="btn-flat col s2 primary-bg-color white-text" id="add-button">Add</button>
@@ -92,4 +97,5 @@
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/add.js"></script>
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/remove.js"></script>
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/main.js"></script>
+    <script type="text/javascript" src="/static/js/own/spotify_user_playlists/edit.js"></script>
 {% endblock %}

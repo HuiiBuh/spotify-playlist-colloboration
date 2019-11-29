@@ -97,6 +97,7 @@ def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str, song_le
     playlist_json = {}
     try:
         playlist_json = spotify.playlist(playlist_id, auth_token)
+        playlist_json["duration"] = song_length
     except SpotifyError as e:
         if "Invalid playlist Id" in str(e):
             return abort(400, "The Playlist ID you passed is not valid")

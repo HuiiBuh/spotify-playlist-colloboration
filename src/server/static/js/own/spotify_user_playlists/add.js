@@ -89,7 +89,10 @@ function displayNewPlaylist(json) {
     let songLengthInput = document.createElement("input");
     songLengthInput.setAttribute("type", "number");
     songLengthInput.setAttribute("class", "no-margin");
-    songLengthInput.onkeydown = onlyNumbers;
+    songLengthInput.setAttribute("default-duration", json.duration);
+    songLengthInput.setAttribute("value", json.duration);
+    songLengthInput.id = json["id"] + "-input";
+    songLengthInput.onkeydown = updatePlaylistDuration();
     songLength.appendChild(songLengthInput);
 
     let deleteTd = document.createElement("td");

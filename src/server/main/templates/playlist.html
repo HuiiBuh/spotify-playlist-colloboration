@@ -11,6 +11,7 @@
         let playlistAPI = "/api/spotify/playlist?playlist-id={{ playlist_id }}";
         let playlistTracksAPI = "/api/spotify/playlist/tracks?playlist-id={{ playlist_id }}";
         let playlistAddTracksAPI = "/api/spotify/playlist/add?playlist-id={{ playlist_id }}";
+        let maxSongDuration = {{ spotify_playlist.max_song_length }};
     </script>
 {% endblock %}
 

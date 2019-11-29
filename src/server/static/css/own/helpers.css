@@ -58,6 +58,11 @@
     content: none !important;
 }
 
+.flex-break {
+    flex-basis: 100%;
+    height: 0;
+}
+
 /*Make a div a rectangle*/
 .rectangle {
     position: relative;

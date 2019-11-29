@@ -60,6 +60,10 @@ function onlyNumbers(evt) {
         return
     }
 
+    // F1 to F12
+    if (112 <= theEvent.keyCode && theEvent.keyCode <= 123 || 37 <= theEvent.keyCode && theEvent.keyCode <= 40) return;
+
+
     let number = parseInt(theEvent.key);
     if (Number.isNaN(number)) {
         theEvent.returnValue = false;

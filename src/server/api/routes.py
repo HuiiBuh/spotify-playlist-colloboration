@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 
 from server import spotify, db, SpotifyAuthorisationToken, spotify_info
 from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_spotify_user, \
-    get_token_by_playlist, add_playlist_to_spotify_user, assign_playlists_to_user
+    get_token_by_playlist, add_playlist_to_spotify_user, assign_playlists_to_user, check_songs
 from server.main.modals import Playlist, SpotifyUser, User
 
 mod = Blueprint("api", __name__)
@@ -113,7 +113,7 @@ def add_track_to_playlist():
     :return: status 201, or 400
     """
 
-    playlist_id = request.args.get('playlist-id')
+    playlist_id: str = request.args.get('playlist-id')
 
     if not playlist_id:
         return abort(400, "You did not give a playlist-id")
@@ -132,10 +132,14 @@ def add_track_to_playlist():
     json = request.get_json()
 
     if "track-list" in json:
-        spotify.add_playlist_tracks(playlist_id, json["track-list"], auth_token)
-        return Response(status=201)
+        track_list = json["track-list"]
     else:
         return abort(400, "Your request body has not track-list")
+
+    track_list = check_songs(track_list, auth_token, playlist_id)
+
+    spotify.add_playlist_tracks(playlist_id, track_list, auth_token)
+    return Response(status=201)
 
 
 @mod.route("/spotify/me")
@@ -315,13 +319,18 @@ def add_playlist():
     if not current_user.is_admin:
         return abort(403, "You are not authorized to visit the page")
 
-    playlist_id = request.args.get("playlist-id")
-    spotify_user_id = request.args.get("spotify-user-id")
+    playlist_id: str = request.args.get("playlist-id")
+    spotify_user_id: str = request.args.get("spotify-user-id")
+    song_length: str = request.args.get("song-length")
+
+    if not song_length or not song_length.isdigit():
+        song_length = "0"
+    song_length: int = int(song_length)
 
     if not playlist_id or not spotify_user_id:
         return abort(400, "You passed an empty playlistor spotify user")
 
-    return add_playlist_to_spotify_user(playlist_id, spotify_user_id)
+    return add_playlist_to_spotify_user(playlist_id, spotify_user_id, song_length)
 
 
 @mod.route("playlist/remove")
@@ -402,5 +411,3 @@ def remove_user():
     db.session.delete(user)
     db.session.commit()
     return ""
-
-########################################################################################################################

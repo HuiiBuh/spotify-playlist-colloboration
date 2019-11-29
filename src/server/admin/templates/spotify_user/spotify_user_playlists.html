@@ -26,6 +26,7 @@
                 <th data-sort-default>Name</th>
                 <th>Author</th>
                 <th data-sort-method='number'>Track count</th>
+                <th class="song-length" data-sort-method='none'>Max. song length</th>
                 <th style="width: 1px" data-sort-method='none'></th>
             </tr>
             </thead>
@@ -46,6 +47,9 @@
                                onclick="window.open('{{ playlist.author.url }}')">{{ playlist.author.name }}</a>
                         </td>
                         <td>{{ playlist.track_count }}</td>
+                        <td class="song-length no-padding">
+                            <input onkeydown="onlyNumbers()" class="no-margin" type="number">
+                        </td>
                         <td><i tabindex="0" class="material-icons pointer primary-text-color" id="{{ playlist_id }}">delete</i>
                         </td>
                     </tr>
@@ -54,8 +58,8 @@
             {% else %}
                 <tr id="no-playlists-placeholder">
                     <td></td>
+                    <td></td>
                     <td class="center-align">No Playlists</td>
-
                     <td></td>
                     <td></td>
                 </tr>
@@ -69,9 +73,13 @@
     </div>
 
     <div class="row flex-v-center">
-        <div class="input-field col s10">
+        <div class="input-field col s5">
             <input id="playlist-id" class="autocomplete" type="text">
             <label for="playlist-id">Playlist ID</label>
+        </div>
+        <div class="input-field col s5">
+            <input id="songlength-id" type="number" onkeydown="onlyNumbers(event)">
+            <label for="songlength-id">Song Length in sec</label>
         </div>
         <button class="btn-flat col s2 primary-bg-color white-text" id="add-button">Add</button>
     </div>

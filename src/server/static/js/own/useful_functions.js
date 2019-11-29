@@ -48,8 +48,21 @@ function cleanForRegex(regexString) {
         return regexString.replace(/[\\^$*+?.()|[\]{}]/g, '');
 }
 
-function relocateOnEnter(evt) {
-    if (evt.code === "Enter" || evt.code === "NumpadEnter") {
-        window.location.href = evt.currentTarget.getAttribute("link");
+
+/**
+ * Allow only numbers in the input
+ * @param evt The event of the input filed
+ */
+function onlyNumbers(evt) {
+    let theEvent = evt || window.event;
+
+    if (theEvent.key === "Backspace" || theEvent.key === "key") {
+        return
+    }
+
+    let number = parseInt(theEvent.key);
+    if (Number.isNaN(number)) {
+        theEvent.returnValue = false;
+        if (theEvent.preventDefault) theEvent.preventDefault();
     }
 }

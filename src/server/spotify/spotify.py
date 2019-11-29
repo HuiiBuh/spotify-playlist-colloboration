@@ -16,6 +16,7 @@ class SpotifyUrls:
     """
     AUTHORIZE = "https://accounts.spotify.com/authorize"
     REFRESH = "https://accounts.spotify.com/api/token"
+    TRACK = "https://api.spotify.com/v1/tracks/{id}"
     PLAYLIST_TRACKS = "https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     PLAYLIST = "https://api.spotify.com/v1/playlists/{playlist_id}"
     SEARCH = "https://api.spotify.com/v1/search?q={query}"
@@ -363,7 +364,27 @@ class Spotify:
         request_json = request.json()
         return request_json
 
-        pass
+    def track(self, track_id: str, auth_token: SpotifyAuthorisationToken) -> dict:
+        """
+
+        :param track_id:
+        :param auth_token:
+        :return:
+        """
+
+        url: str = SpotifyUrls.TRACK.replace("{id}", track_id)
+
+        if auth_token is None:
+            raise SpotifyError("You have to provide a valid auth token")
+
+        headers: dict = self._get_headers(auth_token)
+        request = requests.get(url=url, headers=headers)
+
+        if "error" in request.json():
+            raise SpotifyError(request.json())
+
+        request_json = request.json()
+        return request_json
 
     @staticmethod
     def _get_headers(auth_token: SpotifyAuthorisationToken) -> dict:

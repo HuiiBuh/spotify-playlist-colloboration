@@ -9,7 +9,6 @@ from server.config import Config
 from server.keys import KEYS
 from server.spotify import Spotify, SpotifyAppInfo, SpotifyAuthorisationToken
 
-
 # create flask app
 app = Flask(__name__)
 # configure the app from the object

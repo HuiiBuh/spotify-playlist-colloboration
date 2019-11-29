@@ -42,6 +42,7 @@ let playlistPlaceholder = function () {
     tr.id = "no-playlists-placeholder";
 
     tr.appendChild(document.createElement("td"));
+    tr.appendChild(document.createElement("td"));
 
     let td = document.createElement("td");
     td.setAttribute("class", "center-align");

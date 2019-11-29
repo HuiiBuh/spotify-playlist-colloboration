@@ -7,7 +7,7 @@ import server.admin
 import server.api
 from server.config import Config
 from server.keys import KEYS
-from server.spotify import Spotify, SpotifyAppInfo, SpotifyAuthorisationToken
+from server.spotify import Spotify, SpotifyAppInfo
 
 # create flask app
 app = Flask(__name__)
@@ -34,7 +34,7 @@ spotify.app_information = spotify_info
 
 state = "HuiiBuh"
 
-# import the modal at the end so the db the modals depend on are already created
+# import the modal at the end so the db the db modals depend on are already created
 import server.routes
 from server.main.routes import mod as main_mod
 from server.main import modals

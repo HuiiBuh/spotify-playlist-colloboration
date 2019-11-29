@@ -3,10 +3,11 @@ import time
 from flask import Blueprint, jsonify, request, Response, abort, make_response, redirect, url_for
 from flask_login import login_required, current_user
 
-from server import spotify, db, SpotifyAuthorisationToken, spotify_info
+from server import spotify, db, spotify_info
 from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_spotify_user, \
     get_token_by_playlist, add_playlist_to_spotify_user, assign_playlists_to_user, check_songs
 from server.main.modals import Playlist, SpotifyUser, User
+from server.spotify import SpotifyAuthorisationToken
 
 mod = Blueprint("api", __name__)
 

@@ -35,7 +35,7 @@ def home() -> render_template:
         return render_template("select.html", title="Select Playlist", playlist_list_json=playlist_list_json)
 
     # Get a playlist from the database
-    spotify_playlist:Playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+    spotify_playlist: Playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
 
     # If the playlist is not in the db render the resource not found
     if not spotify_playlist:

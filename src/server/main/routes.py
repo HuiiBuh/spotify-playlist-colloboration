@@ -17,23 +17,23 @@ def home() -> render_template:
     :return: A template
     """
 
-    playlist_id = request.args.get('playlist-id')
+    user = current_user.id
+    playlist_list = Playlist.query.join(User.playlists).filter(User.id == user).all()
 
-    # Check if the playlist id is present
-    if not playlist_id:
-        user = current_user.id
-        playlist_list = Playlist.query.join(User.playlists).filter(User.id == user).all()
+    playlist_list_json = {}
+    for playlist in playlist_list:
+        auth_token = get_token_by_playlist(playlist.spotify_id)
 
-        playlist_list_json = {}
-        for playlist in playlist_list:
-            auth_token = get_token_by_playlist(playlist.spotify_id)
+        if auth_token:
+            playlist_list_json[playlist.spotify_id] = \
+                modify_playlist_json(spotify.playlist(playlist.spotify_id, auth_token))
 
-            if auth_token:
-                playlist_list_json[playlist.spotify_id] = \
-                    modify_playlist_json(spotify.playlist(playlist.spotify_id, auth_token))
+    return render_template("select.html", title="Select Playlist", playlist_list_json=playlist_list_json)
 
-        return render_template("select.html", title="Select Playlist", playlist_list_json=playlist_list_json)
 
+@mod.route("/playlist/<playlist_id>")
+@login_required
+def playlist(playlist_id) -> render_template:
     # Get a playlist from the database
     spotify_playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
 

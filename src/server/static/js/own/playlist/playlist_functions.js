@@ -35,10 +35,12 @@ function displayPlaylistInfo() {
     //Set the information
     document.getElementById("playlist-name").innerText = mainPlaylist.name;
     document.getElementById("author").innerText = mainPlaylist.author[0];
-    document.getElementById("author").onclick = addOnclick(mainPlaylist.author[1]);
+    document.getElementById("author").href = mainPlaylist.author[1];
+    document.getElementById("author").setAttribute("target", "_blank");
     document.getElementById("duration").innerText = mainPlaylist.durationHumanReadable;
     document.getElementById("song-count").innerText = mainPlaylist.songCount;
-    document.getElementById("playlist-url").onclick = addOnclick(mainPlaylist.url);
+    document.getElementById("playlist-url").href = mainPlaylist.url;
+    document.getElementById("playlist-url").setAttribute("target", "_blank");
     document.getElementById("playlist-cover").style.background = 'url(' + mainPlaylist.picture + ')';
 
     // Add a trash image and remove it as soon as it loads.

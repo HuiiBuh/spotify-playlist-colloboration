@@ -4,9 +4,9 @@ venv/
 *.pyc
 *.db
 
+src/wsgi.py
 src/backup/
 src/settings_production.json
-src/migrations/
 src/server/keys/key_template_production.py
 src/server/settings/settings_production.json
 docker/flask/src/

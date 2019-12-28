@@ -20,8 +20,8 @@
                     <th>Country</th>
                     <th data-sort-method='number'>Playlists</th>
                     <th data-sort-method='number'>Followers</th>
-                    <th  style="width: 1px" data-sort-method='none'></th>
-                    <th  style="width: 1px" data-sort-method='none'></th>
+                    <th style="width: 1px" data-sort-method='none'></th>
+                    <th style="width: 1px" data-sort-method='none'></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,7 +35,7 @@
                         <tr class="spotify-user">
                             <td>
                                 <a class="black-text pointer underline" hover-on-touch
-                                   onclick="window.open('{{ user.external_urls.spotify }}')">{{ user.display_name }}</a>
+                                   href="{{ user.external_urls.spotify }}" target="_blank">{{ user.display_name }}</a>
                             </td>
                             <td>{{ user.country }}</td>
                             <td>{{ user.playlist_count }}</td>

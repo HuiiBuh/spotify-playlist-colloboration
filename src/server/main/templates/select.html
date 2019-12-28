@@ -31,10 +31,12 @@
 
                 <div class="col xs12 s5 m4 l3 xl2 small-margin-bottom">
                     <div class="card">
-                        <div class="card-image pointer" hover-on-touch
-                             onclick="location.href = '?playlist-id={{ id }}'">
-                            <img alt="cover image" src="{{ playlist["image_url"] }}">
-                        </div>
+                        <a href="{{ url_for("main.playlist", playlist_id=playlist["id"]) }}">
+                            <div class="card-image pointer" hover-on-touch>
+                                <img alt="cover image" src="{{ playlist["image_url"] }}">
+                            </div>
+                        </a>
+
                         <div class="card-content">
                             <a class="card-title black-text underline pointer"
                                href="?playlist-id={{ id }}">{{ playlist["name"] }}</a>

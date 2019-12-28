@@ -107,7 +107,8 @@ function displayPlaylistSongs(rootID, songList, type) {
         titleA.setAttribute("class", " pointer underline black-text no-wrap");
         titleA.setAttribute("hover-on-touch", "");
         titleA.innerText = title;
-        titleA.onclick = addOnclick(url);
+        titleA.href = url;
+        titleA.setAttribute("target", "_blank");
         titleDiv.appendChild(titleA);
 
         let restDiv = document.createElement("div");
@@ -120,7 +121,8 @@ function displayPlaylistSongs(rootID, songList, type) {
             interpretA.setAttribute("hover-on-touch", "");
             interpretA.innerText = artist["name"];
 
-            interpretA.onclick = addOnclick(artist["url"]);
+            interpretA.href = artist["url"];
+            interpretA.setAttribute("target", "_blank");
 
             restDiv.appendChild(interpretA);
 
@@ -137,7 +139,8 @@ function displayPlaylistSongs(rootID, songList, type) {
         albumArtistA.setAttribute("class", "black-text pointer underline album-artist no-wrap to-long no-shrink");
         albumArtistA.setAttribute("hover-on-touch", "");
         albumArtistA.innerText = song.albumArtist["name"];
-        albumArtistA.onclick = addOnclick(song.albumArtist["url"]);
+        albumArtistA.href = song.albumArtist["url"];
+        albumArtistA.setAttribute("target", "_blank");
         restDiv.appendChild(albumArtistA);
 
 
@@ -150,7 +153,8 @@ function displayPlaylistSongs(rootID, songList, type) {
         albumA.setAttribute("class", "black-text pointer underline no-wrap to-long");
         albumA.setAttribute("hover-on-touch", "");
         albumA.innerText = album["name"];
-        albumA.onclick = addOnclick(album["url"]);
+        albumA.href = album["url"];
+        albumA.setAttribute("target", "_blank");
 
         restDiv.appendChild(albumA);
 

@@ -31,6 +31,7 @@ class Playlist {
     addSong(song) {
         this._songList.push(song);
         this._calculateDuration();
+        ++ this._songCount;
 
         if (this.type === "main") {
             this.updatePlaylistInfo();

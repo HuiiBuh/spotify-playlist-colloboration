@@ -46,6 +46,16 @@ function songSearch(evt) {
 function addToAddPlaylist(song) {
 
     return function (evt) {
+
+        if (maxSongDuration !== 0 && song.duration >= (maxSongDuration * 1000)) {
+            M.toast({
+                html: "<span>The duration of the song is to long.</span> <div class='flex-break'></div>" +
+                    "<span> Only songs shorter than <b>" + maxSongDuration + "</b> seconds can be added</span>"
+                , classes: "bg-warning"
+            });
+            return
+        }
+
         let add = true;
         [mainPlaylist.songList, addPlaylist.songList].forEach(playlist => {
             playlist.forEach(playlistSong => {
@@ -64,6 +74,7 @@ function addToAddPlaylist(song) {
                 }
             });
         });
+
         if (add) {
             evt.currentTarget.classList.add("success");
             addPlaylist.addSong(song);
@@ -117,7 +128,7 @@ function addSongsToPlaylist() {
             document.getElementById("add-song-list").innerText = "";
             addPlaylist = new Playlist("main", "web", 0, null, null, "add")
         } else if (this.readyState === 4 && this.status !== 200) {
-            M.toast({html: "An error occurred <br> The tracks could not bea added", classes: "bg-warning"})
+            showErrorMessage(this);
         }
     };
 

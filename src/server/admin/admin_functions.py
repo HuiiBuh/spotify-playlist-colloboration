@@ -1,13 +1,13 @@
-import json
 import re
 
-from flask import render_template, jsonify
+from flask import render_template
 from flask_login import current_user
 
-from server import SpotifyAuthorisationToken, spotify
+from server import spotify
 from server.admin.forms import AddUserForm, ChangePasswordForm
 from server.api.api_functions import update_spotify_user, modify_playlist_json, get_token_by_playlist
 from server.main.modals import SpotifyUser, Playlist, User
+from server.spotify import SpotifyAuthorisationToken
 
 
 def display_all_spotify_users() -> render_template:
@@ -95,25 +95,27 @@ def display_spotify_user_playlists(spotify_user_id: str):
     for playlist in playlist_list:
         playlist_list_json[playlist.spotify_id] = modify_playlist_json(
             spotify.playlist(playlist.spotify_id, oauth_token))
+        playlist_list_json[playlist.spotify_id]["max_song_duration"] = playlist.max_song_length
 
     # Get the username of the spotify user
     user_name = spotify.me(oauth_token)['display_name']
 
     playlist_list = spotify.user_playlists(oauth_token)["items"]
 
-    updated_playlist_list = {}
+    autocomplete_playlist_list = {}
     for playlist in playlist_list:
         if playlist["owner"]["id"] == spotify_user_id:
             try:
-                updated_playlist_list[playlist["name"] + " - " + playlist["id"]] = playlist["images"][2]["url"]
+                autocomplete_playlist_list[playlist["name"] + " - " + playlist["id"]] = playlist["images"][2]["url"]
             except IndexError:
-                updated_playlist_list[
+                autocomplete_playlist_list[
                     playlist["name"] + " - " + playlist["id"]] = "/static/icons/default_playlist_cover.png"
 
     return render_template("spotify_user/spotify_user_playlists.html",
                            playlist_list_json=playlist_list_json,
-                           user_name=user_name, title=f"{user_name}'s Playlists",
-                           updated_playlist_list=updated_playlist_list)
+                           user_name=user_name,
+                           title=f"{user_name}'s Playlists",
+                           autocomplete_playlist_list=autocomplete_playlist_list)
 
 
 def display_user(user_id: str):

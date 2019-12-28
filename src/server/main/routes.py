@@ -35,14 +35,14 @@ def home() -> render_template:
 @login_required
 def playlist(playlist_id) -> render_template:
     # Get a playlist from the database
-    spotify_playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
+    spotify_playlist: Playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
 
     # If the playlist is not in the db render the resource not found
     if not spotify_playlist:
         return render_template("resource_not_found.html", title="Resource not found", resource="Playlist")
 
     # Render the playlist page
-    return render_template("playlist.html", title="Home", playlist_id=playlist_id)
+    return render_template("playlist.html", title="Home", playlist_id=playlist_id, spotify_playlist=spotify_playlist)
 
 
 @mod.route("/playback/<spotify_user_id>")
@@ -90,7 +90,7 @@ def login() -> redirect:
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get("next")
         if next_page:
-            if not next_page[0] == "/":
+            if not str(next_page[0]) == "/":
                 next_page = "/" + next_page
 
             return redirect(f"{next_page}")

@@ -22,6 +22,9 @@ class SpotifyUrls:
     SEARCH = "https://api.spotify.com/v1/search?q={query}"
     ME = "https://api.spotify.com/v1/me"
     ME_PLAYLISTS = "https://api.spotify.com/v1/me/playlists"
+    CURRENT_PLAYBACK = "https://api.spotify.com/v1/me/player"
+    PLAY = "https://api.spotify.com/v1/me/player/play"
+    SHUFFLE = "https://api.spotify.com/v1/me/player/shuffle"
 
 
 class SpotifyAppInfo:
@@ -361,15 +364,14 @@ class Spotify:
         if "error" in request.json():
             raise SpotifyError(request.json())
 
-        request_json = request.json()
-        return request_json
+        return request.json()
 
     def track(self, track_id: str, auth_token: SpotifyAuthorisationToken) -> dict:
         """
-
-        :param track_id:
-        :param auth_token:
-        :return:
+        Get the track information
+        :param track_id: The spotify track id
+        :param auth_token: A valid auth token
+        :return: The information available to the track
         """
 
         url: str = SpotifyUrls.TRACK.replace("{id}", track_id)
@@ -383,8 +385,78 @@ class Spotify:
         if "error" in request.json():
             raise SpotifyError(request.json())
 
-        request_json = request.json()
-        return request_json
+        return request.json()
+
+    def current_playback(self, auth_token: SpotifyAuthorisationToken) -> dict:
+        """
+        Get the current playback
+        :param auth_token: The auth token
+        :return: The current playback information
+        """
+
+        request = requests.get(SpotifyUrls.CURRENT_PLAYBACK, headers=self._get_headers(auth_token))
+
+        if request.text:
+            if "error" in request.json():
+                raise SpotifyError(request.json())
+            return request.json()
+        return {}
+
+    def shuffle(self, shuffle_on: bool, auth_token: SpotifyAuthorisationToken) -> bool:
+        """
+        Set the shuffle to a specific value
+        :param shuffle_on: Is the shuffle supposed to be on
+        :param auth_token: The auth token
+        :return: The shuffle state
+        """
+
+        url = SpotifyUrls.SHUFFLE
+        url += f"?state={shuffle_on}"
+
+        request = requests.put(url=url, headers=self._get_headers(auth_token))
+
+        if request.text and "error" in request.json():
+            raise SpotifyError(request.json())
+
+    def queue(self, track_id_list: list, auth_token: SpotifyAuthorisationToken, shuffle: bool = None) -> dict:
+        """
+        Queue a track
+        :param shuffle: The shuffle state
+        :param track_id_list: The id of the track
+        :param auth_token: The auth token
+        :return: If it was a success or not
+        """
+
+        # Get the currently playling track
+        current = self.current_playback(auth_token)
+        if not current:
+            return {"error": "No playback device was found"}
+
+        # Set shuffle to the current value
+        if shuffle is not None:
+            self.shuffle(shuffle, auth_token)
+
+        # Get the current song id and the progress
+        current_song = current["item"]["uri"]
+        progress = current["progress_ms"]
+
+        body: json = {
+            "uris": [
+                current_song
+            ],
+            "position_ms": progress
+        }
+
+        # Add the tracks to the queue
+        for track_id in track_id_list:
+            body["uris"].append(f"spotify:track:{track_id}")
+
+        request = requests.put(SpotifyUrls.PLAY, headers=self._get_headers(auth_token), data=json.dumps(body))
+
+        if request.text and "error" in request.json():
+            raise SpotifyError(request.json())
+
+        return {"success": "success"}
 
     @staticmethod
     def _get_headers(auth_token: SpotifyAuthorisationToken) -> dict:

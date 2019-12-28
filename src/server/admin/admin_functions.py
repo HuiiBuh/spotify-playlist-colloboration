@@ -75,7 +75,7 @@ def display_spotify_user_playlists(spotify_user_id: str):
 
     # Check if spotify user exists
     if not spotify_user:
-        return render_template("resource_not_found.html", title="404")
+        return render_template("resource_not_found.html", title="Resource not found", resource="Spotify User")
 
     # Get all playlists that are assigned to the spotify user
     playlist_list = Playlist.query.filter(Playlist.spotify_user == spotify_user.id).all()
@@ -163,7 +163,7 @@ def display_user(user_id: str):
                                all_playlists_list=all_playlists_list, form=form, user_id=int(user_id),
                                current_user_id=current_user.id)
     else:
-        return render_template("resource_not_found.html")
+        return render_template("resource_not_found.html", title="Resource not found", resource="User")
 
 
 def password_complex_enough(password: str) -> bool:

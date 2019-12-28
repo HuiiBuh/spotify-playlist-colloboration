@@ -5,7 +5,8 @@ from flask_login import login_required, current_user
 
 from server import spotify, db, SpotifyAuthorisationToken, spotify_info
 from server.api.api_functions import modify_playlist_json, modify_track_json, collect_tracks, update_spotify_user, \
-    get_token_by_playlist, add_playlist_to_spotify_user, assign_playlists_to_user, check_songs
+    get_token_by_playlist, add_playlist_to_spotify_user, assign_playlists_to_user, check_songs, \
+    get_token_by_spotify_user_id
 from server.main.modals import Playlist, SpotifyUser, User
 
 mod = Blueprint("api", __name__)
@@ -167,6 +168,33 @@ def me():
         update_spotify_user(user_id, auth_token)
 
     return spotify.me(auth_token=auth_token)
+
+
+@mod.route("/queue", methods=['PUT'])
+@login_required
+def queue_songs():
+    """
+    Queue songs to a specific user
+    :return:
+    """
+    # ToDo make secure
+
+    json = request.get_json()
+
+    if "songs" not in json:
+        return abort(400, "No songs where passed")
+
+    if "spotify_user_id" not in json:
+        return abort(400, "No spotify user id was passed")
+
+    auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(json["spotify_user_id"])
+
+    songs = json["songs"]
+    queue_return_value = spotify.queue(track_id_list=songs, auth_token=auth_token)
+
+    if "error" in queue_return_value:
+        return abort(400, queue_return_value)
+    return queue_return_value
 
 
 # ADMIN ################################################################################################################

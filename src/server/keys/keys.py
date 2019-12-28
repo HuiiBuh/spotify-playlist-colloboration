@@ -11,7 +11,9 @@ class KEYS:
         "playlist-modify-public",
         "playlist-read-private",
         "user-read-email",
-        "user-read-private"
+        "user-read-private",
+        "user-read-playback-state",
+        "user-modify-playback-state"
     ]
 
     DATABASE_USERNAME = os.environ["MYSQL_USER"]

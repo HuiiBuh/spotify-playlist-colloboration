@@ -39,9 +39,9 @@
 
                         <div class="card-content">
                             <a class="card-title black-text underline pointer"
-                               href="?playlist-id={{ id }}">{{ playlist["name"] }}</a>
+                               href="{{ url_for("main.playlist", playlist_id=playlist["id"]) }}">{{ playlist["name"] }}</a>
                             <a class="pointer black-text underline"
-                               href="{{ playlist["url"] }}">{{ playlist["author"]["name"] }}</a>
+                               href="{{ playlist["author"]["url"] }}">{{ playlist["author"]["name"] }}</a>
                         </div>
                     </div>
                 </div>

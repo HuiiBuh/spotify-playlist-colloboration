@@ -1,10 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, jsonify
 from flask_login import login_required, current_user, logout_user, login_user
 
 from server import spotify
 from server.api.api_functions import get_token_by_playlist, modify_playlist_json
 from server.main.forms import LoginForm
-from server.main.modals import User, Playlist
+from server.main.modals import User, Playlist, SpotifyUser
 
 mod = Blueprint("main", __name__, template_folder='templates')
 
@@ -39,10 +39,28 @@ def playlist(playlist_id) -> render_template:
 
     # If the playlist is not in the db render the resource not found
     if not spotify_playlist:
-        return render_template("resource_not_found.html")
+        return render_template("resource_not_found.html", title="Resource not found", resource="Playlist")
 
     # Render the playlist page
     return render_template("playlist.html", title="Home", playlist_id=playlist_id)
+
+
+@mod.route("/playback/<spotify_user_id>")
+def playback(spotify_user_id):
+    spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
+    if not spotify_user:
+        return render_template("resource_not_found.html", title="Resource not found", resource="Spotify User")
+
+    # ToDo make secure
+    return render_template("playback.html", title="Playback", spotify_user_id=spotify_user_id)
+
+
+@mod.route("/queue")
+@login_required
+def queue():
+    # ToDo remove
+    token = get_token_by_playlist("2dSOsy4TypHJeNCUvf7z3y")
+    return jsonify(spotify.queue(["7MJQ9Nfxzh8LPZ9e9u68Fq"], token))
 
 
 @mod.route("/login", methods=["GET", "POST"])

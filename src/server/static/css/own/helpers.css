@@ -107,8 +107,17 @@
     padding-left: .5em !important;
 }
 
+.padding-left {
+    padding-left: 1em !important;
+}
+
+
 .no-padding-left {
     padding-left: 0 !important;
+}
+
+.no-padding-top {
+    padding-top: 0 !important;
 }
 
 .no-padding-right {
@@ -153,6 +162,10 @@
     margin: 0 !important;
 }
 
+.no-margin-top {
+    margin-top: 0 !important;
+}
+
 .no-margin-bottom {
     margin-bottom: 0;
 }
@@ -160,4 +173,8 @@
 /*Align*/
 .align-right {
     text-align: right !important;
+}
+
+h6 {
+    font-size: 1.5rem;
 }

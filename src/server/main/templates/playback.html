@@ -44,12 +44,32 @@
                 <i class="material-icons pointer playback-control">repeat</i>
                 {#                            <i class="material-icons">repeat_one</i>#}
             </div>
-            <div class="settings">
-                <i class="material-icons pointer small-padding-left">settings</i>
-
-                <a class="pointer devices">
-                    <i class="material-icons"> devices_other</i>
-                    <span class="device-text">Hover over me</span>
+            <div class="right-controls">
+                <a>
+                    <i class="material-icons pointer small-padding-left">settings</i>
+                </a>
+                <a class="devices">
+                    <i class="material-icons pointer"> devices_other</i>
+                    <div class="device-text">
+                        <h6 class="no-wrap device-padding">Connect to a device</h6>
+                        <div style="text-align: center">
+                            <img src="/static/icons/devices.png" class="small-padding-top small-padding-bottom"
+                                 style="width: 180px;" alt="">
+                        </div>
+                        <div class="flex-v-center device-padding pointer     small-margin-bottom listening-option">
+                            <i class="material-icons small">laptop</i>
+                            <span class="left-align padding-left">
+                                <p class="no-margin">Laptop</p>
+                                <p class="no-margin">Acer Aspire</p>
+                            </span>
+                        </div>
+                        <div class="flex-v-center device-padding pointer listening-option">
+                            <i class="material-icons small">smartphone</i>
+                            <span class="left-align padding-left">
+                                <p class="no-margin">Smartphone</p>
+                                <p class="no-margin">Poco F1</p>
+                            </span></div>
+                    </div>
                 </a>
             </div>
         </div>
@@ -532,3 +552,7 @@
 
 {% block main %}{% endblock %}
 {% block footer %}{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="/static/js/own/playback/main.js"></script>
+{% endblock %}

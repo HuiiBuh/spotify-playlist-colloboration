@@ -96,7 +96,7 @@
     align-items: center;
 }
 
-.settings {
+.right-controls {
     width: 50%;
     display: inline-flex;
     align-items: center;
@@ -149,32 +149,27 @@
     background: #000;
 }
 
-.settings > i {
+.right-controls > i {
     position: relative;
 }
-.devices{
+
+.devices {
     position: relative;
 }
 
 .devices .device-text {
-    width: 500px;
-    height: 500px;
-    margin-left: -250px;
-
+    display: inline-block;
+    text-align: center;
     visibility: hidden;
-    background-color: black;
+    background-color: #171717;
     color: #fff;
     position: absolute;
     z-index: 1;
     bottom: 125%;
     left: 50%;
+
     opacity: 0;
     transition: opacity .5s;
-}
-
-.show {
-    visibility: visible;
-    opacity: 1;
 }
 
 .devices .device-text::after {
@@ -185,5 +180,19 @@
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: black transparent transparent transparent;
+    border-color: #171717 transparent transparent transparent;
+}
+
+
+.show {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.listening-option:hover {
+    background: #333333;
+}
+
+.device-padding {
+    padding: .5rem 2rem;
 }

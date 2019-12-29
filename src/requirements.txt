@@ -1,7 +1,7 @@
 Flask==1.1.1
 
 # Base64 encoding
-six==1.12.0
+six==1.13.0
 
 # Make api calls
 requests
@@ -26,9 +26,6 @@ cryptography
 # login and passwords
 flask-login
 argon2-cffi
-
-# backup
-schedule==0.6.0
 
 # production server
 uWSGI

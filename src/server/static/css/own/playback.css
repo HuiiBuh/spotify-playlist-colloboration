@@ -1,0 +1,189 @@
+/*Hide main box*/
+#main-box {
+    display: none;
+}
+
+:root {
+    --darken: rgba(0, 0, 0, .4)
+}
+
+.playlist-heading-text {
+    font-size: 1.5rem;
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+
+.playlist-heading {
+    height: 45px;
+    background: rgba(0, 0, 0, .5)
+}
+
+.cover-image {
+    width: 40vw;
+    max-width: 50vh;
+}
+
+.main-contend > :first-child {
+    height: calc(100vh - 135px)
+}
+
+.back {
+    position: fixed;
+    top: 1em;
+    left: 1em;
+}
+
+.back > i {
+    font-size: 3em;
+}
+
+.back > span {
+    font-size: 1.5em;
+}
+
+.background-blur-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background: url("https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg");
+
+    z-index: -1;
+
+    filter: blur(37px);
+    -webkit-filter: blur(37px);
+
+    transform: scale(1.1);
+    overflow: hidden;
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+.playback-group {
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    width: 75%;
+    background: var(--darken);
+    padding: 1em;
+}
+
+.main-contend {
+    margin: 0;
+}
+
+.playback-group > :first-child, .playback-group > :last-child {
+    margin-bottom: 10px;
+}
+
+.btn-floating.playback-control {
+    background-color: black;
+}
+
+.playback-control {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.playback-controls {
+    width: 50%;
+    display: inline-flex;
+    align-items: center;
+}
+
+.settings {
+    width: 50%;
+    display: inline-flex;
+    align-items: center;
+    float: right;
+    flex-direction: row-reverse;
+}
+
+.playback-group > .row .col.s11 {
+    margin-left: 0;
+}
+
+.progress {
+    margin: .5rem 0 .5rem 0 !important;
+}
+
+.progress {
+    background-color: black;
+}
+
+.progress .determinate {
+    background-color: white;
+}
+
+*, a, .black-text {
+    color: white !important;
+}
+
+::selection {
+    background-color: transparent;
+}
+
+.queue {
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    height: calc(100vh - 45px);
+    background: var(--darken);
+}
+
+::-webkit-scrollbar {
+    height: auto;
+    width: 5px;
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+}
+
+::-webkit-scrollbar-corner {
+    background: #000;
+}
+
+.settings > i {
+    position: relative;
+}
+.devices{
+    position: relative;
+}
+
+.devices .device-text {
+    width: 500px;
+    height: 500px;
+    margin-left: -250px;
+
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    opacity: 0;
+    transition: opacity .5s;
+}
+
+.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.devices .device-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}

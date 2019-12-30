@@ -3,18 +3,24 @@
     display: none;
 }
 
+
+body {
+    color: white;
+}
+
 :root {
     --darken: rgba(0, 0, 0, .4)
 }
 
 .playlist-heading-text {
-    font-size: 1.5rem;
-    margin-top: .5em;
-    margin-bottom: .5em;
+    font-size: 1.3rem;
+    margin-top: .8em;
+    margin-bottom: .8em;
 }
 
 .playlist-heading {
-    height: 45px;
+    padding: 1rem;
+    height: 91px;
     background: rgba(0, 0, 0, .5)
 }
 
@@ -24,21 +30,98 @@
 }
 
 .main-contend > :first-child {
-    height: calc(100vh - 135px)
+    height: calc(100vh - 113px)
 }
 
 .back {
     position: fixed;
-    top: 1em;
-    left: 1em;
+    top: 0;
+    left: 0;
+    padding: 1em 10em 10em 1em;
 }
 
-.back > i {
+.search {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em 10em 10em 1em;
+
+    background: rgb(0, 0, 0);
+    background: -moz-linear-gradient(225deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
+    background: -webkit-linear-gradient(225deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
+    background: linear-gradient(225deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
+}
+
+.search > i {
     font-size: 3em;
 }
 
-.back > span {
+.search-div {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    visibility: hidden;
+    border-bottom-left-radius: 100%;
+
+    width: 0;
+    background-color: transparent;
+    height: 0;
+
+    transition: width, height, color, background-color, 600ms;
+}
+
+.search-div > i {
+    position: absolute;
+    padding-bottom: 1rem;
+    padding-left: .35rem;
+    padding-right: .35rem;
+    font-size: 3rem;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    transform: rotate(180deg);
+}
+
+.search-div:not(.expand-search) * {
+    color: transparent !important;
+    border-color: transparent !important;
+}
+
+.expand-search {
+    width: 100% !important;
+    height: 100% !important;
+    border-bottom-left-radius: 0;
+    background-color: white;
+    transition: all 600ms;
+
+    color: black;
+
+    visibility: visible;
+}
+
+
+#add-to-queue {
+    position: absolute;
+    right: .25rem;
+    top: .25rem;
+}
+
+.back i {
+    font-size: 3em;
+    color: #ffffff !important;
+}
+
+.back span {
     font-size: 1.5em;
+    color: #ffffff !important;
+}
+
+.fade-back {
+    background: rgb(0, 0, 0);
+    background: -moz-linear-gradient(136deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
+    background: -webkit-linear-gradient(136deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
+    background: linear-gradient(136deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
 }
 
 .background-blur-image {
@@ -51,7 +134,10 @@
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
-    background: url("https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg");
+    /*background: url("https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg") !important;*/
+    background: url("https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg");
+    /*background: url("https://e.snmc.io/i/300/w/c156fbce1b98fb761bf46e24ffcc24c1/1255619");*/
+    /*background: url("https://upload.wikimedia.org/wikipedia/de/b/bd/Metallica_-_Metallica.jpg");*/
 
     z-index: -1;
 
@@ -91,13 +177,13 @@
 }
 
 .playback-controls {
-    width: 50%;
     display: inline-flex;
     align-items: center;
 }
 
 .right-controls {
-    width: 50%;
+    position: absolute;
+    right: 1em;
     display: inline-flex;
     align-items: center;
     float: right;
@@ -120,10 +206,6 @@
     background-color: white;
 }
 
-*, a, .black-text {
-    color: white !important;
-}
-
 ::selection {
     background-color: transparent;
 }
@@ -131,8 +213,9 @@
 .queue {
     overflow-x: hidden;
     scrollbar-width: thin;
-    height: calc(100vh - 45px);
+    height: calc(100vh - 91px);
     background: var(--darken);
+    padding: 0 !important;
 }
 
 ::-webkit-scrollbar {
@@ -155,6 +238,10 @@
 
 .devices {
     position: relative;
+}
+
+.right-controls i {
+    color: white;
 }
 
 .devices .device-text {

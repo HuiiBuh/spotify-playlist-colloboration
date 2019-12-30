@@ -3,7 +3,7 @@ window.onload = function () {
 
 };
 
-function showDevices(event) {
+function toggleDevices(event) {
     let element = document.getElementsByClassName("device-text")[0];
 
     //Check if the devices are shown
@@ -29,7 +29,6 @@ function showDevices(event) {
     }
 
     event.stopPropagation();
-    event.preventDefault();
     //Add the handler to hide the element
     document.onclick = hideDeviceText;
 }
@@ -38,5 +37,32 @@ function showDevices(event) {
  * Add the event listeners
  */
 function addListener() {
-    document.getElementsByClassName("devices")[0].onclick = showDevices;
+    document.getElementsByClassName("devices")[0].onclick = toggleDevices;
+    document.getElementById("add-to-queue").onclick = toggleSearchDiv;
+    document.getElementById("close-search-div").onclick = toggleSearchDiv;
+}
+
+
+function toggleSearchDiv(event) {
+    let searchDiv = document.getElementsByClassName("search-div")[0];
+
+    if (searchDiv.classList.contains("expand-search")) {
+        searchDiv.classList.remove("expand-search");
+        return
+    }
+
+    searchDiv.classList.add("expand-search");
+
+    function hideSearchDiv(evt) {
+        let searchDiv = document.getElementsByClassName("search-div")[0];
+        if (searchDiv.contains(evt.target)) {
+            return
+        }
+
+        searchDiv.classList.remove("expand-search");
+
+    }
+
+    event.stopPropagation();
+    document.onclick = hideSearchDiv;
 }

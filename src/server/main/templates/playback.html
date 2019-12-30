@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{# Cover zentrieren; Zeichen für die queue zentral über die cover & Leiste mit Schriftzug der Queue noch ein bisschen breiter ("vertikal breiter") #}
+{# TODO Zeichen für die queue zentral über die cover
+ TODO Leiste mit Schriftzug der Queue noch ein bisschen breiter ("vertikal breiter") #}
 
 {% block css %}
     <link type="text/css" rel="stylesheet" href="/static/css/own/playback.css" media="screen,projection"/>
@@ -19,12 +20,21 @@
     {# Background image#}
     <div class="background-blur-image"></div>
 
+    {# Back button #}
+    <div class="back fade-back">
+        <a class="pointer flex-v-center" href="/">
+            <i class="material-icons">navigate_before</i>
+            <span>Home</span>
+        </a>
+    </div>
+
+
     {# Playback group #}
     <div class="playback-group">
         {# Progress bar#}
         <div class="row flex-center">
             <span class="col">0:00</span>
-            <div class="col s8 m9 l10 xl11">
+            <div class="col s8 m9 l10 xl10">
                 <div class="progress">
                     <div class="determinate" style="width: 70%"></div>
                 </div>
@@ -75,17 +85,30 @@
         </div>
     </div>
 
-    <a class="back pointer flex-v-center" href="/">
-        <i class="material-icons">navigate_before</i>
-        <span>Home</span>
-    </a>
-
     {# The main content #}
     <div class="row main-contend">
-        {# Cover image #}
-        <div class="col s9 no-padding flex-center flex-v-center">
+
+        {# Cover image and search #}
+        <div class="col s9 no-padding flex-center flex-v-center" style="position: relative;">
+
+            {#  search #}
+            <div class="search">
+                <i class="material-icons pointer" id="add-to-queue">playlist_add</i>
+            </div>
+
+            <div class="search-div expand-search small-padding">
+                <i class="material-icons pointer" id="close-search-div">minimize</i>
+
+                <h5>Search for the songs you want to add to the queue</h5>
+
+                <div class="input-field">
+                    <label for="song-name">Song</label>
+                    <input id="song-name" type="text">
+                </div>
+            </div>
+
             <img class="cover-image"
-                 src="https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg"
+                 src="https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg"
                  alt>
         </div>
         {# The snog queue #}
@@ -96,455 +119,14 @@
             </div>
         </div>
         <div class="col s3 queue">
-            <div id="playlist-songs" style="display: block;">
-                <div id="0AtP8EkGPn6SwxKDaUuXec" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/ab67616d00001e02a53a148d92ce7afa20229e49"
-                                                                                    src="https://i.scdn.co/image/ab67616d00001e02a53a148d92ce7afa20229e49">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/0AtP8EkGPn6SwxKDaUuXec"
-                                                    target="_blank">Remember The Name (feat. Eminem &amp; 50 Cent)</a>
-                        </div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V" target="_blank">Ed
-                            Sheeran</a><a class="black-text small-padding-right artist-separator">,</a><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text small-padding-right artist-separator">,</a><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/3q7HBObVc0L8jNeTe5Gofh" target="_blank">50
-                            Cent</a><a class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                       hover-on-touch="" href="https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V"
-                                       target="_blank">Ed Sheeran</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/3oIFxDIo2fwuk4lwCmFZCx" target="_blank">No.6
-                            Collaborations Project</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>03:27</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="0JtIWgsblOvJfpoyhGkFuS" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/e25624b8b99f78922eaf26efe741b554a09cc51b"
-                                                                                    src="https://i.scdn.co/image/e25624b8b99f78922eaf26efe741b554a09cc51b">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/0JtIWgsblOvJfpoyhGkFuS"
-                                                    target="_blank">Mockingbird</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/7tsXPtLqhab1zWeubbf6JH" target="_blank">Encore</a>
-                        </div>
-                    </div>
-                    <div class="col s2 m1"><p>04:10</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="15JINEqzVMv3SvJTAXAKED" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c"
-                                                                                    src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/15JINEqzVMv3SvJTAXAKED"
-                                                    target="_blank">Love The Way You Lie</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text small-padding-right artist-separator">,</a><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H"
-                                target="_blank">Rihanna</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/47BiFcV59TQi2s9SkBo2pb"
-                                target="_blank">Recovery</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:23</p></div>
-                </div>
-                <div id="1cS0TgbR263ey9jn0MwD2s" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/fa34091d2a73e2e1339428afc7c0c9a4a4402d9f"
-                                                                                    src="https://i.scdn.co/image/fa34091d2a73e2e1339428afc7c0c9a4a4402d9f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/1cS0TgbR263ey9jn0MwD2s"
-                                                    target="_blank">River (feat. Ed Sheeran)</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text small-padding-right artist-separator">,</a><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V" target="_blank">Ed
-                            Sheeran</a><a class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                          hover-on-touch=""
-                                          href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/0U6ldwLBEMkwgfQRY4V6D2" target="_blank">Revival</a>
-                        </div>
-                    </div>
-                    <div class="col s2 m1"><p>03:41</p></div>
-                </div>
-                <div id="7Ie9W94M7OjPoZVV216Xus" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c"
-                                                                                    src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7Ie9W94M7OjPoZVV216Xus"
-                                                    target="_blank">Not Afraid</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/47BiFcV59TQi2s9SkBo2pb"
-                                target="_blank">Recovery</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:08</p></div>
-                </div>
-                <div id="15JINEqzVMv3SvJTAXAKED" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c"
-                                                                                    src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/15JINEqzVMv3SvJTAXAKED"
-                                                    target="_blank">Love The Way You Lie</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text small-padding-right artist-separator">,</a><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H"
-                                target="_blank">Rihanna</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/47BiFcV59TQi2s9SkBo2pb"
-                                target="_blank">Recovery</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:23</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="15JINEqzVMv3SvJTAXAKED" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c"
-                                                                                    src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/15JINEqzVMv3SvJTAXAKED"
-                                                    target="_blank">Love The Way You Lie</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text small-padding-right artist-separator">,</a><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H"
-                                target="_blank">Rihanna</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/47BiFcV59TQi2s9SkBo2pb"
-                                target="_blank">Recovery</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:23</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="15JINEqzVMv3SvJTAXAKED" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c"
-                                                                                    src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/15JINEqzVMv3SvJTAXAKED"
-                                                    target="_blank">Love The Way You Lie</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text small-padding-right artist-separator">,</a><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H"
-                                target="_blank">Rihanna</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/47BiFcV59TQi2s9SkBo2pb"
-                                target="_blank">Recovery</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:23</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="15JINEqzVMv3SvJTAXAKED" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c"
-                                                                                    src="https://i.scdn.co/image/caa5fccf92fc878f79d4fd65cdf21e6610f2b13c">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/15JINEqzVMv3SvJTAXAKED"
-                                                    target="_blank">Love The Way You Lie</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text small-padding-right artist-separator">,</a><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/5pKCCKE2ajJHZ9KAiaK11H"
-                                target="_blank">Rihanna</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/47BiFcV59TQi2s9SkBo2pb"
-                                target="_blank">Recovery</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:23</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
-                <div id="7lQ8MOhq6IN2w8EYcFNSUk" class="row flex-v-center song rounded add-song-list" hover-on-touch="">
-                    <div class="col s2 m1 center flex-v-center song-cover-div"><img alt="cover"
-                                                                                    data-src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f"
-                                                                                    src="https://i.scdn.co/image/46794380fc2259c3117ee3b1e209cb7dccf7ff2f">
-                    </div>
-                    <div class="col s8 m10 to-long">
-                        <div class="s12 to-long"><a class=" pointer underline black-text no-wrap" hover-on-touch=""
-                                                    href="https://open.spotify.com/track/7lQ8MOhq6IN2w8EYcFNSUk"
-                                                    target="_blank">Without Me</a></div>
-                        <div class="s12 to-long flex"><a
-                                class="black-text pointer underline artist no-wrap to-long no-shrink" hover-on-touch=""
-                                href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" target="_blank">Eminem</a><a
-                                class="black-text pointer underline album-artist no-wrap to-long no-shrink"
-                                hover-on-touch="" href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR"
-                                target="_blank">Eminem</a><a
-                                class="black-text small-padding-right small-padding-left">•</a><a
-                                class="black-text pointer underline no-wrap to-long" hover-on-touch=""
-                                href="https://open.spotify.com/album/2cWBwpqMsDJC1ZUwz813lo" target="_blank">The Eminem
-                            Show</a></div>
-                    </div>
-                    <div class="col s2 m1"><p>04:50</p></div>
-                </div>
+            <div>
+
+            </div>
+            <div style="position: absolute; bottom: 0; width: 25%; padding: 1rem; background: var(--darken); height: 113px">
+
+                <div style="font-size: 1.5rem">Remaining time</div>
+                500:40:30
+
             </div>
         </div>
     </div>

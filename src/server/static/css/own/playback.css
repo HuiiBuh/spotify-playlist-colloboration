@@ -9,19 +9,8 @@ body {
 }
 
 :root {
-    --darken: rgba(0, 0, 0, .4)
-}
-
-.playlist-heading-text {
-    font-size: 1.3rem;
-    margin-top: .8em;
-    margin-bottom: .8em;
-}
-
-.playlist-heading {
-    padding: 1rem;
-    height: 91px;
-    background: rgba(0, 0, 0, .5)
+    --dark: rgba(0, 0, 0, .4);
+    --darker: rgba(0, 0, 0, .5);
 }
 
 .cover-image {
@@ -33,28 +22,6 @@ body {
     height: calc(100vh - 113px)
 }
 
-.back {
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 1em 10em 10em 1em;
-}
-
-.search {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 1em 10em 10em 1em;
-
-    background: rgb(0, 0, 0);
-    background: -moz-linear-gradient(225deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
-    background: -webkit-linear-gradient(225deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
-    background: linear-gradient(225deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
-}
-
-.search > i {
-    font-size: 3em;
-}
 
 .search-div {
     position: absolute;
@@ -62,13 +29,17 @@ body {
     right: 0;
 
     visibility: hidden;
-    border-bottom-left-radius: 100%;
 
     width: 0;
-    background-color: transparent;
+    background-color: lightgrey;
     height: 0;
 
     transition: width, height, color, background-color, 600ms;
+}
+
+.search-div:not(.expand-search) * {
+    color: transparent !important;
+    border-color: transparent !important;
 }
 
 .search-div > i {
@@ -83,16 +54,11 @@ body {
     transform: rotate(180deg);
 }
 
-.search-div:not(.expand-search) * {
-    color: transparent !important;
-    border-color: transparent !important;
-}
-
 .expand-search {
-    width: 100% !important;
+    width: 60% !important;
     height: 100% !important;
     border-bottom-left-radius: 0;
-    background-color: white;
+    background-color: lightgrey;
     transition: all 600ms;
 
     color: black;
@@ -101,27 +67,17 @@ body {
 }
 
 
+.back {
+    display: inline-flex;
+    font-size: 1.5rem
+}
+
+.back > i {
+    font-size: 2rem
+}
+
 #add-to-queue {
-    position: absolute;
-    right: .25rem;
-    top: .25rem;
-}
-
-.back i {
-    font-size: 3em;
-    color: #ffffff !important;
-}
-
-.back span {
-    font-size: 1.5em;
-    color: #ffffff !important;
-}
-
-.fade-back {
-    background: rgb(0, 0, 0);
-    background: -moz-linear-gradient(136deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
-    background: -webkit-linear-gradient(136deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
-    background: linear-gradient(136deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 43%);
+    font-size: 2rem
 }
 
 .background-blur-image {
@@ -151,12 +107,11 @@ body {
 }
 
 .playback-group {
-    z-index: 1;
+    z-index: 2;
     position: fixed;
     bottom: 0;
-    width: 75%;
-    background: var(--darken);
-    padding: 1em;
+    width: 100vw;
+    background: var(--dark);
 }
 
 .main-contend {
@@ -183,7 +138,8 @@ body {
 
 .right-controls {
     position: absolute;
-    right: 1em;
+    right: 25%;
+    margin-right: 1rem;
     display: inline-flex;
     align-items: center;
     float: right;
@@ -210,11 +166,22 @@ body {
     background-color: transparent;
 }
 
+
+.queue-heading-text {
+    font-size: 1.3rem;
+}
+
+.queue-heading {
+    padding: 1.5rem;
+    height: 73px;
+    background: var(--darker);
+}
+
 .queue {
     overflow-x: hidden;
     scrollbar-width: thin;
-    height: calc(100vh - 91px);
-    background: var(--darken);
+    height: calc(100vh - 73px);
+    background: var(--dark);
     padding: 0 !important;
 }
 
@@ -236,15 +203,11 @@ body {
     position: relative;
 }
 
-.devices {
-    position: relative;
-}
-
 .right-controls i {
     color: white;
 }
 
-.devices .device-text {
+.device-text {
     display: inline-block;
     text-align: center;
     visibility: hidden;
@@ -259,7 +222,7 @@ body {
     transition: opacity .5s;
 }
 
-.devices .device-text::after {
+ .device-text::after {
     content: "";
     position: absolute;
     top: 100%;

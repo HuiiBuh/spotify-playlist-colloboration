@@ -37,7 +37,7 @@ function toggleDevices(event) {
  * Add the event listeners
  */
 function addListener() {
-    document.getElementsByClassName("devices")[0].onclick = toggleDevices;
+    document.getElementById("devices-button").onclick = toggleDevices;
     document.getElementById("add-to-queue").onclick = toggleSearchDiv;
     document.getElementById("close-search-div").onclick = toggleSearchDiv;
 }

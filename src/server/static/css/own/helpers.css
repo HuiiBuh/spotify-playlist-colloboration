@@ -40,6 +40,11 @@
     display: flex;
 }
 
+.space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
 .no-shrink {
     flex-shrink: 0;
 }
@@ -177,4 +182,8 @@
 
 h6 {
     font-size: 1.5rem;
+}
+
+.min-height-hundred {
+    min-height: 100%;
 }

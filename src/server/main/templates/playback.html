@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 
-{# TODO Zeichen für die queue zentral über die cover
- TODO Leiste mit Schriftzug der Queue noch ein bisschen breiter ("vertikal breiter") #}
-
 {% block css %}
     <link type="text/css" rel="stylesheet" href="/static/css/own/playback.css" media="screen,projection"/>
 {% endblock %}
@@ -20,53 +17,102 @@
     {# Background image#}
     <div class="background-blur-image"></div>
 
-    {# Back button #}
-    <div class="back fade-back">
-        <a class="pointer flex-v-center" href="/">
-            <i class="material-icons">navigate_before</i>
-            <span>Home</span>
-        </a>
+    {# Top Row #}
+    <div class="row flex no-margin" style="background-color: var(--dark); height: 73px">
+        {# Left side #}
+        <div class="col s9 flex-v-center min-height-hundred space-between">
+
+            {# Back button #}
+            <a class="pointer flex-v-center white-text back" href="/">
+                <i class="material-icons">navigate_before</i>
+                <span>Home</span>
+            </a>
+
+            {#  search #}
+            <i class="material-icons pointer" id="add-to-queue">playlist_add</i>
+        </div>
+        {# Right side #}
+        <div class="col s3 no-padding">
+            <div class="flex-v-center queue-heading">
+                <i class="material-icons small">playlist_play</i>
+                <span class="queue-heading-text">Play Queue</span>
+            </div>
+        </div>
     </div>
 
+    {# Middle row #}
+    <div class="row flex no-margin" style="height: calc(100vh - 73px - 113px)">
 
-    {# Playback group #}
-    <div class="playback-group">
-        {# Progress bar#}
-        <div class="row flex-center">
-            <span class="col">0:00</span>
-            <div class="col s8 m9 l10 xl10">
-                <div class="progress">
-                    <div class="determinate" style="width: 70%"></div>
+        {# Cover and search #}
+        <div class="col s9 no-padding min-height-hundred flex-v-center flex-center" style="position: relative;">
+
+            {# Cover #}
+            <img class="cover-image"
+                 src="https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg" alt>
+
+            {# Search field #}
+            <div class="search-div small-padding">
+                <i class="material-icons pointer" id="close-search-div">minimize</i>
+
+                <h5>Search for the songs you want to add to the queue</h5>
+
+                <div class="input-field">
+                    <label for="song-name">Song</label>
+                    <input id="song-name" type="text">
                 </div>
             </div>
-            <span class="col no-padding-right">4:00</span>
+
         </div>
 
-        {# The controls #}
-        <div class="row flex-v-center">
-            <div class="playback-controls">
-                {#Actual controls#}
-                <i class="material-icons pointer playback-control">shuffle</i>
-                <i class="material-icons pointer playback-control">skip_previous</i>
-                <a class="pointer btn-floating playback-control"><i class="material-icons">play_arrow</i></a>
-                {#                            <i class="material-icons">pause</i>#}
-                <i class="material-icons pointer playback-control">skip_next</i>
-                <i class="material-icons pointer playback-control">repeat</i>
-                {#                            <i class="material-icons">repeat_one</i>#}
+        {# Right side (queue) #}
+        <div class="col s3 min-height-hundred" style="background-color: var(--dark)" id="queue">
+
+        </div>
+
+    </div>
+
+    {# Bottom row #}
+    <div class="row playback-group no-margin flex" style="height: 113px">
+        {# Left side#}
+        <div class="col s9 no-margin">
+            {# Progress bar #}
+            <div class="row flex-center">
+                <span class="col">0:00</span>
+                <div class="col s8 m9 l10 xl10">
+                    <div class="progress">
+                        <div class="determinate" style="width: 70%"></div>
+                    </div>
+                </div>
+                <span class="col no-padding-right">4:00</span>
             </div>
-            <div class="right-controls">
-                <a>
-                    <i class="material-icons pointer small-padding-left">settings</i>
-                </a>
-                <a class="devices">
-                    <i class="material-icons pointer"> devices_other</i>
+
+            {# Left controls #}
+            <div class="row flex-v-center">
+                <div class="playback-controls">
+                    <i class="material-icons pointer playback-control">shuffle</i>
+                    <i class="material-icons pointer playback-control">skip_previous</i>
+                    <a class="pointer btn-floating playback-control"><i class="material-icons">play_arrow</i></a>
+                    {#                            <i class="material-icons">pause</i>#}
+                    <i class="material-icons pointer playback-control">skip_next</i>
+                    <i class="material-icons pointer playback-control">repeat</i>
+                    {#                            <i class="material-icons">repeat_one</i>#}
+                </div>
+
+                {# Right controls #}
+                <div class="right-controls">
+
+                    {# Device button #}
+                    <i class="material-icons pointer" id="devices-button"> devices_other</i>
+
+                    {# Device menue #}
                     <div class="device-text">
                         <h6 class="no-wrap device-padding">Connect to a device</h6>
                         <div style="text-align: center">
                             <img src="/static/icons/devices.png" class="small-padding-top small-padding-bottom"
                                  style="width: 180px;" alt="">
                         </div>
-                        <div class="flex-v-center device-padding pointer     small-margin-bottom listening-option">
+
+                        <div class="flex-v-center device-padding pointer small-margin-bottom listening-option">
                             <i class="material-icons small">laptop</i>
                             <span class="left-align padding-left">
                                 <p class="no-margin">Laptop</p>
@@ -78,56 +124,18 @@
                             <span class="left-align padding-left">
                                 <p class="no-margin">Smartphone</p>
                                 <p class="no-margin">Poco F1</p>
-                            </span></div>
+                            </span>
+                        </div>
+
                     </div>
-                </a>
-            </div>
-        </div>
-    </div>
 
-    {# The main content #}
-    <div class="row main-contend">
-
-        {# Cover image and search #}
-        <div class="col s9 no-padding flex-center flex-v-center" style="position: relative;">
-
-            {#  search #}
-            <div class="search">
-                <i class="material-icons pointer" id="add-to-queue">playlist_add</i>
-            </div>
-
-            <div class="search-div expand-search small-padding">
-                <i class="material-icons pointer" id="close-search-div">minimize</i>
-
-                <h5>Search for the songs you want to add to the queue</h5>
-
-                <div class="input-field">
-                    <label for="song-name">Song</label>
-                    <input id="song-name" type="text">
                 </div>
             </div>
-
-            <img class="cover-image"
-                 src="https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg"
-                 alt>
         </div>
-        {# The snog queue #}
-        <div class="col s3 no-padding">
-            <div class="flex-v-center playlist-heading">
-                <i class="material-icons small">playlist_play</i>
-                <span class="playlist-heading-text">Play Queue</span>
-            </div>
-        </div>
-        <div class="col s3 queue">
-            <div>
-
-            </div>
-            <div style="position: absolute; bottom: 0; width: 25%; padding: 1rem; background: var(--darken); height: 113px">
-
-                <div style="font-size: 1.5rem">Remaining time</div>
-                500:40:30
-
-            </div>
+        {# Right queue info #}
+        <div class="col s3 flex-v-center flex-center no-margin" style="min-height: 100%; background: var(--darker)">
+            <p class="no-margin flex-break" style="font-size: 1.5rem; text-align: center;">Remaining time</p>
+            <p class="no-margin">500:40:30</p>
         </div>
     </div>
 {% endblock %}

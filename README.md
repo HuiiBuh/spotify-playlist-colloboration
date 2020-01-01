@@ -15,3 +15,6 @@ See [Install with docker](/docker)
 + [Tristen Brown](https://github.com/tristen/tablesort/) for the sortable table
 + [David Gilbertson](https://medium.com/hackernoon/removing-that-ugly-focus-ring-and-keeping-it-too-6c8727fefcd2) for the inspiration in the focus solution
 + [Mika Tuupola](https://github.com/tuupola/lazyload) for the lazy loading images
++ [Runarfu](https://github.com/runarfu/cors-proxy) for the inspiration for the cors proxy
++ [Lokesh Dhakar](https://github.com/lokesh/color-thief) for the primary background extraction from images
++ 

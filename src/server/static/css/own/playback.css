@@ -26,6 +26,7 @@ body {
 .search-div {
     position: absolute;
     top: 0;
+    z-index: 4;
     right: 0;
 
     visibility: hidden;
@@ -54,14 +55,16 @@ body {
     transform: rotate(180deg);
 }
 
+.search-div * {
+    color: inherit !important;
+}
+
 .expand-search {
     width: 60% !important;
     height: 100% !important;
     border-bottom-left-radius: 0;
     background-color: lightgrey;
     transition: all 600ms;
-
-    color: black;
 
     visibility: visible;
 }
@@ -90,8 +93,8 @@ body {
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
-    /*background: url("https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg") !important;*/
-    background: url("https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg");
+    background: url("https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg") !important;
+    /*background: url("https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg");*/
     /*background: url("https://e.snmc.io/i/300/w/c156fbce1b98fb761bf46e24ffcc24c1/1255619");*/
     /*background: url("https://upload.wikimedia.org/wikipedia/de/b/bd/Metallica_-_Metallica.jpg");*/
 
@@ -222,7 +225,7 @@ body {
     transition: opacity .5s;
 }
 
- .device-text::after {
+.device-text::after {
     content: "";
     position: absolute;
     top: 100%;

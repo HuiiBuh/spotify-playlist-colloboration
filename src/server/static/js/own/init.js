@@ -1,11 +1,6 @@
 // Auto init all the material components
 M.AutoInit();
 
-if (!window.location.pathname === "/login") {
-    document.getElementById("copyright").innerText = "© " + new Date().getFullYear() + " HuiiBuh"
-}
-
-
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/worker/service_worker.js', {scope: "/"})
         .then(function () {

@@ -48,7 +48,8 @@
 
             {# Cover #}
             <img class="cover-image"
-                 src="https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg" alt>
+                 src="/proxy/https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg"
+                 alt>
 
             {# Search field #}
             <div class="search-div small-padding">
@@ -65,7 +66,7 @@
         </div>
 
         {# Right side (queue) #}
-        <div class="col s3 min-height-hundred" style="background-color: var(--dark)" id="queue">
+        <div class="col s3 min-height-hundred" style="background-color: var(--dark); z-index: 5" id="queue">
 
         </div>
 
@@ -144,5 +145,9 @@
 {% block footer %}{% endblock %}
 
 {% block javascript %}
+    <script type="text/javascript" src="/static/js/libraries/color-thief.js"></script>
+    <script type="text/javascript" src="/static/js/libraries/color-scheme.min.js"></script>
     <script type="text/javascript" src="/static/js/own/playback/main.js"></script>
+    <script type="text/javascript" src="/static/js/own/playback/search.js"></script>
+    <script type="text/javascript" src="/static/js/own/playback/devices.js"></script>
 {% endblock %}

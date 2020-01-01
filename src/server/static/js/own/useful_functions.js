@@ -72,3 +72,45 @@ function onlyNumbers(evt) {
         if (theEvent.preventDefault) theEvent.preventDefault();
     }
 }
+
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ *
+ * @param  r {number} The red color value
+ * @param  g {number} The green color value
+ * @param  b {number} The blue color value
+ * @return  {Array}   The HSL representation
+ */
+function rgbToHsl(r, g, b) {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    let max = Math.max(r, g, b);
+    let min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+
+    if (max === min) {
+        h = s = 0; // achromatic
+    } else {
+        let difference = max - min;
+        s = l > 0.5 ? difference / (2 - max - min) : difference / (max + min);
+
+        switch (max) {
+            case r:
+                h = (g - b) / difference + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / difference + 2;
+                break;
+            case b:
+                h = (r - g) / difference + 4;
+                break;
+        }
+
+        h /= 6;
+    }
+
+    return [h, s, l];
+}

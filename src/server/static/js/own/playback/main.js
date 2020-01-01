@@ -1,7 +1,7 @@
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", function () {
     addListener();
-    getSearchBackground()
-};
+    getSearchBackground();
+});
 
 
 /**
@@ -10,6 +10,5 @@ window.onload = function () {
 function addListener() {
     document.getElementById("devices-button").onclick = toggleDevices;
     document.getElementById("add-to-queue").onclick = toggleSearchDiv;
-    document.getElementById("close-search-div").onclick = toggleSearchDiv;
 }
 

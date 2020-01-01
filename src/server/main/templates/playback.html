@@ -18,7 +18,8 @@
     <div class="background-blur-image"></div>
 
     {# Top Row #}
-    <div class="row flex no-margin" style="background-color: var(--dark); height: 73px">
+    <div class="row flex no-margin"
+         style="background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.7) 100%); height: 73px">
         {# Left side #}
         <div class="col s9 flex-v-center min-height-hundred space-between">
 
@@ -48,25 +49,76 @@
 
             {# Cover #}
             <img class="cover-image"
-                 src="/proxy/https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg"
+                 src="/proxy/https://cdn.smehost.net/formeleinstv-deprod/wp-content/uploads/2014/11/4502902_2.jpg"
                  alt>
 
             {# Search field #}
-            <div class="search-div small-padding">
-                <i class="material-icons pointer" id="close-search-div">minimize</i>
+            <div class="search-div small-padding" style="overflow: hidden">
 
-                <h5>Search for the songs you want to add to the queue</h5>
+                <div style="height: 100px">
+                    <h5 class="no-margin-bottom no-wrap to-long no-margin-top">Search for the songs</h5>
 
-                <div class="input-field">
-                    <label for="song-name">Song</label>
-                    <input id="song-name" type="text">
+                    <div class="input-field small-padding-bottom no-margin-bottom">
+                        <input placeholder="artist:** track:** album: ** year:**" id="song-name" type="text">
+                    </div>
+                </div>
+
+                <div class="search-preview">
+
+                    <div id="0AtP8EkGPn6SwxKDaUuXec" class="row flex-v-center">
+                        <div class="col s2 center flex-v-center no-padding-right" style="padding-left: .3em">
+                            <img alt="cover" src="https://i.scdn.co/image/ab67616d00001e02a53a148d92ce7afa20229e49">
+                        </div>
+
+                        <div class="col s8 to-long">
+                            <div class="s12 to-long">
+                                <a class=" pointer underline no-wrap" hover-on-touch=""
+                                   href="https://open.spotify.com/track/0AtP8EkGPn6SwxKDaUuXec"
+                                   target="_blank">Remember The Name (feat. Eminem &amp; 50 Cent)
+                                </a>
+                            </div>
+                            <div class="s12 to-long flex">
+                                <a class="pointer underline no-wrap to-long no-shrink"
+                                   hover-on-touch="" href="https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V"
+                                   target="_blank">Ed Sheeran
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col s2 flex-v-center">
+                            <i class="material-icons">playlist_add</i>
+                        </div>
+                    </div>
+                    <div class="divider small-margin-bottom small-margin-top"></div>
+
                 </div>
             </div>
 
         </div>
 
         {# Right side (queue) #}
-        <div class="col s3 min-height-hundred" style="background-color: var(--dark); z-index: 5" id="queue">
+        <div class="col s3 min-height-hundred" id="queue">
+
+            <div id="0AtP8EkGPn6SwxKDaUuXec" class="row flex-v-center">
+                <div class="col s2 center flex-v-center no-padding-right">
+                    <img alt="cover" src="https://i.scdn.co/image/ab67616d00001e02a53a148d92ce7afa20229e49">
+                </div>
+
+                <div class="col s10 to-long">
+                    <div class="s12 to-long">
+                        <a class=" pointer underline no-wrap" hover-on-touch=""
+                           href="https://open.spotify.com/track/0AtP8EkGPn6SwxKDaUuXec"
+                           target="_blank">Remember The Name (feat. Eminem &amp; 50 Cent)
+                        </a>
+                    </div>
+                    <div class="s12 to-long flex">
+                        <a class="pointer underline no-wrap to-long no-shrink"
+                           hover-on-touch="" href="https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V"
+                           target="_blank">Ed Sheeran
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="divider small-margin-bottom small-margin-top"></div>
 
         </div>
 
@@ -146,7 +198,6 @@
 
 {% block javascript %}
     <script type="text/javascript" src="/static/js/libraries/color-thief.js"></script>
-    <script type="text/javascript" src="/static/js/libraries/color-scheme.min.js"></script>
     <script type="text/javascript" src="/static/js/own/playback/main.js"></script>
     <script type="text/javascript" src="/static/js/own/playback/search.js"></script>
     <script type="text/javascript" src="/static/js/own/playback/devices.js"></script>

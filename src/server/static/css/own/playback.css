@@ -3,7 +3,6 @@
     display: none;
 }
 
-
 body {
     color: white;
 }
@@ -11,6 +10,22 @@ body {
 :root {
     --dark: rgba(0, 0, 0, .4);
     --darker: rgba(0, 0, 0, .5);
+    --search-text-color: white;
+    --search-background-color: gray;
+}
+
+.search-preview {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100% - 100px);
+}
+
+.search-preview > .row {
+    margin-bottom: 0;
+}
+
+.search-preview img {
+    width: 100%;
 }
 
 .cover-image {
@@ -32,7 +47,6 @@ body {
     visibility: hidden;
 
     width: 0;
-    background-color: lightgrey;
     height: 0;
 
     transition: width, height, color, background-color, 600ms;
@@ -63,7 +77,7 @@ body {
     width: 60% !important;
     height: 100% !important;
     border-bottom-left-radius: 0;
-    background-color: lightgrey;
+    background-color: var(--search-background-color);
     transition: all 600ms;
 
     visibility: visible;
@@ -93,10 +107,13 @@ body {
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
-    background: url("https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg") !important;
-    /*background: url("https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg");*/
-    /*background: url("https://e.snmc.io/i/300/w/c156fbce1b98fb761bf46e24ffcc24c1/1255619");*/
-    /*background: url("https://upload.wikimedia.org/wikipedia/de/b/bd/Metallica_-_Metallica.jpg");*/
+    /*background-image: url("https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg") !important;*/
+    background-image: url("https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg");
+    /*background-image: url("https://e.snmc.io/i/300/w/c156fbce1b98fb761bf46e24ffcc24c1/1255619");*/
+    /*background-image: url("https://upload.wikimedia.org/wikipedia/de/b/bd/Metallica_-_Metallica.jpg");*/
+
+    -webkit-transition: background-image 0.6s ease-in-out;
+    transition: background-image 0.6s ease-in-out;
 
     z-index: -1;
 
@@ -110,7 +127,7 @@ body {
 }
 
 .playback-group {
-    z-index: 2;
+    z-index: 5;
     position: fixed;
     bottom: 0;
     width: 100vw;
@@ -123,6 +140,29 @@ body {
 
 .playback-group > :first-child, .playback-group > :last-child {
     margin-bottom: 10px;
+}
+
+#queue {
+    background-color: var(--dark);
+    z-index: 5;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#queue > :first-child {
+    margin-top: .5rem;
+}
+
+#queue > :last-child {
+    margin-bottom: .5rem !important;
+}
+
+#queue > .row {
+    margin-bottom: 0;
+}
+
+#queue img {
+    width: 100% !important;
 }
 
 .btn-floating.playback-control {
@@ -167,6 +207,11 @@ body {
 
 ::selection {
     background-color: transparent;
+}
+
+input:focus {
+    border-bottom: 1px solid var(--search-text-color) !important;
+    box-shadow: 0 1px 0 0 var(--search-text-color) !important;
 }
 
 
@@ -217,7 +262,7 @@ body {
     background-color: #171717;
     color: #fff;
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     bottom: 125%;
     left: 50%;
 
@@ -248,4 +293,12 @@ body {
 
 .device-padding {
     padding: .5rem 2rem;
+}
+
+a {
+    color: white;
+}
+
+img {
+    border-radius: 0;
 }

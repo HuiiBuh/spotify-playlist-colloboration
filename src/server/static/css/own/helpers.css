@@ -100,6 +100,10 @@
     padding: .5em;
 }
 
+.padding-top {
+    padding-top: 1em;
+}
+
 .small-padding-top {
     padding-top: .5em;
 }

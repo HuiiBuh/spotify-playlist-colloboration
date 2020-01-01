@@ -1,3 +1,7 @@
+/**
+ * Toggle the devices
+ * @param event
+ */
 function toggleDevices(event) {
     let element = document.getElementsByClassName("device-text")[0];
 
@@ -17,13 +21,15 @@ function toggleDevices(event) {
      * @param evt The event
      */
     function hideDeviceText(evt) {
+
         if (document.getElementsByClassName("device-text")[0].contains(evt.target)) {
             return
         }
+        document.removeEventListener("click", hideDeviceText);
         document.getElementsByClassName("device-text")[0].classList.remove("show");
     }
 
-    event.stopPropagation();
-    //Add the handler to hide the element
-    document.onclick = hideDeviceText;
+    setTimeout(timeout => {
+        document.addEventListener("click", hideDeviceText);
+    }, 10);
 }

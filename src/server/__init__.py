@@ -11,6 +11,7 @@ from server.spotify import Spotify, SpotifyAppInfo
 
 # create flask app
 app = Flask(__name__)
+
 # configure the app from the object
 app.config.from_object(Config)
 
@@ -40,7 +41,9 @@ from server.main.routes import mod as main_mod
 from server.main import modals
 from server.admin.routes import mod as admin_mod
 from server.api.routes import mod as api_mod
+from server.cors_proxy.routes import mod as cors_proxy_mod
 
 app.register_blueprint(admin_mod, url_prefix="/admin")
 app.register_blueprint(api_mod, url_prefix="/api")
+app.register_blueprint(cors_proxy_mod, url_prefix="/proxy")
 app.register_blueprint(main_mod)

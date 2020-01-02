@@ -28,6 +28,10 @@ body {
     width: 100%;
 }
 
+.search-preview .divider:last-of-type {
+    display: none;
+}
+
 .cover-image {
     width: 40vw;
     max-width: 50vh;
@@ -76,7 +80,6 @@ body {
 .expand-search {
     width: 60% !important;
     height: 100% !important;
-    border-bottom-left-radius: 0;
     background-color: var(--search-background-color);
     transition: all 600ms;
 
@@ -145,6 +148,7 @@ body {
 #queue {
     background-color: var(--dark);
     z-index: 5;
+    margin: 0;
     overflow-y: scroll;
     overflow-x: hidden;
 }

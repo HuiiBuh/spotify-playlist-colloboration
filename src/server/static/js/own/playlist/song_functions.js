@@ -16,44 +16,6 @@ function getPlaylistSongs() {
     xhttp.send();
 }
 
-/**
- * Create song objects from json
- * @param json The json with the song objects
- * @param type "main" for the main playlist
- * @param appendList The list the songs are supposed to be appended to
- * @returns {[]|Array}
- */
-function jsonToSongList(json, type, appendList = []) {
-
-    //Loop through the json and create the songs
-    for (let songId in json) {
-        if (!json.hasOwnProperty(songId)) continue;
-
-        let songJSON = json[songId];
-
-
-        let song = new Song(
-            songId,
-            songJSON["album"],
-            songJSON["url"],
-            songJSON["artists"],
-            songJSON["duration"],
-            songJSON["cover"],
-            songJSON["title"],
-            songJSON["album"]["artist"]
-        );
-
-        if (type === "main")
-            mainPlaylist.addSong(song);
-        else
-            appendList.push(song);
-    }
-
-    if (type === "main")
-        displayPlaylistSongs("playlist-songs", mainPlaylist.songList, "main");
-    else
-        return appendList
-}
 
 /**
  * Display the songs in the main playlist

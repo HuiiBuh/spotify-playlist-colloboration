@@ -38,11 +38,11 @@
                         </a>
 
                         <div class="card-content">
-                            <a class="card-title black-text underline pointer"
+                            <a class="card-title black-text underline pointer to-long no-wrap"
                                href="{{ url_for("main.playlist", playlist_id=playlist["id"]) }}">
                                 {{ playlist["name"] }}
                             </a>
-                            <a class="pointer black-text underline"
+                            <a class="pointer black-text underline to-long no-wrap" style="display: block"
                                href="{{ playlist["author"]["url"] }}">
                                 {{ playlist["author"]["name"] }}
                             </a>

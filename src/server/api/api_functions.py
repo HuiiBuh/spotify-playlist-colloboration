@@ -155,7 +155,7 @@ def get_token_by_spotify_user_id(spotify_user_id: str) -> SpotifyAuthorisationTo
     :return:
     """
 
-    spotify_user = SpotifyUser.query.filter(SpotifyUser.id == spotify_user_id).first()
+    spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
     if not spotify_user:
         return None
 

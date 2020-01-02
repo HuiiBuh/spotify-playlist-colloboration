@@ -22,14 +22,19 @@ def search_for_songs():
     """
 
     playlist_id = request.args.get('playlist-id')
+    user_id = request.args.get('user-id')
 
-    if not playlist_id:
-        return abort(400, "You did not give a playlist-id")
+    if not playlist_id and not user_id:
+        return abort(400, "You did not give a playlist-id or user-id")
 
-    auth_token = get_token_by_playlist(playlist_id)
+    auth_token = None
+    if playlist_id:
+        auth_token = get_token_by_playlist(playlist_id)
+    if user_id:
+        auth_token = get_token_by_spotify_user_id(user_id)
 
     if not auth_token:
-        return abort(400, "No playlist with this id found")
+        return abort(400, "No playlist or user with this id found")
 
     # Check if expired and update the user
     if auth_token.is_expired():

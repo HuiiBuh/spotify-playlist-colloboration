@@ -6,6 +6,12 @@
 
 {% block javascript_variables %}
     <script type="text/javascript">
+
+        let searchAPI = "/api/spotify/search?user-id={{ spotify_user_id }}&searchterm=";
+        {#let shuffleAPI = "{{  }}";#}
+        {#let deviceAPI = "{{ }}";#}
+
+
         let spotifyUserID = "{{ spotify_user_id }}";
     </script>
 {% endblock %}
@@ -64,32 +70,7 @@
                 </div>
 
                 <div class="search-preview">
-
-                    <div id="0AtP8EkGPn6SwxKDaUuXec" class="row flex-v-center">
-                        <div class="col s2 center flex-v-center no-padding-right" style="padding-left: .3em">
-                            <img alt="cover" src="https://i.scdn.co/image/ab67616d00001e02a53a148d92ce7afa20229e49">
-                        </div>
-
-                        <div class="col s8 to-long">
-                            <div class="s12 to-long">
-                                <a class=" pointer underline no-wrap" hover-on-touch=""
-                                   href="https://open.spotify.com/track/0AtP8EkGPn6SwxKDaUuXec"
-                                   target="_blank">Remember The Name (feat. Eminem &amp; 50 Cent)
-                                </a>
-                            </div>
-                            <div class="s12 to-long flex">
-                                <a class="pointer underline no-wrap to-long no-shrink"
-                                   hover-on-touch="" href="https://open.spotify.com/artist/6eUKZXaKkcviH0Ku9w2n3V"
-                                   target="_blank">Ed Sheeran
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col s2 flex-v-center">
-                            <i class="material-icons">playlist_add</i>
-                        </div>
-                    </div>
-                    <div class="divider small-margin-bottom small-margin-top"></div>
-
+                    {# The song search #}
                 </div>
             </div>
 
@@ -201,4 +182,5 @@
     <script type="text/javascript" src="/static/js/own/playback/main.js"></script>
     <script type="text/javascript" src="/static/js/own/playback/search.js"></script>
     <script type="text/javascript" src="/static/js/own/playback/devices.js"></script>
+    <script type="text/javascript" src="/static/js/own/playlist/Song.js"></script>
 {% endblock %}

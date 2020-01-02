@@ -100,7 +100,8 @@ function displaySearchSongs(songList) {
         songDiv.appendChild(addPlaylistDiv);
 
         let addPlaylistIcon = document.createElement("i");
-        addPlaylistIcon.setAttribute("class", "material-icons");
+        addPlaylistIcon.setAttribute("class", "material-icons pointer");
+        addPlaylistIcon.onclick = addSongToQueue(song.id);
         addPlaylistIcon.innerText = "playlist_add";
         addPlaylistDiv.appendChild(addPlaylistIcon);
 
@@ -108,6 +109,16 @@ function displaySearchSongs(songList) {
         dividerDiv.setAttribute("class", "divider small-margin-bottom small-margin-top");
         root.appendChild(dividerDiv);
     });
+}
+
+/**
+ * Adds a song to the search queue
+ * @param {string} songID The spotify song id
+ */
+function addSongToQueue(songID) {
+    return function () {
+        console.log(songID);
+    }
 }
 
 

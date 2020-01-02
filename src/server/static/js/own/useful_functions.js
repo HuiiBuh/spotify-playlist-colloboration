@@ -16,10 +16,10 @@ function showErrorMessage(self) {
 
 /**
  * Add return a onclick function with an independent url
- * @param onclick_url The url that is supposed to be added to the url
+ * @param {string} onclick_url The url that is supposed to be added to the url
  * @returns {Function} The function that will be executed onclick
  */
-function addOnclick(onclick_url) {
+function urlOnclick(onclick_url) {
     return function () {
         window.open(onclick_url)
     }

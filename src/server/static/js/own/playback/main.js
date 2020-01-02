@@ -11,6 +11,7 @@ function addListener() {
     document.getElementById("devices-button").onclick = toggleDevices;
     document.getElementById("add-to-queue").onclick = toggleSearchDiv;
     document.getElementById("song-name").onkeyup = searchSongs;
+    document.getElementById("song-name").onclick = searchSongs;
 }
 
 

@@ -28,7 +28,7 @@ body {
     width: 100%;
 }
 
-.search-preview .divider:last-of-type {
+.search-preview > .divider:last-of-type {
     display: none;
 }
 
@@ -159,6 +159,10 @@ body {
 
 #queue > :last-child {
     margin-bottom: .5rem !important;
+}
+
+#queue > .divider:last-of-type {
+    display: none;
 }
 
 #queue > .row {

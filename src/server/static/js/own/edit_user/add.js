@@ -78,7 +78,7 @@ function displayPlaylists(playlistJSON) {
             nameA.setAttribute("class", "pointer underline black-text playlist-name");
             nameA.setAttribute("hover-on-touch", "");
             nameA.innerText = playlist["name"];
-            nameA.onclick = addOnclick(playlist["url"]);
+            nameA.onclick = urlOnclick(playlist["url"]);
             nameTd.appendChild(nameA);
 
             let idTd = document.createElement("td");
@@ -96,7 +96,7 @@ function displayPlaylists(playlistJSON) {
             authorA.setAttribute("class", "pointer underline black-text playlist-name");
             authorA.setAttribute("hover-on-touch", "");
             authorA.innerText = playlist["author"]["name"];
-            authorA.onclick = addOnclick(playlist["author"]["url"]);
+            authorA.onclick = urlOnclick(playlist["author"]["url"]);
             authorTd.appendChild(authorA);
 
             let deleteTd = document.createElement("td");

@@ -73,7 +73,7 @@ function displayNewPlaylist(json) {
     let nameA = document.createElement("a");
     nameA.setAttribute("class", "black-text pointer underline");
     nameA.innerText = json["name"];
-    nameA.onclick = addOnclick(json["external_urls"]["spotify"]);
+    nameA.onclick = urlOnclick(json["external_urls"]["spotify"]);
     name.appendChild(nameA);
 
     let author = document.createElement("td");
@@ -82,7 +82,7 @@ function displayNewPlaylist(json) {
     let authorA = document.createElement("a");
     authorA.innerText = json["owner"]["display_name"];
     authorA.setAttribute("class", "black-text pointer underline");
-    authorA.onclick = addOnclick(json["owner"]["external_urls"]["spotify"]);
+    authorA.onclick = urlOnclick(json["owner"]["external_urls"]["spotify"]);
     author.appendChild(authorA);
 
     let trackCount = document.createElement("td");

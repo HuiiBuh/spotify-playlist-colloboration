@@ -111,7 +111,7 @@ function addSongsToPlaylist() {
 
 
     let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", playlistAddTracksAPI, true);
+    xhttp.open("POST", playlistTracksAPI, true);
 
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 201) {

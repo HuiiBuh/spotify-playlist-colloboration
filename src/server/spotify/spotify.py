@@ -22,6 +22,7 @@ class SpotifyUrls:
     SEARCH = "https://api.spotify.com/v1/search?q={query}"
     ME = "https://api.spotify.com/v1/me"
     ME_PLAYLISTS = "https://api.spotify.com/v1/me/playlists"
+    DEVICES = "https://api.spotify.com/v1/me/player/devices"
     CURRENT_PLAYBACK = "https://api.spotify.com/v1/me/player"
     PLAY = "https://api.spotify.com/v1/me/player/play"
     SHUFFLE = "https://api.spotify.com/v1/me/player/shuffle"
@@ -402,6 +403,22 @@ class Spotify:
             return request.json()
         return {}
 
+    def devices(self, auth_token: SpotifyAuthorisationToken) -> dict:
+        """
+        Get all possible devices connected to spotify
+        :param auth_token: The auth token
+        :return: The api response
+        """
+
+        url = SpotifyUrls.DEVICES
+
+        request = requests.get(url=url, headers=self._get_headers(auth_token))
+
+        if request.text and "error" in request.json():
+            raise SpotifyError(request.json())
+
+        return request.json()
+
     def shuffle(self, shuffle_on: bool, auth_token: SpotifyAuthorisationToken) -> bool:
         """
         Set the shuffle to a specific value
@@ -418,6 +435,8 @@ class Spotify:
         if request.text and "error" in request.json():
             raise SpotifyError(request.json())
 
+        return shuffle_on
+
     def queue(self, track_id_list: list, auth_token: SpotifyAuthorisationToken, shuffle: bool = None) -> dict:
         """
         Queue a track
@@ -427,7 +446,7 @@ class Spotify:
         :return: If it was a success or not
         """
 
-        # Get the currently playling track
+        # Get the currently playing track
         current = self.current_playback(auth_token)
         if not current:
             return {"error": "No playback device was found"}

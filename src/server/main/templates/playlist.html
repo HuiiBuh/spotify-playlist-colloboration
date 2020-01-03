@@ -7,10 +7,9 @@
 
 {% block javascript_variables %}
     <script type="text/javascript">
-        let searchAPI = "/api/spotify/search?playlist-id={{ playlist_id }}&searchterm=";
-        let playlistAPI = "/api/spotify/playlist?playlist-id={{ playlist_id }}";
-        let playlistTracksAPI = "/api/spotify/playlist/tracks?playlist-id={{ playlist_id }}";
-        let playlistAddTracksAPI = "/api/spotify/playlist/add?playlist-id={{ playlist_id }}";
+        let searchAPI = "{{ url_for("api.search") }}?playlist-id={{ playlist_id }}&q=";
+        let playlistAPI = "{{ url_for("api.get_playlist", playlist_id=playlist_id) }}";
+        let playlistTracksAPI = "{{ url_for("api.add_track_to_playlist", playlist_id=playlist_id) }}";
         let maxSongDuration = {{ spotify_playlist.max_song_length }};
     </script>
 {% endblock %}

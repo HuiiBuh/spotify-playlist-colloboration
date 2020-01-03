@@ -12,6 +12,7 @@ body {
     --darker: rgba(0, 0, 0, .5);
     --search-text-color: white;
     --search-background-color: gray;
+    --selection-color: black;
 }
 
 .search-preview {
@@ -214,7 +215,7 @@ body {
 }
 
 ::selection {
-    background-color: transparent;
+    background-color: var(--selection-color);
 }
 
 input:focus {

@@ -4,7 +4,6 @@
     <script type="text/javascript">
         let removePlaylistAPI = "{{ url_for("api.remove_playlist") }}?playlist-id=";
         let addPlaylistAPI = "{{ url_for("api.add_playlist") }}?playlist-id=";
-        let playlistAPI = "{{ url_for("api.get_playlist") }}?playlist-id=";
         let playlistDurationAPI = "{{ url_for("api.update_playlist_duration")}}?playlist-id=";
         let autocomplete = {
             {%   for key, value in autocomplete_playlist_list.items() %}

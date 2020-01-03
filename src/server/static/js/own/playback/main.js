@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     addListener();
-    getSearchBackground();
+    updateCurrentPlayback();
+    updateSearchBackground();
 });
 
 
@@ -18,7 +19,7 @@ function addListener() {
 /**
  * Get the search background and return a update the background
  */
-function getSearchBackground() {
+function updateSearchBackground() {
     let img = document.getElementsByClassName('cover-image')[0];
     let colorThief = new ColorThief();
 
@@ -44,10 +45,12 @@ function updateBackground(color, imageUrl) {
     let colorThreshold = 140;
     if (color[0] < colorThreshold || color[1] < colorThreshold || color[2] < colorThreshold) {
         root.style.setProperty("--search-background-color", "black");
+        root.style.setProperty('--selection-color', "black");
         root.style.setProperty('--search-text-color', "white");
     } else {
         root.style.setProperty("--search-background-color", "white");
-        root.style.setProperty('--search-text-color', "black")
+        root.style.setProperty('--selection-color', "white");
+        root.style.setProperty('--search-text-color', "black");
 
     }
 

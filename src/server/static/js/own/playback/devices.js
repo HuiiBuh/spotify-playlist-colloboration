@@ -11,6 +11,8 @@ function toggleDevices(event) {
         return
     }
 
+    updateDevices();
+
     //Get the width of the element
     let width = parseInt(window.getComputedStyle(element).getPropertyValue('width').replace("px", ""));
     element.style.marginLeft = width / -2 + "px";
@@ -32,4 +34,90 @@ function toggleDevices(event) {
     setTimeout(timeout => {
         document.addEventListener("click", hideDeviceText);
     }, 10);
+}
+
+function updateDevices() {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            updateDevicesView(JSON.parse(this.responseText))
+        } else if (this.readyState === 4) {
+            showErrorMessage(this);
+        }
+    };
+
+    xhttp.open("GET", devicesAPI, true);
+    xhttp.send();
+}
+
+let noDeviceFound = function () {
+    let root = document.createElement("div");
+    root.setAttribute("class", "device-padding small-margin-bottom");
+
+    let p1 = document.createElement("p");
+    p1.innerText = "Play and control Spotify on all your devices.";
+    p1.classList.add("no-margin");
+    root.appendChild(p1);
+
+    let p2 = document.createElement("p");
+    p2.innerText = "Start Spotify on another device and it will magically appear here.";
+    p2.classList.add("no-margin");
+    root.appendChild(p2);
+
+    let button = document.createElement("a");
+    button.setAttribute("class", "btn btn-flat");
+    button.innerText = "Lean more";
+    button.setAttribute("href", "https://www.spotify.com/en/connect/");
+    root.appendChild(button);
+
+    return root
+}();
+
+function updateDevicesView(deviceJSON) {
+    let root = document.getElementById("devices");
+    root.innerText = "";
+
+    if (deviceJSON["devices"].length === 0) {
+        root.appendChild(noDeviceFound);
+        return
+    }
+
+    deviceJSON["devices"].forEach(device => {
+        let id = device.id;
+        let name = device.name;
+        let active = device.is_active;
+        let deviceType = device.type;
+
+        let deviceDiv = document.createElement("div");
+        deviceDiv.setAttribute("class", "flex-v-center device-padding pointer listening-option");
+        deviceDiv.id = id;
+        if (active)
+            deviceDiv.classList.add("active-green")
+
+
+        root.appendChild(deviceDiv);
+
+        let deviceIcon = document.createElement("i");
+        deviceIcon.setAttribute("class", "material-icons small");
+        deviceIcon.innerText = deviceType.toLowerCase();
+        deviceDiv.appendChild(deviceIcon);
+
+        let deviceInfoSpan = document.createElement("span");
+        deviceInfoSpan.setAttribute("class", "left-align padding-left");
+        deviceDiv.appendChild(deviceInfoSpan);
+
+        let deviceTypeP = document.createElement("p");
+        deviceTypeP.setAttribute("class", "no-margin");
+        deviceTypeP.innerText = deviceType;
+        deviceInfoSpan.appendChild(deviceTypeP);
+
+        let deviceNameP = document.createElement("p");
+        deviceNameP.setAttribute("class", "no-margin");
+        deviceNameP.innerText = name;
+        deviceInfoSpan.appendChild(deviceNameP);
+
+    })
+
+
 }

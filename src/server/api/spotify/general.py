@@ -17,7 +17,7 @@ def search():
     """
 
     playlist_id = request.args.get('playlist-id')
-    user_id = request.args.get('user-id')
+    user_id = request.args.get('spotify-user-id')
 
     if not playlist_id and not user_id:
         return abort(400, "You did not give a playlist-id or user-id")

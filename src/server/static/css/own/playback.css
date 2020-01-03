@@ -150,7 +150,7 @@ body {
     background-color: var(--dark);
     z-index: 5;
     margin: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -302,6 +302,32 @@ input:focus {
 
 .device-padding {
     padding: .5rem 2rem;
+}
+
+#devices .btn {
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    border: solid 1px transparent;
+}
+
+.active-green {
+    color: #1db954 !important;
+}
+
+#devices * {
+    color: inherit;
+}
+
+
+#devices .btn:hover {
+    background-color: transparent !important;
+    border: solid 1px #d1d1d1;
+    transition: border-color .2s;
+
+}
+
+#devices:last-child{
+    margin-bottom: 1rem;
 }
 
 a {

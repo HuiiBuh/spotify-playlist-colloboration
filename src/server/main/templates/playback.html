@@ -7,11 +7,10 @@
 {% block javascript_variables %}
     <script type="text/javascript">
 
-        let searchAPI = "{{url_for("api.search")}}?user-id={{ spotify_user_id }}&q=";
-        let devicesAPI = "{{url_for("api.devices")}}";
+        let searchAPI = "{{url_for("api.search")}}?spotify-user-id={{ spotify_user_id }}&q=";
+        let devicesAPI = "{{url_for("api.devices")}}?spotify-user-id={{ spotify_user_id }}";
         {#let shuffleAPI = "{{  }}";#}
         {#let deviceAPI = "{{ }}";#}
-
 
         let spotifyUserID = "{{ spotify_user_id }}";
     </script>
@@ -142,24 +141,18 @@
                     {# Device menue #}
                     <div class="device-text">
                         <h6 class="no-wrap device-padding">Connect to a device</h6>
-                        <div style="text-align: center">
+                        <div style="text-align: center; padding-left: 50px; padding-right: 50px">
                             <img src="/static/icons/devices.png" class="small-padding-top small-padding-bottom"
                                  style="width: 180px;" alt="">
                         </div>
 
-                        <div class="flex-v-center device-padding pointer small-margin-bottom listening-option">
-                            <i class="material-icons small">laptop</i>
-                            <span class="left-align padding-left">
-                                <p class="no-margin">Laptop</p>
-                                <p class="no-margin">Acer Aspire</p>
-                            </span>
-                        </div>
-                        <div class="flex-v-center device-padding pointer listening-option">
-                            <i class="material-icons small">smartphone</i>
-                            <span class="left-align padding-left">
-                                <p class="no-margin">Smartphone</p>
-                                <p class="no-margin">Poco F1</p>
-                            </span>
+                        <div id="devices">
+                            <div class="device-padding small-margin-bottom">
+                                <p class="no-margin">Play and control Spotify on all your devices.</p>
+                                <p class="no-margin">Start Spotify on another device and it will magically appear
+                                    here.</p>
+                                <a class="btn btn-flat" href="https://www.spotify.com/de/connect/">Lean more</a>
+                            </div>
                         </div>
 
                     </div>

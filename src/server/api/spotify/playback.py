@@ -43,4 +43,12 @@ def devices():
     :return: The devices
     """
 
-    return spotify.devices()
+    spotify_user_id = request.args.get("spotify-user-id")
+    if not spotify_user_id:
+        return abort(400, "You did not provide a spotify user id")
+
+    auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
+    if not auth_token:
+        return abort(400, "No user with this id in the database")
+
+    return spotify.devices(auth_token)

@@ -9,8 +9,7 @@
 
         let searchAPI = "{{url_for("api.search")}}?spotify-user-id={{ spotify_user_id }}&q=";
         let devicesAPI = "{{url_for("api.devices")}}?spotify-user-id={{ spotify_user_id }}";
-        {#let shuffleAPI = "{{  }}";#}
-        {#let deviceAPI = "{{ }}";#}
+        let playerAPI = "{{ url_for("api.player") }}?spotify-user-id={{ spotify_user_id }}";
 
         let spotifyUserID = "{{ spotify_user_id }}";
     </script>
@@ -55,7 +54,7 @@
 
             {# Cover #}
             <img class="cover-image"
-                 src="/proxy/https://cdn.smehost.net/formeleinstv-deprod/wp-content/uploads/2014/11/4502902_2.jpg"
+                 src="/static/icons/default_playlist_cover.png"
                  alt>
 
             {# Search field #}
@@ -176,5 +175,6 @@
     <script type="text/javascript" src="/static/js/own/playback/main.js"></script>
     <script type="text/javascript" src="/static/js/own/playback/search.js"></script>
     <script type="text/javascript" src="/static/js/own/playback/devices.js"></script>
+    <script type="text/javascript" src="/static/js/own/playback/playback.js"></script>
     <script type="text/javascript" src="/static/js/own/playlist/Song.js"></script>
 {% endblock %}

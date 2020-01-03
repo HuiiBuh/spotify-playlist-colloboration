@@ -13,6 +13,16 @@ body {
     --search-text-color: white;
     --search-background-color: gray;
     --selection-color: black;
+    --placeholder-color: gray;
+}
+
+
+::selection {
+    background-color: var(--selection-color);
+}
+
+::placeholder {
+    color: var(--placeholder-color);
 }
 
 .search-preview {
@@ -33,6 +43,10 @@ body {
     display: none;
 }
 
+.search-preview .divider {
+    background-color: var(--search-text-color);
+}
+
 .cover-image {
     width: 40vw;
     max-width: 50vh;
@@ -50,16 +64,16 @@ body {
     right: 0;
 
     visibility: hidden;
+    background-color: var(--search-background-color);
 
     width: 0;
     height: 0;
 
-    transition: width, height, color, background-color, 600ms;
+    transition: width, height, color, 600ms;
 }
 
 .search-div:not(.expand-search) * {
     color: transparent !important;
-    border-color: transparent !important;
 }
 
 .search-div > i {
@@ -83,8 +97,15 @@ body {
     height: 100% !important;
     background-color: var(--search-background-color);
     transition: all 600ms;
+    color: var(--search-text-color);
 
     visibility: visible;
+}
+
+
+input:focus {
+    border-bottom: 1px solid var(--search-text-color) !important;
+    box-shadow: 0 1px 0 0 var(--search-text-color) !important;
 }
 
 
@@ -111,10 +132,8 @@ body {
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
-    /*background-image: url("https://images-na.ssl-images-amazon.com/images/I/81lWZ4lbk2L._SL1200_.jpg") !important;*/
-    background-image: url("https://lastfm.freetls.fastly.net/i/u/770x0/185a38ca7368d2c9ad9cb9ea95ae05f4.jpg");
-    /*background-image: url("https://e.snmc.io/i/300/w/c156fbce1b98fb761bf46e24ffcc24c1/1255619");*/
-    /*background-image: url("https://upload.wikimedia.org/wikipedia/de/b/bd/Metallica_-_Metallica.jpg");*/
+    background-image: url("/static/icons/default_playlist_cover.png");
+
 
     -webkit-transition: background-image 0.6s ease-in-out;
     transition: background-image 0.6s ease-in-out;
@@ -212,15 +231,6 @@ body {
 
 .progress .determinate {
     background-color: white;
-}
-
-::selection {
-    background-color: var(--selection-color);
-}
-
-input:focus {
-    border-bottom: 1px solid var(--search-text-color) !important;
-    box-shadow: 0 1px 0 0 var(--search-text-color) !important;
 }
 
 
@@ -326,7 +336,7 @@ input:focus {
 
 }
 
-#devices:last-child{
+#devices:last-child {
     margin-bottom: 1rem;
 }
 

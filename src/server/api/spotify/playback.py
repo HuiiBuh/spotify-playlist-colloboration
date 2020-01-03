@@ -7,6 +7,9 @@ from server.api.routes import mod
 from server.spotify import SpotifyAuthorisationToken
 
 
+# ToDo make secure
+
+
 @mod.route("/queue-songs", methods=['PUT'])
 @login_required
 def queue_songs():
@@ -14,8 +17,6 @@ def queue_songs():
     Queue songs to a specific user
     :return:
     """
-
-    # ToDo make secure
 
     json = request.get_json()
 
@@ -52,3 +53,31 @@ def devices():
         return abort(400, "No user with this id in the database")
 
     return spotify.devices(auth_token)
+
+
+@mod.route("me/player", methods=["PUT", "GET"])
+@login_required
+def player():
+    """
+
+    :return:
+    """
+
+    spotify_user_id = request.args.get("spotify-user-id")
+    if not spotify_user_id:
+        return abort(400, "You did not provide a spotify user id")
+
+    auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
+    if not auth_token:
+        return abort(400, "No user with this id in the database")
+
+    if request.method == "PUT":
+        json = request.get_json()
+        if not json or json and "device_id" not in json:
+            return abort(400, "No device id passed")
+
+        device_id = json["device_id"]
+        return spotify.switch_device(auth_token, device_id)
+
+    if request.method == "GET":
+        return spotify.current_playback(auth_token)

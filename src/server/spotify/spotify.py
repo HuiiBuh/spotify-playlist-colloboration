@@ -25,6 +25,7 @@ class SpotifyUrls:
     DEVICES = "https://api.spotify.com/v1/me/player/devices"
     CURRENT_PLAYBACK = "https://api.spotify.com/v1/me/player"
     PLAY = "https://api.spotify.com/v1/me/player/play"
+    PLAYER = "https://api.spotify.com/v1/me/player"
     SHUFFLE = "https://api.spotify.com/v1/me/player/shuffle"
 
 
@@ -419,6 +420,27 @@ class Spotify:
 
         return request.json()
 
+    def switch_device(self, auth_token: SpotifyAuthorisationToken, device_id: str):
+        """
+
+        :param auth_token:
+        :param device_id:
+        :return:
+        """
+
+        # body = {"device_ids": [device_id]}
+        body = {
+            "device_ids": [
+                str(device_id)
+            ]
+        }
+        request = requests.put(url=SpotifyUrls.PLAYER, headers=self._get_headers(auth_token), data=json.dumps(body))
+
+        if request.text and "error" in request.text:
+            raise SpotifyError(request.json())
+
+        return request.text
+
     def shuffle(self, shuffle_on: bool, auth_token: SpotifyAuthorisationToken) -> bool:
         """
         Set the shuffle to a specific value
@@ -441,7 +463,7 @@ class Spotify:
         """
         Queue a track
         :param shuffle: The shuffle state
-        :param track_id_list: The id of the track
+        :param track_id_list: The ids of the tracks
         :param auth_token: The auth token
         :return: If it was a success or not
         """

@@ -46,6 +46,7 @@ def playlist(playlist_id) -> render_template:
 
 
 @mod.route("/playback/<spotify_user_id>")
+@login_required
 def playback(spotify_user_id):
     spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
     if not spotify_user:

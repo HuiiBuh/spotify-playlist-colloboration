@@ -90,10 +90,11 @@ function updateDevicesView(deviceJSON) {
         let deviceType = device.type;
 
         let deviceDiv = document.createElement("div");
+        deviceDiv.onclick = switchDevice(id);
         deviceDiv.setAttribute("class", "flex-v-center device-padding pointer listening-option");
         deviceDiv.id = id;
         if (active)
-            deviceDiv.classList.add("active-green")
+            deviceDiv.classList.add("active-green");
 
 
         root.appendChild(deviceDiv);
@@ -118,6 +119,25 @@ function updateDevicesView(deviceJSON) {
         deviceInfoSpan.appendChild(deviceNameP);
 
     })
+}
 
+function switchDevice(id) {
+    return function () {
+        let xhttp = new XMLHttpRequest();
 
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                document.getElementsByClassName("active-green")[0].classList.remove("active-green");
+                document.getElementById(id).classList.add("active-green")
+            } else if (this.readyState === 4) {
+                showErrorMessage(this);
+            }
+        };
+
+        let body = JSON.stringify({"device_id": id});
+
+        xhttp.open("PUT", playerAPI, true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(body);
+    }
 }

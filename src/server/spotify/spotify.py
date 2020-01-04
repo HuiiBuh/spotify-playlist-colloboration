@@ -83,12 +83,12 @@ class Spotify:
     A Spotify API manager
     """
 
-    def __init__(self):
+    def __init__(self, app_info):
         """
         New Spotify api manager
         """
 
-        self.app_info: SpotifyAppInfo = None
+        self.app_info: SpotifyAppInfo = app_info
 
     def build_authorize_url(self, show_dialog=True) -> str:
         """
@@ -150,13 +150,13 @@ class Spotify:
         reauthorization_request = requests.post(url=url, data=body, headers=headers)
 
         if "error" in reauthorization_request.json():
-            raise SpotifyError(f"There was an error: {reauthorization_request.json()}")
+            raise SpotifyError(reauthorization_request.text)
 
         try:
             access_token: str = reauthorization_request.json()["access_token"]
         except KeyError:
-            raise SpotifyError(f"No 'access_token' key was found in this json:"
-                               f"{reauthorization_request.json()}")
+            # No 'access_token' key was found in this json:
+            raise SpotifyError(reauthorization_request.text)
         try:
             refresh_token: str = reauthorization_request.json()["refresh_token"]
         except KeyError:
@@ -209,14 +209,11 @@ class Spotify:
             url_parameters = urlencode(url_parameters)
             url += f"?{url_parameters}"
 
-        if auth_token is None:
-            raise SpotifyError("You have to provide a valid auth token")
-
         headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return request.json()
 
@@ -240,14 +237,11 @@ class Spotify:
             url_parameters = urlencode(url_parameters)
             url += f"?{url_parameters}"
 
-        if auth_token is None:
-            raise SpotifyError("You have to provide a valid auth token")
-
         headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return request.json()
 
@@ -273,14 +267,11 @@ class Spotify:
             url_parameters = urlencode(url_parameters)
             url += f"&{url_parameters}"
 
-        if auth_token is None:
-            raise SpotifyError("You have to provide a valid auth token")
-
         headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return request.json()
 
@@ -317,14 +308,11 @@ class Spotify:
             url_parameters = urlencode(url_parameters)
             url += f"&{url_parameters}"
 
-        if auth_token is None:
-            raise SpotifyError("You have to provide a valid auth token")
-
         headers: dict = self._get_headers(auth_token)
         request = requests.post(url=url, headers=headers)
 
         if "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return request.json()
 
@@ -337,14 +325,11 @@ class Spotify:
         """
         url: str = SpotifyUrls.ME
 
-        if auth_token is None:
-            raise SpotifyError("You have to provide a valid auth token")
-
         headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         request_json = request.json()
 
@@ -357,14 +342,11 @@ class Spotify:
 
         url: str = SpotifyUrls.ME_PLAYLISTS
 
-        if auth_token is None:
-            raise SpotifyError("You have to provide a valid auth token")
-
         headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return request.json()
 
@@ -378,14 +360,11 @@ class Spotify:
 
         url: str = SpotifyUrls.TRACK.replace("{id}", track_id)
 
-        if auth_token is None:
-            raise SpotifyError("You have to provide a valid auth token")
-
         headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
         if "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return request.json()
 
@@ -400,7 +379,7 @@ class Spotify:
 
         if request.text:
             if "error" in request.json():
-                raise SpotifyError(request.json())
+                raise SpotifyError(request.text)
             return request.json()
         return {}
 
@@ -416,19 +395,18 @@ class Spotify:
         request = requests.get(url=url, headers=self._get_headers(auth_token))
 
         if request.text and "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return request.json()
 
     def switch_device(self, auth_token: SpotifyAuthorisationToken, device_id: str):
         """
-
-        :param auth_token:
-        :param device_id:
-        :return:
+        Switch to another device
+        :param auth_token: The auth token
+        :param device_id: The device id
+        :return: "" if it has worked
         """
 
-        # body = {"device_ids": [device_id]}
         body = {
             "device_ids": [
                 str(device_id)
@@ -437,7 +415,7 @@ class Spotify:
         request = requests.put(url=SpotifyUrls.PLAYER, headers=self._get_headers(auth_token), data=json.dumps(body))
 
         if request.text and "error" in request.text:
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return request.text
 
@@ -455,7 +433,7 @@ class Spotify:
         request = requests.put(url=url, headers=self._get_headers(auth_token))
 
         if request.text and "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return shuffle_on
 
@@ -495,7 +473,7 @@ class Spotify:
         request = requests.put(SpotifyUrls.PLAY, headers=self._get_headers(auth_token), data=json.dumps(body))
 
         if request.text and "error" in request.json():
-            raise SpotifyError(request.json())
+            raise SpotifyError(request.text)
 
         return {"success": "success"}
 
@@ -506,9 +484,6 @@ class Spotify:
         :type auth_token: Valid SpotifyAuthorisationToken
         :return: headers
         """
-
-        if auth_token is None:
-            raise SpotifyError("You have to provide a valid auth token")
 
         return {
             "Authorization": f"Bearer {auth_token.token}",

@@ -28,12 +28,9 @@ login = LoginManager(app=app)
 login.login_message = ""
 login.login_view = 'main.login'
 
-spotify = Spotify()
 spotify_info = SpotifyAppInfo(KEYS.SPOTIFY_CLIENT_ID, KEYS.SPOTIFY_CLIENT_SECRET, KEYS.SPOTIFY_SCOPES,
                               KEYS.SPOTIFY_REDIRECT_URI, KEYS.SPOTIFY_STATE)
-spotify.app_information = spotify_info
-
-state = "HuiiBuh"
+spotify = Spotify(spotify_info)
 
 # import the modal at the end so the db the db modals depend on are already created
 import server.routes

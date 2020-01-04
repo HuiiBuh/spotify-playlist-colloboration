@@ -10,9 +10,9 @@ body {
 :root {
     --dark: rgba(0, 0, 0, .4);
     --darker: rgba(0, 0, 0, .5);
-    --search-text-color: white;
-    --search-background-color: gray;
-    --selection-color: black;
+    --search-text-color: black;
+    --search-background-color: rgb(204, 204, 204);
+    --selection-color: gray;
     --placeholder-color: gray;
 }
 
@@ -50,6 +50,13 @@ body {
 .cover-image {
     width: 40vw;
     max-width: 50vh;
+}
+
+.middle {
+    z-index: 5;
+    position: absolute;
+    top: calc(50% - 69px / 2);
+    left: calc(50% - 64px / 2);
 }
 
 .main-contend > :first-child {
@@ -278,7 +285,7 @@ input:focus {
     display: inline-block;
     text-align: center;
     visibility: hidden;
-    background-color: #171717;
+    background-color: var(--search-background-color);
     color: #fff;
     position: absolute;
     z-index: 10;
@@ -297,7 +304,7 @@ input:focus {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: #171717 transparent transparent transparent;
+    border-color: var(--search-background-color) transparent transparent transparent;
 }
 
 
@@ -307,11 +314,11 @@ input:focus {
 }
 
 .listening-option:hover {
-    background: #333333;
+    background: var(--darker);
 }
 
 .device-padding {
-    padding: .5rem 2rem;
+    padding: .8rem 2rem;
 }
 
 #devices .btn {
@@ -334,10 +341,6 @@ input:focus {
     border: solid 1px #d1d1d1;
     transition: border-color .2s;
 
-}
-
-#devices:last-child {
-    margin-bottom: 1rem;
 }
 
 a {

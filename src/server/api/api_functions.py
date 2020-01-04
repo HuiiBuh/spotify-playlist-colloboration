@@ -1,3 +1,5 @@
+import json
+
 from flask import abort
 
 from server import spotify, db
@@ -98,9 +100,9 @@ def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str, song_le
     try:
         playlist_json = spotify.playlist(playlist_id, auth_token)
         playlist_json["duration"] = song_length
+
     except SpotifyError as e:
-        if "Invalid playlist Id" in str(e):
-            return abort(400, "The Playlist ID you passed is not valid")
+        return return_error(e)
 
     # Get the owner of the playlist
     playlist_json_owner = playlist_json["owner"]["id"]
@@ -303,3 +305,17 @@ def check_songs(song_list: list, auth_token: SpotifyAuthorisationToken, playlist
             pass
 
     return updated_track_list
+
+
+def return_error(spotify_error: SpotifyError):
+    """
+    Takes a spotify error and returns the right api response
+    :param spotify_error: The spotify error
+    :return: Api response
+    """
+
+    spotify_error: json = json.loads(str(spotify_error))
+
+    status = spotify_error["error"]["status"]
+    message = str(status) + ": " + spotify_error["error"]["message"]
+    return message, status

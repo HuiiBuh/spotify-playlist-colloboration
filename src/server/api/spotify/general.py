@@ -1,10 +1,11 @@
-from flask import jsonify, request, Response, abort
+from flask import jsonify, request, Response
 from flask_login import login_required
 
 from server import spotify
 from server.api.api_functions import update_spotify_user, get_token_by_playlist, get_token_by_spotify_user_id, \
-    modify_playlist_json, collect_tracks, check_songs, modify_track_json
+    modify_playlist_json, collect_tracks, check_songs, modify_track_json, return_error
 from server.api.routes import mod
+from server.spotify.spotify import SpotifyError
 
 
 @mod.route("/spotify/search", methods=["GET"])
@@ -20,7 +21,7 @@ def search():
     user_id = request.args.get('spotify-user-id')
 
     if not playlist_id and not user_id:
-        return abort(400, "You did not give a playlist-id or user-id")
+        return "You did not give a playlist-id or user-id", 400
 
     auth_token = None
     if playlist_id:
@@ -29,7 +30,7 @@ def search():
         auth_token = get_token_by_spotify_user_id(user_id)
 
     if not auth_token:
-        return abort(400, "No playlist or user with this id found")
+        return "No playlist or user with this id found", 400
 
     # Check if expired and update the user
     if auth_token.is_expired():
@@ -40,9 +41,12 @@ def search():
     search_term = request.args.get('q')
 
     if search_term is None or search_term == "":
-        return abort(400)
+        return "Empty string as search", 400
 
-    search_results = spotify.search(search_term, "track", auth_token, limit=10)
+    try:
+        search_results = spotify.search(search_term, "track", auth_token, limit=10)
+    except SpotifyError as e:
+        return return_error(e)
 
     return_search_results = modify_track_json(search_results["tracks"])
     return return_search_results
@@ -59,15 +63,18 @@ def get_playlist(playlist_id):
     auth_token = get_token_by_playlist(playlist_id)
 
     if not auth_token:
-        return abort(400, "No playlist with this id found")
+        return "No playlist with this id found", 400
 
     # Check if expired and update the user
     if auth_token.is_expired():
         auth_token = spotify.reauthorize(auth_token)
         user_id = spotify.me(auth_token)["id"]
         update_spotify_user(user_id, auth_token)
+    try:
+        playlist = spotify.playlist(playlist_id=playlist_id, auth_token=auth_token)
+    except SpotifyError as e:
+        return return_error(e)
 
-    playlist = spotify.playlist(playlist_id=playlist_id, auth_token=auth_token)
     modified_playlist = modify_playlist_json(playlist)
 
     return modified_playlist
@@ -84,7 +91,7 @@ def get_playlist_tracks(playlist_id):
     auth_token = get_token_by_playlist(playlist_id)
 
     if not auth_token:
-        return abort(400, "No playlist with this id found")
+        return "No playlist with this id found", 400
 
     # Check if expired and update the user
     if auth_token.is_expired():
@@ -109,7 +116,7 @@ def add_track_to_playlist(playlist_id):
     auth_token = get_token_by_playlist(playlist_id)
 
     if not auth_token:
-        return abort(400, "No playlist with this id found")
+        return "No playlist with this id found", 400
 
     # Check if expired and update the user
     if auth_token.is_expired():
@@ -124,12 +131,12 @@ def add_track_to_playlist(playlist_id):
         if "track-list" in json:
             track_list = json["track-list"]
         else:
-            return abort(400, "Your request body has not track-list")
+            return "Your request body has not track-list", 400
 
         track_list = check_songs(track_list, auth_token, playlist_id)
 
         if not track_list:
-            return abort(400, "You passed an empty message")
+            return "You passed an empty message", 400
 
         spotify.add_playlist_tracks(playlist_id, track_list, auth_token)
         return Response(status=201)
@@ -149,12 +156,12 @@ def me():
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
-        return abort(400, "You did not give a playlist-id")
+        return 400, "You did not give a playlist-id", 400
 
     auth_token = get_token_by_playlist(playlist_id)
 
     if not auth_token:
-        return abort(400, "No playlist with this id found")
+        return 400, "No playlist with this id found", 400
 
     # Check if expired and update the user
     if auth_token.is_expired():

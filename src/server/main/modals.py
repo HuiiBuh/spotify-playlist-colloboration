@@ -61,6 +61,7 @@ class SpotifyUser(db.Model):
     """
     Spotify user model, that stores the oauth key for every user
     """
+
     id = db.Column(db.Integer, primary_key=True)
     spotify_user_id = db.Column(db.String(64), nullable=False, unique=True)
     refresh_token = db.Column(db.Text)
@@ -76,9 +77,41 @@ class Playlist(db.Model):
     """
     Connects the spotify user with the playlist
     """
+
     id = db.Column(db.Integer, primary_key=True)
     spotify_id = db.Column(db.String(length=64), nullable=False, unique=True)
     spotify_user = db.Column(db.Integer, db.ForeignKey(SpotifyUser.id, ondelete="CASCADE"))
     max_song_length = db.Column(db.BigInteger, nullable=False, default=0)
+
+    __mapper_args__ = {"order_by": id}
+
+
+class Queue(db.Model):
+    """
+    As spotify queue with all the songs in it
+    """
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    shuffle = db.Column(db.Boolean, nullable=False)
+    songs = db.relationship('Song', backref='Queue', lazy='joined', cascade='all, delete, delete-orphan',
+                            passive_deletes=True)
+
+
+class Song(db.Model):
+    """
+    The songs in the database
+
+    @id   -| The id is the index (time the song was added to a specific queue)
+
+    @playing -| True  = Active song
+         -| False = Queue
+         -| None  = Already played
+    """
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    spotify_id = db.Column(db.String(length=64), nullable=False)
+    song_info = db.Column(db.Text, nullable=False)
+    playing = db.Column(db.Boolean, nullable=True)
+    queue = db.Column(db.Integer, db.ForeignKey(Queue.id, ondelete='CASCADE'))
 
     __mapper_args__ = {"order_by": id}

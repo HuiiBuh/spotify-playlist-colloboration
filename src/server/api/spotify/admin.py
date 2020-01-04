@@ -1,6 +1,6 @@
 import time
 
-from flask import request, abort, redirect, jsonify, url_for, make_response
+from flask import request, redirect, jsonify, url_for, make_response
 from flask_login import login_required, current_user
 
 from server import spotify, spotify_info, db
@@ -20,7 +20,7 @@ def authorize():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     url = spotify.build_authorize_url(show_dialog=False)
     return redirect(url)
@@ -35,7 +35,7 @@ def callback():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     if request.args.get("error"):
         return jsonify(dict(error=request.args.get("error_description")))
@@ -68,17 +68,17 @@ def reauthorize():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     playlist_id = request.args.get('playlist-id')
 
     if not playlist_id:
-        return abort(400, "You did not give a playlist-id")
+        return "You did not give a playlist-id", 400
 
     auth_token = get_token_by_playlist(playlist_id)
 
     if not auth_token:
-        return abort(400, "No playlist with this id found")
+        return "No playlist with this id found", 400
 
     return jsonify(OAuth_Token=spotify.reauthorize(auth_token).token)
 
@@ -92,17 +92,17 @@ def add_playlists_to_user():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     request_json = request.get_json()
 
     if not request_json or ("playlists" and "user-id") not in request_json:
-        return abort(400, "You did not pass a playlist or user-id")
+        return "You did not pass a playlist or user-id", 400
 
     playlist_list: list = request_json["playlists"]
 
     if not playlist_list:
-        return abort(400, "You did not select a playlist")
+        return "You did not select a playlist", 400
 
     user_id = request_json["user-id"]
 
@@ -119,28 +119,28 @@ def remove_playlist_from_user():
     """
 
     if not current_user.is_root:
-        return abort(403, "Only root users can delete a spotify user")
+        return "Only root users can delete a spotify user", 403
 
     request_json: dict = request.get_json()
 
     if not request_json or "playlist-id" not in request_json and "user-id" not in request_json:
-        return abort(400, "You did not provide a playlist id or a user id")
+        return "You did not provide a playlist id or a user id", 400
 
     playlist_id: str = request_json["playlist-id"]
     user_id: str = request_json["user-id"]
 
     user: User = User.query.filter(User.id == user_id).first()
     if not user:
-        return abort(400, "You did not provide a valid user")
+        return "You did not provide a valid user", 400
 
     playlist: Playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
     if not playlist:
-        return abort(400, "You did not provide a valid playlist")
+        return "You did not provide a valid playlist", 400
 
     playlist_list: list = user.playlists
 
     if playlist not in playlist_list:
-        return abort(400, "The use has your playlist not assigned to him")
+        return "The use has your playlist not assigned to him", 400
 
     user.playlists.remove(playlist)
     db.session.commit()
@@ -157,7 +157,7 @@ def add_playlist():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     playlist_id: str = request.args.get("playlist-id")
     spotify_user_id: str = request.args.get("spotify-user-id")
@@ -171,7 +171,7 @@ def add_playlist():
         song_length: int = 0
 
     if not playlist_id or not spotify_user_id:
-        return abort(400, "You passed an empty playlist or spotify user")
+        return "You passed an empty playlist or spotify user", 400
 
     return add_playlist_to_spotify_user(playlist_id, spotify_user_id, song_length)
 
@@ -185,15 +185,15 @@ def remove_playlist():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     playlist_id = request.args.get("playlist-id")
     if not playlist_id:
-        return abort(400, "You passed an empty playlist")
+        return "You passed an empty playlist", 400
 
     playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
     if not playlist:
-        return abort(400, "The playlist id you provided does not exist")
+        return "The playlist id you provided does not exist", 400
 
     db.session.delete(playlist)
     db.session.commit()
@@ -209,19 +209,19 @@ def remove_spotify_user():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     if not current_user.is_root:
-        return abort(403, "You have to bee root to remove spotify users")
+        return "You have to bee root to remove spotify users", 403
 
     spotify_user_id = request.args.get("spotify-user-id")
     if not spotify_user_id:
-        return abort(400, "You did not pass a spotify user")
+        return "You did not pass a spotify user", 400
 
     spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
 
     if not spotify_user:
-        return abort(400, "The spotify user id you provided does not exist")
+        return "The spotify user id you provided does not exist", 400
 
     db.session.delete(spotify_user)
     db.session.commit()
@@ -237,16 +237,16 @@ def update_playlist_duration():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     playlist_id = request.args.get("playlist-id")
     duration: str = request.args.get("duration")
 
     if not duration or not playlist_id:
-        return abort(400, "You did not provide a playlist id or duration")
+        return "You did not provide a playlist id or duration", 400
 
     if not duration.isdigit():
-        return abort(400, "The duration you provided is not a digit but " + duration)
+        return "The duration you provided is not a digit but " + duration, 400
 
     duration: int = abs(int(duration))
 
@@ -255,7 +255,7 @@ def update_playlist_duration():
 
     playlist = Playlist.query.filter(Playlist.spotify_id == playlist_id).first()
     if not playlist:
-        return abort(400, f"The playlist {playlist_id} id you provided was not found")
+        return f"The playlist {playlist_id} id you provided was not found", 400
 
     playlist.max_song_length = duration
     db.session.commit()
@@ -271,23 +271,23 @@ def remove_user():
     """
 
     if not current_user.is_admin:
-        return abort(403, "You are not authorized to visit the page")
+        return "You are not authorized to visit the page", 403
 
     user_id = request.args.get("user-id")
 
     if not user_id:
-        return abort(400, "You did not pass a user")
+        return "You did not pass a user", 400
 
     user = User.query.filter(User.id == user_id).first()
 
     if not user:
-        return abort(400, "The user id you provided does not exist")
+        return "The user id you provided does not exist", 400
 
     if user.is_admin and not current_user.is_root:
-        return abort(400, "You can not remove admin users")
+        return "You can not remove admin users", 403
 
     if user.is_root:
-        return abort(400, "You can not delete the root user")
+        return "You can not delete the root user", 403
 
     db.session.delete(user)
     db.session.commit()

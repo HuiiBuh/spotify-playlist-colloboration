@@ -36,12 +36,12 @@ function toggleDevices(event) {
     }, 10);
 }
 
-function updateDevices() {
+function updateDevices(first = false) {
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            updateDevicesView(JSON.parse(this.responseText))
+            updateDevicesView(JSON.parse(this.responseText), first)
         } else if (this.readyState === 4) {
             showErrorMessage(this);
         }
@@ -56,30 +56,36 @@ let noDeviceFound = function () {
     root.setAttribute("class", "device-padding small-margin-bottom");
 
     let p1 = document.createElement("p");
-    p1.innerText = "Play and control Spotify on all your devices.";
-    p1.classList.add("no-margin");
+    p1.innerText = "Play and control Spotify.";
+    p1.setAttribute("class", "no-margin");
     root.appendChild(p1);
 
     let p2 = document.createElement("p");
     p2.innerText = "Start Spotify on another device and it will magically appear here.";
-    p2.classList.add("no-margin");
+    p2.setAttribute("class", "no-margin small-padding-bottom");
     root.appendChild(p2);
 
     let button = document.createElement("a");
     button.setAttribute("class", "btn btn-flat");
     button.innerText = "Lean more";
+
+    button.setAttribute("target", "_blank");
     button.setAttribute("href", "https://www.spotify.com/en/connect/");
     root.appendChild(button);
 
     return root
 }();
 
-function updateDevicesView(deviceJSON) {
+function updateDevicesView(deviceJSON, first) {
     let root = document.getElementById("devices");
     root.innerText = "";
 
     if (deviceJSON["devices"].length === 0) {
         root.appendChild(noDeviceFound);
+
+        if (first) {
+            document.getElementById("devices-button").click();
+        }
         return
     }
 
@@ -95,7 +101,6 @@ function updateDevicesView(deviceJSON) {
         deviceDiv.id = id;
         if (active)
             deviceDiv.classList.add("active-green");
-
 
         root.appendChild(deviceDiv);
 
@@ -127,7 +132,11 @@ function switchDevice(id) {
 
         xhttp.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
-                document.getElementsByClassName("active-green")[0].classList.remove("active-green");
+                try {
+                    document.getElementsByClassName("active-green")[0].classList.remove("active-green");
+                } catch {
+                }
+
                 document.getElementById(id).classList.add("active-green")
             } else if (this.readyState === 4) {
                 showErrorMessage(this);

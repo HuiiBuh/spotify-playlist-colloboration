@@ -36,17 +36,13 @@ def queue_songs():
     return queue_return_value
 
 
-@mod.route("/me/player/devices", methods=['GET'])
+@mod.route("/<spotify_user_id>/player/devices", methods=['GET'])
 @login_required
-def devices():
+def devices(spotify_user_id):
     """
     View the devices of a person
     :return: The devices
     """
-
-    spotify_user_id = request.args.get("spotify-user-id")
-    if not spotify_user_id:
-        return "You did not provide a spotify user id", 400
 
     auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
     if not auth_token:
@@ -58,17 +54,13 @@ def devices():
         return return_error(e)
 
 
-@mod.route("me/player", methods=["PUT", "GET"])
+@mod.route("<spotify_user_id>/player", methods=["PUT", "GET"])
 @login_required
-def player():
+def player(spotify_user_id):
     """
     Returns the player information from spotify
     :return: The playback
     """
-
-    spotify_user_id = request.args.get("spotify-user-id")
-    if not spotify_user_id:
-        return "You did not provide a spotify user id", 400
 
     auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
     if not auth_token:
@@ -87,3 +79,55 @@ def player():
 
     if request.method == "GET":
         return spotify.current_playback(auth_token)
+
+
+@mod.route("<spotify_user_id>/player/pause ", methods=["PUT"])
+@login_required
+def pause(spotify_user_id):
+    """
+    Pauses the spotify playback
+    :return:
+    """
+
+    auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
+    if not auth_token:
+        return "No user with this id in the database", 400
+
+    try:
+        device = spotify.active_devices(auth_token)
+    except SpotifyError as e:
+        return return_error(e)
+
+    if not device:
+        return "You have to start the playback on one device to use this functionality", 400
+
+    try:
+        return spotify.pause(auth_token, device["id"])
+    except SpotifyError as e:
+        return return_error(e)
+
+
+@mod.route("<spotify_user_id>/player/play ", methods=["PUT"])
+@login_required
+def play(spotify_user_id):
+    """
+    Continues the spotify playback
+    :return:
+    """
+
+    auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
+    if not auth_token:
+        return "No user with this id in the database", 400
+
+    try:
+        device = spotify.active_devices(auth_token)
+    except SpotifyError as e:
+        return return_error(e)
+
+    if not device:
+        return "You have to start the playback on one device to use this functionality", 400
+
+    try:
+        return spotify.play(auth_token, device["id"])
+    except SpotifyError as e:
+        return return_error(e)

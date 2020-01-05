@@ -23,8 +23,9 @@ class SpotifyUrls:
     ME = "https://api.spotify.com/v1/me"
     ME_PLAYLISTS = "https://api.spotify.com/v1/me/playlists"
     DEVICES = "https://api.spotify.com/v1/me/player/devices"
-    CURRENT_PLAYBACK = "https://api.spotify.com/v1/me/player"
+    PAUSE = "https://api.spotify.com/v1/me/player/pause"
     PLAY = "https://api.spotify.com/v1/me/player/play"
+    CURRENT_PLAYBACK = "https://api.spotify.com/v1/me/player"
     PLAYER = "https://api.spotify.com/v1/me/player"
     SHUFFLE = "https://api.spotify.com/v1/me/player/shuffle"
 
@@ -399,6 +400,24 @@ class Spotify:
 
         return request.json()
 
+    def active_devices(self, auth_token: SpotifyAuthorisationToken) -> dict:
+        """
+        Get the active device
+        :param auth_token: The auth token
+        :return: The active device
+        """
+
+        devices = self.devices(auth_token)
+
+        if not devices:
+            return {}
+
+        for device in devices["devices"]:
+            if device['is_active'] is True:
+                return device
+
+        return {}
+
     def switch_device(self, auth_token: SpotifyAuthorisationToken, device_id: str):
         """
         Switch to another device
@@ -436,6 +455,36 @@ class Spotify:
             raise SpotifyError(request.text)
 
         return shuffle_on
+
+    def pause(self, auth_token: SpotifyAuthorisationToken, device_id: str) -> dict:
+        """
+        Pause the playback
+        :param device_id: The device id of the device that is currently playing back
+        :param auth_token: The auth token
+        :return: Error or {}
+        """
+
+        url = SpotifyUrls.PAUSE + "?device_id=" + device_id
+        request = requests.put(url=url, headers=self._get_headers(auth_token))
+
+        if request.text and "error" in request.json():
+            raise SpotifyError(request.text)
+        return {}
+
+    def play(self, auth_token: SpotifyAuthorisationToken, device_id):
+        """
+        Continue the playback
+        :param auth_token: The auth token
+        :param device_id: The deviec id
+        :return: Error or {}
+        """
+
+        url = SpotifyUrls.PLAY + "?device_id=" + device_id
+        request = requests.put(url=url, headers=self._get_headers(auth_token))
+
+        if request.text and "error" in request.json():
+            raise SpotifyError(request.text)
+        return {}
 
     def queue(self, track_id_list: list, auth_token: SpotifyAuthorisationToken, shuffle: bool = None) -> dict:
         """

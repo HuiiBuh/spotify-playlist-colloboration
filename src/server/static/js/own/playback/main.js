@@ -13,6 +13,8 @@ function addListener() {
     document.getElementById("add-to-queue").onclick = toggleSearchDiv;
     document.getElementById("song-name").onkeyup = searchSongs;
     document.getElementById("song-name").onclick = searchSongs;
+    document.getElementById("pause").onclick = pause;
+    document.getElementById("play").onclick = play;
 }
 
 

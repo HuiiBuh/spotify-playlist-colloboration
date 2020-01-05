@@ -16,6 +16,11 @@ function startPlaybackSync() {
 }
 
 function updateCurrentlyPlaying(json) {
+    if (Object.keys(json).length === 0) {
+        M.toast({html: "No song is currently playing. Start spotify and play a song.", classes: "bg-warning"});
+        return
+    }
+
     let song = json["item"];
     let cover = "/proxy/" + song["album"]["images"][0]["url"];
 
@@ -38,4 +43,35 @@ function updateCurrentlyPlaying(json) {
         document.getElementsByClassName("cover-image")[0].src = cover;
         updateBackground();
     }
+}
+
+function pause() {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            alert("pause")
+        } else if (this.readyState === 4) {
+            showErrorMessage(this);
+        }
+    };
+
+    xhttp.open("PUT", pauseAPI, true);
+    xhttp.send();
+}
+
+
+function play() {
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            alert("play")
+        } else if (this.readyState === 4) {
+            showErrorMessage(this);
+        }
+    };
+
+    xhttp.open("PUT", playAPI, true);
+    xhttp.send();
 }

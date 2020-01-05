@@ -56,12 +56,12 @@ let noDeviceFound = function () {
     root.setAttribute("class", "device-padding small-margin-bottom");
 
     let p1 = document.createElement("p");
-    p1.innerText = "Play and control Spotify.";
+    p1.innerText = "Play and control the Spotify playback on all your devices.";
     p1.setAttribute("class", "no-margin");
     root.appendChild(p1);
 
     let p2 = document.createElement("p");
-    p2.innerText = "Start Spotify on another device and it will magically appear here.";
+    p2.innerText = "Start Spotify on another device, start playing.";
     p2.setAttribute("class", "no-margin small-padding-bottom");
     root.appendChild(p2);
 

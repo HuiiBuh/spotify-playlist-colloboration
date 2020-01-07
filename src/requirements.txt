@@ -30,3 +30,6 @@ argon2-cffi
 # production server
 uWSGI
 
+# Websockets
+flask-socketio
+eventlet

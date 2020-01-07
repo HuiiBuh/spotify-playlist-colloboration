@@ -40,6 +40,7 @@ class User(db.Model, UserMixin):
         :param password: The clear password as string
         :return: If the password is correct
         """
+
         ph = PasswordHasher(type=Type.ID)
         try:
             same = ph.verify(self.password_hash, password)
@@ -66,6 +67,7 @@ class SpotifyUser(db.Model):
     spotify_user_id = db.Column(db.String(64), nullable=False, unique=True)
     refresh_token = db.Column(db.Text)
     oauth_token = db.Column(db.Text)
+    playback_info = db.Column(db.Text)
     activated_at = db.Column(db.BigInteger)
     playlists = db.relationship('Playlist', backref='SpotifyUser', lazy="joined", cascade="all, delete, delete-orphan",
                                 passive_deletes=True)
@@ -112,7 +114,7 @@ class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     spotify_id = db.Column(db.String(length=64), nullable=False)
     song_info = db.Column(db.Text, nullable=False)
-    playing = db.Column(db.Boolean, nullable=True)
+    playing = db.Column(db.Boolean, nullable=True, default=False)
     queue = db.Column(db.Integer, db.ForeignKey(Queue.id, ondelete='CASCADE'))
 
     __mapper_args__ = {"order_by": id}

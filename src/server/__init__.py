@@ -2,6 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO
 
 import server.admin
 import server.api
@@ -14,6 +15,8 @@ app = Flask(__name__)
 
 # configure the app from the object
 app.config.from_object(Config)
+
+socket_io = SocketIO(app)
 
 # add the login manager
 login_manager = LoginManager()

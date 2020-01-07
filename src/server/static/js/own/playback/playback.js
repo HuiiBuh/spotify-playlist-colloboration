@@ -24,8 +24,8 @@ function updateCurrentlyPlaying(json) {
     //     M.toast({html: "No song is currently playing. Start spotify and play a song.", classes: "bg-warning"});
     //     return
     // }
-    updatePlaybackState(json);
 
+    updatePlaybackState(json);
     if (playbackSongID === json["item"]["id"]) {
         return;
     }

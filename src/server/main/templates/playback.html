@@ -7,8 +7,8 @@
 {% block javascript_variables %}
     <script type="text/javascript">
 
-        let searchAPI = "{{url_for("api.search", spotify_user_id=spotify_user_id)}}&q=";
-        let devicesAPI = "{{url_for("api.devices", spotify_user_id=spotify_user_id)}}";
+        let searchAPI = "{{ url_for("api.search") }}?spotify-user-id={{ spotify_user_id }}&q=";
+        let devicesAPI = "{{url_for("api.devices", spotify_user_id=spotify_user_id) }}";
         let playerAPI = "{{ url_for("api.player", spotify_user_id=spotify_user_id) }}";
 
         let pauseAPI = "{{ url_for("api.pause", spotify_user_id=spotify_user_id) }}";
@@ -31,7 +31,7 @@
     <div class="row flex no-margin"
          style="background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.7) 100%); height: 73px">
         {# Left side #}
-        <div class="col s9 flex-v-center min-height-hundred space-between">
+        <div class="col s9 no-margin flex-v-center min-height-hundred space-between">
 
             {# Back button #}
             <a class="pointer flex-v-center white-text back" href="/">
@@ -43,7 +43,7 @@
             <i class="material-icons pointer" id="add-to-queue">playlist_add</i>
         </div>
         {# Right side #}
-        <div class="col s3 no-padding">
+        <div class="col s3 no-margin no-padding">
             <div class="flex-v-center queue-heading">
                 <i class="material-icons small">playlist_play</i>
                 <span class="queue-heading-text">Play Queue</span>
@@ -55,7 +55,7 @@
     <div class="row flex no-margin" style="height: calc(100vh - 73px - 113px)">
 
         {# Cover and search #}
-        <div class="col s9 no-padding min-height-hundred flex-v-center flex-center" style="position: relative;">
+        <div class="col s9 no-margin no-padding min-height-hundred flex-v-center flex-center" style="position: relative;">
 
             {# Cover #}
             <div>
@@ -78,10 +78,11 @@
                 <img class="cover-image"
                      src="/static/icons/default_playlist_cover.png"
                      alt>
-                <p class="small-padding-top small-padding-bottom center cover-text">
-                    <a class="underline" href="#" id="artist"></a>
-                    <a class="small-padding-right small-padding-left">•</a>
-                    <a class="underline" href="#" id="song"></a>
+                <p class="small-padding-top small-padding-bottom center cover-text small-padding-left small-padding-right">
+                    <a class="underline no-wrap to-long inline-block" style="max-width: 100%" href="#" id="artist"></a>
+                    <a class="small-padding-right no-wrap to-long small-padding-left inline-block">•</a><a
+                        class="underline no-wrap to-long inline-block small-padding-left small-padding-right"
+                        style="max-width: 100%" href="#" id="song"></a>
                 </p>
             </div>
 
@@ -104,7 +105,7 @@
         </div>
 
         {# Right side (queue) #}
-        <div class="col s3 min-height-hundred" id="queue">
+        <div class="col s3 min-height-hundred no-margin" id="queue">
 
             <div id="0AtP8EkGPn6SwxKDaUuXec" class="row flex-v-center">
                 <div class="col s2 center flex-v-center no-padding-right">
@@ -152,7 +153,6 @@
                 <div class="playback-controls">
 
                     <i class="material-icons pointer playback-control" id="shuffle">shuffle</i>
-                    <i class="material-icons pointer playback-control shuffle" id="straight">drag_handle</i>
 
                     <i class="material-icons pointer playback-control" id="previous">skip_previous</i>
 
@@ -170,7 +170,7 @@
                 <div class="right-controls">
 
                     {# Device button #}
-                    <i class="material-icons pointer" id="devices-button"> devices_other</i>
+                    <i class="material-icons pointer" id="devices-button">devices_other</i>
 
                     {# Device menue #}
                     <div class="device-text">

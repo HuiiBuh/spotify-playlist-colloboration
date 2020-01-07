@@ -276,7 +276,7 @@ class Spotify:
         headers: dict = self._get_headers(auth_token)
         request = requests.get(url=url, headers=headers)
 
-        if "error" in request.json():
+        if not request.ok:
             raise SpotifyError(request.text)
 
         return request.json()

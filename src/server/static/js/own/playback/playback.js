@@ -95,12 +95,10 @@ function updatePlaybackState(json) {
     }
 
     if (shuffle === true) {
-        document.getElementById("straight").style.display = "block";
-        document.getElementById("shuffle").style.display = "none";
+        document.getElementById("shuffle").style.color = "white";
 
     } else {
-        document.getElementById("shuffle").style.display = "block";
-        document.getElementById("straight").style.display = "none";
+        document.getElementById("shuffle").style.color = "darkgray";
     }
 
     if (repeat === "off") {

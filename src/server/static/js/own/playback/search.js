@@ -27,7 +27,7 @@ function searchSongs(evt) {
                 let songList = jsonToSongList(JSON.parse(this.responseText), "search");
                 displaySearchSongs(songList)
             } else if (this.readyState === 4 && this.status !== 200) {
-                M.toast({html: "No songs could be retrieved from spotify", classes: "bg-warning"})
+                showErrorMessage(this)
             }
         };
 

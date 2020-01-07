@@ -218,7 +218,7 @@ input:focus {
     display: none;
 }
 
-#previous, #next {
+#previous, #next, #shuffle {
     display: block;
 }
 

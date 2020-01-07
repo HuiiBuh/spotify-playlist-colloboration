@@ -78,7 +78,10 @@ def player(spotify_user_id):
             return return_error(e)
 
     if request.method == "GET":
-        return spotify.current_playback(auth_token)
+        try:
+            return spotify.current_playback(auth_token)
+        except SpotifyError as e:
+            return return_error(e)
 
 
 @mod.route("<spotify_user_id>/player/pause ", methods=["PUT"])
@@ -129,5 +132,41 @@ def play(spotify_user_id):
 
     try:
         return spotify.play(auth_token, device["id"])
+    except SpotifyError as e:
+        return return_error(e)
+
+
+@mod.route("<spotify_user_id>/player/next ", methods=["POST"])
+@login_required
+def next(spotify_user_id):
+    """
+    Go to the next track
+    :return:
+    """
+
+    auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
+    if not auth_token:
+        return "No user with this id in the database", 400
+
+    try:
+        return spotify.next(auth_token)
+    except SpotifyError as e:
+        return return_error(e)
+
+
+@mod.route("<spotify_user_id>/player/previous ", methods=["POST"])
+@login_required
+def previous(spotify_user_id):
+    """
+    Go to the previous track
+    :return:
+    """
+
+    auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
+    if not auth_token:
+        return "No user with this id in the database", 400
+
+    try:
+        return spotify.previous(auth_token)
     except SpotifyError as e:
         return return_error(e)

@@ -52,6 +52,14 @@ body {
     max-width: 50vh;
 }
 
+.cover-text {
+    color: var(--search-text-color);
+    margin-top: -6px !important;
+    width: 40vw;
+    max-width: 50vh;
+    background-color: var(--dark)
+}
+
 .middle {
     z-index: 5;
     position: absolute;
@@ -207,6 +215,11 @@ input:focus {
 .playback-control {
     margin-left: 10px;
     margin-right: 10px;
+    display: none;
+}
+
+#previous, #next {
+    display: block;
 }
 
 .playback-controls {

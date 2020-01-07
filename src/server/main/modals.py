@@ -93,6 +93,7 @@ class Queue(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     shuffle = db.Column(db.Boolean, nullable=False)
+    repeat_all = db.Column(db.Boolean, nullable=False, default=False)
     songs = db.relationship('Song', backref='Queue', lazy='joined', cascade='all, delete, delete-orphan',
                             passive_deletes=True)
 
@@ -104,8 +105,8 @@ class Song(db.Model):
     @id   -| The id is the index (time the song was added to a specific queue)
 
     @playing -| True  = Active song
-         -| False = Queue
-         -| None  = Already played
+             -| False = Queue
+             -| None  = Already played
     """
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

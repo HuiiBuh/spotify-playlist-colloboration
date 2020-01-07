@@ -10,8 +10,11 @@
         let searchAPI = "{{url_for("api.search", spotify_user_id=spotify_user_id)}}&q=";
         let devicesAPI = "{{url_for("api.devices", spotify_user_id=spotify_user_id)}}";
         let playerAPI = "{{ url_for("api.player", spotify_user_id=spotify_user_id) }}";
+
         let pauseAPI = "{{ url_for("api.pause", spotify_user_id=spotify_user_id) }}";
         let playAPI = "{{ url_for("api.play", spotify_user_id=spotify_user_id) }}";
+        let nextAPI = "{{ url_for("api.next", spotify_user_id=spotify_user_id) }}";
+        let previousAPI = "{{ url_for("api.previous", spotify_user_id=spotify_user_id) }}";
 
         let spotifyUserID = "{{ spotify_user_id }}";
     </script>
@@ -75,6 +78,11 @@
                 <img class="cover-image"
                      src="/static/icons/default_playlist_cover.png"
                      alt>
+                <p class="small-padding-top small-padding-bottom center cover-text">
+                    <a class="underline" href="#" id="artist"></a>
+                    <a class="small-padding-right small-padding-left">•</a>
+                    <a class="underline" href="#" id="song"></a>
+                </p>
             </div>
 
             {# Search field #}
@@ -130,25 +138,32 @@
         <div class="col s9 no-margin">
             {# Progress bar #}
             <div class="row flex-center">
-                <span class="col">0:00</span>
+                <span class="col" id="current-time"></span>
                 <div class="col s8 m9 l10 xl10">
                     <div class="progress">
-                        <div class="determinate" style="width: 70%"></div>
+                        <div class="determinate"></div>
                     </div>
                 </div>
-                <span class="col no-padding-right">4:00</span>
+                <span class="col no-padding-right" id="total-time"></span>
             </div>
 
             {# Left controls #}
             <div class="row flex-v-center">
                 <div class="playback-controls">
-                    <i class="material-icons pointer playback-control">shuffle</i>
-                    <i class="material-icons pointer playback-control">skip_previous</i>
+
+                    <i class="material-icons pointer playback-control" id="shuffle">shuffle</i>
+                    <i class="material-icons pointer playback-control shuffle" id="straight">drag_handle</i>
+
+                    <i class="material-icons pointer playback-control" id="previous">skip_previous</i>
+
                     <a class="pointer btn-floating playback-control" id="play"><i class="material-icons">play_arrow</i></a>
                     <a class="pointer btn-floating playback-control" id="pause"><i class="material-icons">pause</i></a>
-                    <i class="material-icons pointer playback-control">skip_next</i>
-                    <i class="material-icons pointer playback-control">repeat</i>
-                    <i class="material-icons">repeat_one</i>
+
+                    <i class="material-icons pointer playback-control" id="next">skip_next</i>
+
+                    <i class="material-icons pointer playback-control" id="repeat">repeat</i>
+                    <i class="material-icons pointer playback-control" id="repeat-one">repeat_one</i>
+
                 </div>
 
                 {# Right controls #}

@@ -16,18 +16,23 @@ class SpotifyUrls:
     """
     AUTHORIZE = "https://accounts.spotify.com/authorize"
     REFRESH = "https://accounts.spotify.com/api/token"
+
     TRACK = "https://api.spotify.com/v1/tracks/{id}"
     PLAYLIST_TRACKS = "https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
     PLAYLIST = "https://api.spotify.com/v1/playlists/{playlist_id}"
     SEARCH = "https://api.spotify.com/v1/search?q={query}"
     ME = "https://api.spotify.com/v1/me"
     ME_PLAYLISTS = "https://api.spotify.com/v1/me/playlists"
+
     DEVICES = "https://api.spotify.com/v1/me/player/devices"
+    PLAYER = "https://api.spotify.com/v1/me/player"
+    CURRENT_PLAYBACK = "https://api.spotify.com/v1/me/player"
+
+    SHUFFLE = "https://api.spotify.com/v1/me/player/shuffle"
     PAUSE = "https://api.spotify.com/v1/me/player/pause"
     PLAY = "https://api.spotify.com/v1/me/player/play"
-    CURRENT_PLAYBACK = "https://api.spotify.com/v1/me/player"
-    PLAYER = "https://api.spotify.com/v1/me/player"
-    SHUFFLE = "https://api.spotify.com/v1/me/player/shuffle"
+    PREVIOUS = " https://api.spotify.com/v1/me/player/previous"
+    NEXT = "https://api.spotify.com/v1/me/player/next"
 
 
 class SpotifyAppInfo:
@@ -484,6 +489,46 @@ class Spotify:
 
         if request.text and "error" in request.json():
             raise SpotifyError(request.text)
+        return {}
+
+    def previous(self, auth_token: SpotifyAuthorisationToken, device_id=None):
+        """
+        Skip the current track to the next one
+        :param device_id: The device that is supposed to be accessed
+        :param auth_token: The auth token
+        :return: {}
+        """
+
+        url: str = SpotifyUrls.PREVIOUS
+
+        if device_id:
+            url += "?device_id=" + device_id
+
+        request = requests.post(url=url, headers=self._get_headers(auth_token))
+
+        if not request.ok:
+            raise SpotifyError(request.text)
+
+        return {}
+
+    def next(self, auth_token: SpotifyAuthorisationToken, device_id=None):
+        """
+        Go to the next track
+        :param auth_token: The auth token
+        :param device_id: The device that is supposed to be targeted
+        :return: {}
+        """
+
+        url: str = SpotifyUrls.NEXT
+
+        if device_id:
+            url += "?device_id=" + device_id
+
+        request = requests.post(url=url, headers=self._get_headers(auth_token))
+
+        if not request.ok:
+            raise SpotifyError(request.text)
+
         return {}
 
     def queue(self, track_id_list: list, auth_token: SpotifyAuthorisationToken, shuffle: bool = None) -> dict:

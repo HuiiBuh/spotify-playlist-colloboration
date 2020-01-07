@@ -13,8 +13,12 @@ function addListener() {
     document.getElementById("add-to-queue").onclick = toggleSearchDiv;
     document.getElementById("song-name").onkeyup = searchSongs;
     document.getElementById("song-name").onclick = searchSongs;
+
     document.getElementById("pause").onclick = pause;
     document.getElementById("play").onclick = play;
+
+    document.getElementById("next").onclick = next;
+    document.getElementById("previous").onclick = previous;
 }
 
 
@@ -34,6 +38,7 @@ function updateBackground() {
     }
 
     function imgLoaded(event) {
+        img.removeEventListener("load", imgLoaded);
         updateVariables(colorThief.getColor(event.target), event.target.src);
     }
 
@@ -64,9 +69,6 @@ function updateBackground() {
         // Set the background image for the page
         let backgroundImage = document.getElementsByClassName("background-blur-image")[0];
         backgroundImage.style.backgroundImage = "url(" + imageUrl + ")";
-
-        //Hide the loading indicator
-        document.getElementsByClassName("middle")[0].style.display = "none";
     }
 }
 

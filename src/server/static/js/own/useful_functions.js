@@ -156,3 +156,35 @@ function jsonToSongList(json, type, appendList = []) {
     else
         return appendList
 }
+
+
+/**
+ * Sleep for <> ms
+ * @param ms The ms that you want to sleep
+ * @returns {Promise<void>}
+ */
+async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Convert the ms in a hh:mm:ss string
+ * @param ms the ms
+ */
+function msToHumanReadable(ms) {
+    //The human readable duration
+    let hDuration = "";
+
+    //Get the seconds and fill the missing 0s
+    let seconds = parseInt((ms / 1000) % 60).toString();
+    let minutes = (parseInt((ms / (1000 * 60) % 60))).toString();
+    let hours = (parseInt((ms / (1000 * 60 * 60)) % 60)).toString();
+
+    //Pad leading 0s if the hour is not 0
+    if (hours !== "0") {
+        hDuration += pad(hours, 2) + ":"
+    }
+
+    hDuration += pad(minutes, 2) + ":" + pad(seconds, 2);
+    return hDuration
+}

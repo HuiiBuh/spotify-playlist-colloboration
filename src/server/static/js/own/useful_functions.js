@@ -3,18 +3,21 @@
  * @param self the http request
  */
 function showErrorMessage(self) {
-    let error_response = self.responseText;
-    try {
-        error_response = error_response.split("<p>")[1].replace("</p>", "");
-    } catch {
-    }
-
     let toast_message = document.createElement("p");
     toast_message.style.marginTop = "0px";
     toast_message.style.marginBottom = "0px";
-    toast_message.innerText = error_response;
+    toast_message.innerText = self.responseText;
 
     M.toast({html: toast_message, classes: "bg-warning"})
+}
+
+function showSuccessMessage(self) {
+    let toast_message = document.createElement("p");
+    toast_message.style.marginTop = "0px";
+    toast_message.style.marginBottom = "0px";
+    toast_message.innerText = self.responseText;
+
+    M.toast({html: toast_message, classes: "bg-success"})
 }
 
 /**

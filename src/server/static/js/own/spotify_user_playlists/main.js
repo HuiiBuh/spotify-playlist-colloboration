@@ -5,6 +5,8 @@ window.onload = function () {
 function addEventHandler() {
     document.getElementById("add-button").onclick = addPlaylist;
 
+    document.getElementById("playback-control").onchange = toggleQueue;
+
     document.getElementById("playlist-id").addEventListener("keyup", function (evt) {
         if (evt.code === "Enter" || evt.code === "NumpadEnter") {
             addPlaylist();

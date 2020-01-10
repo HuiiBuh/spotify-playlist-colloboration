@@ -5,7 +5,7 @@
         let removePlaylistAPI = "{{ url_for("api.remove_playlist") }}?playlist-id=";
         let addPlaylistAPI = "{{ url_for("api.add_playlist") }}?playlist-id=";
         let playlistDurationAPI = "{{ url_for("api.update_playlist_duration")}}?playlist-id=";
-        let playbackControlAPI = "{{ url_for("api.toggle_playback_control", spotify_user_id=spotify_user_id)}}";
+        let playbackControlAPI = "{{ url_for("api.toggle_playback_control", spotify_user_id=spotify_user_id)}}?queue=";
         let autocomplete = {
             {%   for key, value in autocomplete_playlist_list.items() %}
                 "{{ key }}": "{{ value }}",
@@ -76,9 +76,9 @@
     </div>
 
     <div class="row flex-v-center">
-        <div class="input-field col s5">
+        <div class="input-field col s5 no-padding-left">
             <input id="playlist-id" class="autocomplete" type="text">
-            <label for="playlist-id">Playlist ID</label>
+            <label for="playlist-id" style="left: 0;">Playlist ID</label>
         </div>
         <div class="input-field col s5">
             <input id="songlength-id" type="number" value="0" autocomplete="off" onkeydown="onlyNumbers(event)">
@@ -89,10 +89,10 @@
 
 
     <h5>Playback Control</h5>
-    <div class="switch small-margin-bottom">
+    <div class="switch margin-bottom">
         <label>
             Off
-            <input type="checkbox" id="playback-control">
+            <input type="checkbox" id="playback-control" autocomplete="off" {{ queue }}>
             <span class="lever"></span>
             Allow the playback being controlled by other users
         </label>
@@ -105,6 +105,7 @@
 {% block javascript %}
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/add.js"></script>
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/remove.js"></script>
-    <script type="text/javascript" src="/static/js/own/spotify_user_playlists/main.js"></script>
+    <script type="text/javascript" src="/static/js/own/spotify_user_playlists/queue.js"></script>
     <script type="text/javascript" src="/static/js/own/spotify_user_playlists/edit.js"></script>
+    <script type="text/javascript" src="/static/js/own/spotify_user_playlists/main.js"></script>
 {% endblock %}

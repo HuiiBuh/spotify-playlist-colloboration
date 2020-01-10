@@ -7,7 +7,7 @@ from server import spotify, spotify_info, db
 from server.api.api_functions import update_spotify_user, get_token_by_playlist, assign_playlists_to_user, \
     add_playlist_to_spotify_user
 from server.api.routes import mod
-from server.main.modals import User, Playlist, SpotifyUser
+from server.main.modals import User, Playlist, SpotifyUser, Queue
 from server.spotify import SpotifyAuthorisationToken
 
 
@@ -294,7 +294,7 @@ def remove_user():
     return ""
 
 
-@mod.route("/<spotify_user_id>/playback")
+@mod.route("/<spotify_user_id>/playback", methods=["POST"])
 @login_required
 def toggle_playback_control(spotify_user_id):
     """
@@ -306,6 +306,20 @@ def toggle_playback_control(spotify_user_id):
     if not current_user.is_admin:
         return "You are not authorized to visit the page", 403
 
-    spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
+    spotify_user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
     if not spotify_user:
         return "No user with this id was found", 404
+
+    queue = request.args.get("queue")
+    if not queue:
+        return "Parameter queue is missing", 404
+
+    if queue == "false":
+        db.session.delete(spotify_user.queue)
+        spotify_user.queue = None
+        db.session.commit()
+        return "Disabled the playback control"
+
+    spotify_user.queue = Queue(shuffle=False, repeat_all=True, spotify_user_id=spotify_user_id)
+    db.session.commit()
+    return "Enabled the playback control"

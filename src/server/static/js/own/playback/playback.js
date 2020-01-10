@@ -6,7 +6,7 @@ function startPlaybackSync() {
     let socket = io.connect(url);
 
     socket.on('connected', function (msg) {
-        socket.emit('message_loop', {"start": "now"});
+        socket.emit('message_loop', {"spotify_user_id": spotifyUserID});
     });
 
     socket.on("message", function (msg) {

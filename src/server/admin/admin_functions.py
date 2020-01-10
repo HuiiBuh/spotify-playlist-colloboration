@@ -72,10 +72,13 @@ def display_spotify_user_playlists(spotify_user_id: str):
 
     # Get the spotify user from the database
     spotify_user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
-
-    # Check if spotify user exists
     if not spotify_user:
         return render_template("resource_not_found.html", title="Resource not found", resource="Spotify User")
+
+    # Check if the playback control is enabled
+    queue: str = ""
+    if spotify_user.queue:
+        queue = "checked"
 
     # Get all playlists that are assigned to the spotify user
     playlist_list = Playlist.query.filter(Playlist.spotify_user == spotify_user.id).all()
@@ -116,6 +119,7 @@ def display_spotify_user_playlists(spotify_user_id: str):
                            user_name=user_name,
                            title=user_name,
                            spotify_user_id=spotify_user_id,
+                           queue=queue,
                            autocomplete_playlist_list=autocomplete_playlist_list)
 
 

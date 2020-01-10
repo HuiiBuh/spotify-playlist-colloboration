@@ -2,20 +2,16 @@ let playbackSongID = "a very random string that will never match a song id (hope
 
 function startPlaybackSync() {
 
-    let xhttp = new XMLHttpRequest();
+    let url = location.protocol + '//' + document.domain + ':' + location.port + '/api/playback';
+    let socket = io.connect(url);
 
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            updateCurrentlyPlaying(JSON.parse(this.responseText));
-            setTimeout(startPlaybackSync, 800);
-        } else if (this.readyState === 4) {
-            showErrorMessage(this);
-        }
-    };
+    socket.on('connected', function (msg) {
+        socket.emit('message_loop', {"start": "now"});
+    });
 
-    xhttp.open("GET", playerAPI, true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send();
+    socket.on("message", function (msg) {
+        updateCurrentlyPlaying(msg)
+    });
 }
 
 
@@ -24,6 +20,8 @@ function updateCurrentlyPlaying(json) {
     //     M.toast({html: "No song is currently playing. Start spotify and play a song.", classes: "bg-warning"});
     //     return
     // }
+
+    return;
 
     updatePlaybackState(json);
     if (playbackSongID === json["item"]["id"]) {

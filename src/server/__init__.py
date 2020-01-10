@@ -40,7 +40,7 @@ import server.routes
 from server.main.routes import mod as main_mod
 from server.main import modals
 from server.admin.routes import mod as admin_mod
-from server.api.routes import mod as api_mod
+from server.api.apis import mod as api_mod
 from server.cors_proxy.routes import mod as cors_proxy_mod
 
 app.register_blueprint(admin_mod, url_prefix="/admin")

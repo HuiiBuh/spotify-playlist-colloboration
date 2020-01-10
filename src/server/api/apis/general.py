@@ -2,9 +2,9 @@ from flask import jsonify, request, Response
 from flask_login import login_required
 
 from server import spotify
+from server.api.routes import mod
 from server.api.api_functions import update_spotify_user, get_token_by_playlist, get_token_by_spotify_user_id, \
     modify_playlist_json, collect_tracks, check_songs, modify_track_json, return_error
-from server.api.routes import mod
 from server.spotify.spotify import SpotifyError
 
 

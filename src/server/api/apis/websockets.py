@@ -5,7 +5,8 @@ from flask_socketio import Namespace, emit
 class Playback(Namespace):
     def __init__(self, namespace=None):
         super().__init__(namespace=None)
-        self.connected = False
+        self.connected: bool = False
+        self.current_track: str = "Some very random string that is not a spotify ID."
 
     def on_connect(self):
         """

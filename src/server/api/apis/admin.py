@@ -292,3 +292,20 @@ def remove_user():
     db.session.delete(user)
     db.session.commit()
     return ""
+
+
+@mod.route("/<spotify_user_id>/playback")
+@login_required
+def toggle_playback_control(spotify_user_id):
+    """
+    Toggle the playback control of a spotify user
+    :param spotify_user_id: The spotify user id
+    :return:
+    """
+
+    if not current_user.is_admin:
+        return "You are not authorized to visit the page", 403
+
+    spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
+    if not spotify_user:
+        return "No user with this id was found", 404

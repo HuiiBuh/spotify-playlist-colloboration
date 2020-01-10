@@ -5,6 +5,7 @@
         let removePlaylistAPI = "{{ url_for("api.remove_playlist") }}?playlist-id=";
         let addPlaylistAPI = "{{ url_for("api.add_playlist") }}?playlist-id=";
         let playlistDurationAPI = "{{ url_for("api.update_playlist_duration")}}?playlist-id=";
+        let playbackControlAPI = "{{ url_for("api.toggle_playback_control", spotify_user_id=spotify_user_id)}}";
         let autocomplete = {
             {%   for key, value in autocomplete_playlist_list.items() %}
                 "{{ key }}": "{{ value }}",
@@ -16,11 +17,12 @@
 {% block main %}
 
     <div class="center">
-        <h3>{{ user_name }}'s Playlists</h3>
+        <h3>{{ user_name }}</h3>
     </div>
 
+    <h5>Playlists</h5>
     <div class="table-wrapper">
-        <table class="striped highlight own-responsive-table">
+        <table class="striped highlight own-responsive-table small-margin-bottom">
             <thead>
             <tr>
                 <th data-sort-default>Name</th>
@@ -72,9 +74,6 @@
             </tbody>
         </table>
     </div>
-    <div class="left-align">
-        <h4>Add Playlists</h4>
-    </div>
 
     <div class="row flex-v-center">
         <div class="input-field col s5">
@@ -86,6 +85,17 @@
             <label for="songlength-id">Song Length in sec</label>
         </div>
         <button class="btn-flat col s2 primary-bg-color white-text" id="add-button">Add</button>
+    </div>
+
+
+    <h5>Playback Control</h5>
+    <div class="switch small-margin-bottom">
+        <label>
+            Off
+            <input type="checkbox" id="playback-control">
+            <span class="lever"></span>
+            Allow the playback being controlled by other users
+        </label>
     </div>
 
 {% endblock %}

@@ -114,7 +114,8 @@ def display_spotify_user_playlists(spotify_user_id: str):
     return render_template("spotify_user/spotify_user_playlists.html",
                            playlist_list_json=playlist_list_json,
                            user_name=user_name,
-                           title=f"{user_name}'s Playlists",
+                           title=user_name,
+                           spotify_user_id=spotify_user_id,
                            autocomplete_playlist_list=autocomplete_playlist_list)
 
 

@@ -67,10 +67,11 @@ class SpotifyUser(db.Model):
     spotify_user_id = db.Column(db.String(64), nullable=False, unique=True)
     refresh_token = db.Column(db.Text)
     oauth_token = db.Column(db.Text)
-    playback_info = db.Column(db.Text)
     activated_at = db.Column(db.BigInteger)
     playlists = db.relationship('Playlist', backref='SpotifyUser', lazy="joined", cascade="all, delete, delete-orphan",
                                 passive_deletes=True)
+
+    queue = db.relationship("Queue", backref="spotify_user", uselist=False)
 
     __mapper_args__ = {"order_by": id}
 
@@ -93,11 +94,15 @@ class Queue(db.Model):
     As spotify queue with all the songs in it
     """
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     shuffle = db.Column(db.Boolean, nullable=False)
     repeat_all = db.Column(db.Boolean, nullable=False, default=False)
     songs = db.relationship('Song', backref='Queue', lazy='joined', cascade='all, delete, delete-orphan',
                             passive_deletes=True)
+    current_song = db.Column(db.Text, nullable=True)
+
+    spotify_user_id = db.Column(db.Integer, db.ForeignKey("spotify_user.id"))
+    # spotify_user = db.relationship(SpotifyUser, uselist=False)
 
 
 class Song(db.Model):

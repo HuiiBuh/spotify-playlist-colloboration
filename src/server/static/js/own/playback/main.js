@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-    test();
-
     startPlaybackSync();
     updateDevices(true);
     addListener();
@@ -75,25 +72,3 @@ function updateBackground() {
     }
 }
 
-
-function test() {
-
-
-    let url = location.protocol + '//' + document.domain + ':' + location.port + '/api/playback';
-
-    let socket = io.connect(url);
-
-    console.log(new Date());
-
-    socket.on('connected', function (msg) {
-        console.log(new Date());
-
-        socket.emit('message_loop', {"start": "now"});
-    });
-
-    socket.on("message", function (msg) {
-        console.log(msg);
-        console.log(new Date());
-    })
-
-}

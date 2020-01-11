@@ -1,16 +1,23 @@
-let playbackSongID = "a very random string that will never match a song id (hopefully)";
+let playbackSongID = "A very random string that will never match a song id.";
 
 function startPlaybackSync() {
 
     let url = location.protocol + '//' + document.domain + ':' + location.port + '/api/playback';
     let socket = io.connect(url);
 
-    socket.on('connected', function (msg) {
-        socket.emit('message_loop', {"spotify_user_id": spotifyUserID});
+    socket.on('connect', function (msg) {
+        socket.emit('essen', {"spotify_user_id": spotifyUserID});
+        socket.send("essen")
     });
 
     socket.on("message", function (msg) {
+        console.log(msg);
         updateCurrentlyPlaying(msg)
+    });
+
+    socket.on("error", function (msg) {
+        console.log(msg);
+        showErrorMessage({"responseText": msg})
     });
 }
 
@@ -20,8 +27,6 @@ function updateCurrentlyPlaying(json) {
     //     M.toast({html: "No song is currently playing. Start spotify and play a song.", classes: "bg-warning"});
     //     return
     // }
-
-    return;
 
     updatePlaybackState(json);
     if (playbackSongID === json["item"]["id"]) {

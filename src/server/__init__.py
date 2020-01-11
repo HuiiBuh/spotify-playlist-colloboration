@@ -17,6 +17,8 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 socket_io = SocketIO(app)
+# TODO
+# socket_io.manage_session = False
 
 # add the login manager
 login_manager = LoginManager()

@@ -174,5 +174,4 @@ def previous(spotify_user_id):
         return return_error(e)
 
 
-
 socket_io.on_namespace(Playback('/api/playback'))

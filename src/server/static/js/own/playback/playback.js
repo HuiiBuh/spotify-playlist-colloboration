@@ -1,42 +1,26 @@
-let playbackSongID = "A very random string that will never match a song id.";
-
 function startPlaybackSync() {
 
-    let url = location.protocol + '//' + document.domain + ':' + location.port + '/api/playback';
-    let socket = io.connect(url);
+    let socket = io.connect("/api/playback");
 
-    socket.on('connect', function (msg) {
-        socket.emit('essen', {"spotify_user_id": spotifyUserID});
-        socket.send("essen")
+    socket.on('connect', function () {
+        socket.emit('start_sync', {"spotify_user_id": spotifyUserID});
     });
 
-    socket.on("message", function (msg) {
-        console.log(msg);
+    socket.on("playback", function (msg) {
         updateCurrentlyPlaying(msg)
-    });
-
-    socket.on("error", function (msg) {
-        console.log(msg);
-        showErrorMessage({"responseText": msg})
     });
 }
 
 
 function updateCurrentlyPlaying(json) {
-    // if (Object.keys(json).length === 0) {
-    //     M.toast({html: "No song is currently playing. Start spotify and play a song.", classes: "bg-warning"});
-    //     return
-    // }
-
-    updatePlaybackState(json);
-    if (playbackSongID === json["item"]["id"]) {
+    if (!json.playing) {
+        M.toast({html: "No song is currently playing. Start spotify and play a song,", classes: "bg-warning"});
         return;
     }
 
-    playbackSongID = json["item"]["id"];
+    updatePlaybackState(json["song"]);
 
-
-    let song = json["item"];
+    let song = json["song"]["item"];
     let cover = "/proxy/" + song["album"]["images"][0]["url"];
 
     let album = {
@@ -62,7 +46,7 @@ function updateCurrentlyPlaying(json) {
     let artistA = document.getElementById("artist");
     artistA.innerText = artist.name;
     artistA.setAttribute("href", artist.url);
-    artistA.setAttribute("target", "_blank")
+    artistA.setAttribute("target", "_blank");
 
     let temp = document.createElement("img");
     temp.src = cover;
@@ -85,8 +69,6 @@ function updatePlaybackState(json) {
     let shuffle = json["shuffle_state"];
     let progress = parseInt(json["progress_ms"] / json["item"]["duration_ms"] * 100);
     let playing = json["is_playing"];
-
-    let id = json["item"]["id"];
 
 
     if (playing === true) {

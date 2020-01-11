@@ -1,12 +1,14 @@
 import functools
+import json
 
 from flask_login import current_user
+from sqlalchemy.orm import session
 
-from server import socket_io
-from flask_socketio import Namespace, emit, disconnect, send
+from server import socket_io, db
+from flask_socketio import Namespace, emit, disconnect
 
 from server.api.apis.updater import Updater
-from server.main.modals import SpotifyUser
+from server.main.modals import SpotifyUser, Queue
 
 
 def authenticated_only(f):
@@ -26,26 +28,26 @@ def authenticated_only(f):
     return wrapped
 
 
-class Playback(Namespace):
+class WSPlayback(Namespace):
     def __init__(self, namespace=None):
-        super().__init__(namespace=None)
-        # self.connected: bool = False
+        super().__init__(namespace=namespace)
+        self.connected: bool = False
         self.spotify_user_id = "Some very random string that is not a spotify ID."
-        self.current_track: str = "Some very random string that is not a spotify ID."
+        self.spotify_db_user_id = "Some very random string that is not a spotify ID."
+        self.current_track_id: str = "Some very random string that is not a spotify ID."
         self.updater = None
 
-    # @authenticated_only
+    @authenticated_only
     def on_connect(self):
         """
         Connect to the websocket
         :return: None
         """
 
-        # self.connected = True
-        send('connect')
+        self.connected = True
 
-    # @authenticated_only
-    def on_essen(self, msg):
+    @authenticated_only
+    def on_start_sync(self, msg):
         """
         Get info from db and return it
         :return: None
@@ -56,11 +58,22 @@ class Playback(Namespace):
 
         self.updater = Updater(self.spotify_user_id)
 
-        # while self.connected:
-        #     socket_io.sleep(1)
-        #     emit('message', {'data': 'Message'})
+        while self.connected:
 
-    # @authenticated_only
+            db.session.remove()
+            queue: Queue = Queue.query.filter(Queue.spotify_user_id == self.spotify_db_user_id).first()
+            current_song = json.loads(queue.current_song)
+
+            if not current_song:
+                emit('playback', {'song': None, "playing": False})
+            else:
+                if self.current_track_id != current_song["item"]["id"]:
+                    emit('playback', {'song': current_song, "playing": True})
+                    self.current_track_id = current_song["item"]["id"]
+
+                socket_io.sleep(1)
+
+    @authenticated_only
     def on_error(self, _):
         """
         Stop the message loop during an error
@@ -68,27 +81,26 @@ class Playback(Namespace):
         :return: None
         """
 
-        # self.connected = False
-
+        self.connected = False
         if self.updater:
             self.updater.remove_user(self.spotify_user_id)
 
-    # @authenticated_only
+    @authenticated_only
     def on_disconnect(self):
         """
         Stop the message loop if the socket disconnects
         :return: None
         """
 
-        # self.connected = False
+        self.connected = False
         if self.updater:
             self.updater.remove_user(self.spotify_user_id)
 
-    def _detected_errors(self, msg):
+    def _detected_errors(self, msg) -> bool:
         """
         Detect any errors in the msg
         :param msg: The sent message
-        :return: None
+        :return: SpotifyUser
         """
 
         if "spotify_user_id" not in msg:
@@ -100,10 +112,11 @@ class Playback(Namespace):
             return True
 
         self.spotify_user_id = msg["spotify_user_id"]
+        self.spotify_db_user_id = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == self.spotify_user_id).first().id
         return False
 
 
-class Queue(Namespace):
+class WSQueue(Namespace):
 
     def __init__(self, namespace=None):
         super().__init__(namespace=None)

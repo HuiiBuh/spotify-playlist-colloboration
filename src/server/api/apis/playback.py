@@ -1,3 +1,5 @@
+from flask_socketio import emit
+
 from server import socket_io
 from flask import request
 from flask_login import login_required
@@ -5,7 +7,7 @@ from flask_login import login_required
 from server import spotify
 from server.api.api_functions import get_token_by_spotify_user_id, return_error
 from server.api.routes import mod
-from server.api.apis.websockets import Playback
+from server.api.apis.websockets import WSPlayback
 from server.spotify import SpotifyAuthorisationToken
 
 # ToDo make secure
@@ -174,4 +176,4 @@ def previous(spotify_user_id):
         return return_error(e)
 
 
-socket_io.on_namespace(Playback('/api/playback'))
+socket_io.on_namespace(WSPlayback('/api/playback'))

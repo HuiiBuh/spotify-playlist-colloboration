@@ -99,10 +99,9 @@ class Queue(db.Model):
     repeat_all = db.Column(db.Boolean, nullable=False, default=False)
     songs = db.relationship('Song', backref='Queue', lazy='joined', cascade='all, delete, delete-orphan',
                             passive_deletes=True)
-    current_song = db.Column(db.Text, nullable=True)
+    current_song = db.Column(db.Text, nullable=False, default="{}")
 
     spotify_user_id = db.Column(db.Integer, db.ForeignKey("spotify_user.id"))
-    # spotify_user = db.relationship(SpotifyUser, uselist=False)
 
 
 class Song(db.Model):

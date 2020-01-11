@@ -31,5 +31,5 @@ argon2-cffi
 uWSGI
 
 # Websockets
-flask-socketio
+Flask-SocketIO
 eventlet

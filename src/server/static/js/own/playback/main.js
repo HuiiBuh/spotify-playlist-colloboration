@@ -71,4 +71,3 @@ function updateBackground() {
         backgroundImage.style.backgroundImage = "url(" + imageUrl + ")";
     }
 }
-

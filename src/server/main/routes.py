@@ -56,14 +56,6 @@ def playback(spotify_user_id):
     return render_template("playback.html", title="Playback", spotify_user_id=spotify_user_id)
 
 
-@mod.route("/queue")
-@login_required
-def queue():
-    # ToDo remove
-    token = get_token_by_playlist("2dSOsy4TypHJeNCUvf7z3y")
-    return jsonify(spotify.queue(["7MJQ9Nfxzh8LPZ9e9u68Fq"], token))
-
-
 @mod.route("/login", methods=["GET", "POST"])
 def login() -> redirect:
     """

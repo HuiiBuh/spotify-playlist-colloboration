@@ -320,6 +320,6 @@ def toggle_playback_control(spotify_user_id):
         db.session.commit()
         return "Disabled the playback control"
 
-    spotify_user.queue = Queue(shuffle=False, repeat_all=True, spotify_user_id=spotify_user_id)
+    spotify_user.queue = Queue(shuffle=False, repeat_all=True, spotify_user_db_id=spotify_user_id)
     db.session.commit()
     return "Enabled the playback control"

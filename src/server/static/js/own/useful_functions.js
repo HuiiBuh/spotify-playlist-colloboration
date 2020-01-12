@@ -11,6 +11,10 @@ function showErrorMessage(self) {
     M.toast({html: toast_message, classes: "bg-warning"})
 }
 
+/**
+ * Show a success message from a xhttp request
+ * @param self {XMLHttpRequest}
+ */
 function showSuccessMessage(self) {
     let toast_message = document.createElement("p");
     toast_message.style.marginTop = "0px";

@@ -15,6 +15,7 @@
         let playAPI = "{{ url_for("api.play", spotify_user_id=spotify_user_id) }}";
         let nextAPI = "{{ url_for("api.next", spotify_user_id=spotify_user_id) }}";
         let previousAPI = "{{ url_for("api.previous", spotify_user_id=spotify_user_id) }}";
+        let addSongQueueAPI = "{{ url_for("api.add_song_to_queue", spotify_user_id=spotify_user_id) }}?track-id=";
 
         let spotifyUserID = "{{ spotify_user_id }}";
     </script>

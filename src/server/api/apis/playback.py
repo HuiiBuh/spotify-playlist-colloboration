@@ -1,15 +1,15 @@
-from flask_socketio import emit
+import json
 
-from server import socket_io
 from flask import request
 from flask_login import login_required
 
+from server import socket_io, db
 from server import spotify
 from server.api.api_functions import get_token_by_spotify_user_id, return_error
-from server.api.routes import mod
 from server.api.apis.websockets import WSPlayback
+from server.api.routes import mod
+from server.main.modals import Queue, Song, SpotifyUser
 from server.spotify import SpotifyAuthorisationToken
-
 # ToDo make secure
 from server.spotify.spotify import SpotifyError
 
@@ -174,6 +174,40 @@ def previous(spotify_user_id):
         return spotify.previous(auth_token)
     except SpotifyError as e:
         return return_error(e)
+
+
+@mod.route("<spotify_user_id>/player/queue", methods=["POST"])
+@login_required
+def add_song_to_queue(spotify_user_id):
+    """
+    Add a track to the queue
+    :param spotify_user_id: The spotify user id
+    :return: Success or error message
+    """
+
+    auth_token: SpotifyAuthorisationToken = get_token_by_spotify_user_id(spotify_user_id)
+    if not auth_token:
+        return "No spotify user with this id present", 404
+
+    track_id = request.args.get("track-id")
+    try:
+        song_info = json.dumps(spotify.track(track_id=track_id, auth_token=auth_token))
+    except SpotifyError as e:
+        return return_error(e)
+
+    spotify_user_db_id = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first().id
+    queue = Queue.query.filter(Queue.spotify_user_db_id == spotify_user_db_id).first()
+    if not queue:
+        return "The queue does not exist", 404
+
+    if Song.query.filter(Song.spotify_id == track_id and Song.queue_id == queue.id and Song.playing is None).all():
+        return "The song is already in the queue", 403
+
+    song = Song(spotify_id=track_id, song_info=song_info, queue_id=queue.id)
+    db.session.add(song)
+    db.session.commit()
+
+    return "Added track to queue"
 
 
 socket_io.on_namespace(WSPlayback('/api/playback'))

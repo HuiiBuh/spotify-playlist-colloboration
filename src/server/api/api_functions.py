@@ -85,7 +85,7 @@ def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str, song_le
     if Playlist.query.filter(Playlist.spotify_id == playlist_id).first():
         return abort(400, "The playlist does already exist")
 
-    # Get a random spotify user for a auth token
+    # Get a spotify user for a auth token
     temp_user: SpotifyUser = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
     auth_token = SpotifyAuthorisationToken(temp_user.refresh_token, temp_user.activated_at,
                                            temp_user.oauth_token)
@@ -96,7 +96,6 @@ def add_playlist_to_spotify_user(playlist_id: str, spotify_user_id: str, song_le
         update_spotify_user(user_id, auth_token)
 
     # Check if the playlist id is valid
-    playlist_json = {}
     try:
         playlist_json = spotify.playlist(playlist_id, auth_token)
         playlist_json["duration"] = song_length

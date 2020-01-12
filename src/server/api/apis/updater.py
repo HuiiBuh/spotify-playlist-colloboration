@@ -6,7 +6,7 @@ from server.main.modals import SpotifyUser, Queue
 from server.spotify import SpotifyAuthorisationToken
 
 
-class PlaybackUpdator:
+class PlaybackUpdater:
     """
     Updater class
     """
@@ -23,7 +23,7 @@ class PlaybackUpdator:
             """
 
             self.spotify_user_id_list: list = [spotify_user_id]
-            socket_io.start_background_task(self.update_queues)
+            socket_io.start_background_task(self.update_database)
 
         def remove_user(self, spotify_user_id):
             try:
@@ -31,7 +31,7 @@ class PlaybackUpdator:
             except ValueError:
                 print("Could not remove the user")
 
-        def update_queues(self):
+        def update_database(self):
             """
             Update the database
             :return: None
@@ -52,7 +52,7 @@ class PlaybackUpdator:
                 socket_io.sleep(1)
 
             # Stop the polling and remove the __Update instance
-            PlaybackUpdator.instance = None
+            PlaybackUpdater.instance = None
 
         @staticmethod
         def update_current_song(auth_token: SpotifyAuthorisationToken, queue: Queue):
@@ -90,15 +90,15 @@ class PlaybackUpdator:
         """
 
         # Check if there is a Updater instance and create it if there is no such one
-        if not PlaybackUpdator.instance:
-            PlaybackUpdator.instance = PlaybackUpdator.__Updater(spotify_user_id)
+        if not PlaybackUpdater.instance:
+            PlaybackUpdater.instance = PlaybackUpdater.__Updater(spotify_user_id)
         else:
             # Check if the user is already in the list
-            if spotify_user_id in PlaybackUpdator.instance.spotify_user_id_list:
+            if spotify_user_id in PlaybackUpdater.instance.spotify_user_id_list:
                 return
 
             # Add the user to the polling list
-            PlaybackUpdator.instance.spotify_user_id_list.append(spotify_user_id)
+            PlaybackUpdater.instance.spotify_user_id_list.append(spotify_user_id)
 
     @staticmethod
     def remove_user(spotify_user_id):
@@ -108,7 +108,7 @@ class PlaybackUpdator:
         :return: None
         """
         try:
-            PlaybackUpdator.instance.remove_user(spotify_user_id)
+            PlaybackUpdater.instance.remove_user(spotify_user_id)
         except AttributeError:
             print("Could not remove the user")
 
@@ -121,3 +121,57 @@ class PlaybackUpdator:
 
         return getattr(self.instance, name)
 
+
+class QueueUpdater:
+    class __Updater:
+        def __init__(self, spotify_user_id: str):
+            self.spotify_user_id_list: list = [spotify_user_id]
+            socket_io.start_background_task(self.update_queues)
+
+        def update_queues(self):
+            # As long as there are users in the list
+            while self.spotify_user_id_list:
+                pass
+
+            # Stop the polling and remove the __Update instance
+            QueueUpdater.instance = None
+
+    instance = None
+
+    def __init__(self, spotify_user_id):
+        """
+        Init the class and return update the private class if the Updater has already instanced once
+        :param spotify_user_id: The spotify user id
+        """
+
+        # Check if there is a Updater instance and create it if there is no such one
+        if not QueueUpdater.instance:
+            QueueUpdater.instance = QueueUpdater.__Updater(spotify_user_id)
+        else:
+            # Check if the user is already in the list
+            if spotify_user_id in QueueUpdater.instance.spotify_user_id_list:
+                return
+
+            # Add the user to the polling list
+            QueueUpdater.instance.spotify_user_id_list.append(spotify_user_id)
+
+    @staticmethod
+    def remove_user(spotify_user_id):
+        """
+        Remove the user from the update list
+        :param spotify_user_id: The spotify user id
+        :return: None
+        """
+        try:
+            QueueUpdater.instance.remove_user(spotify_user_id)
+        except AttributeError:
+            print("Could not remove the user")
+
+    def __getattr__(self, name):
+        """
+        Return the attribute of the private class instead of the Updater class
+        :param name: The attribute name
+        :return: The value of the attribute
+        """
+
+        return getattr(self.instance, name)

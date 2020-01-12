@@ -106,7 +106,7 @@ class Queue(db.Model):
     current_song = db.Column(db.Text, nullable=False, default="{}")
     devices = db.Column(db.Text, nullable=False, default="{}")
 
-    spotify_user_id = db.Column(db.Integer, db.ForeignKey("spotify_user.id"))
+    spotify_user_db_id = db.Column(db.Integer, db.ForeignKey("spotify_user.id"))
 
 
 class Song(db.Model):
@@ -124,6 +124,6 @@ class Song(db.Model):
     spotify_id = db.Column(db.String(length=64), nullable=False)
     song_info = db.Column(db.Text, nullable=False)
     playing = db.Column(db.Boolean, nullable=True, default=False)
-    queue = db.Column(db.Integer, db.ForeignKey(Queue.id, ondelete='CASCADE'))
+    queue_id = db.Column(db.Integer, db.ForeignKey(Queue.id, ondelete='CASCADE'))
 
     __mapper_args__ = {"order_by": id}

@@ -6,7 +6,7 @@ from server.main.modals import SpotifyUser, Queue
 from server.spotify import SpotifyAuthorisationToken
 
 
-class Updater:
+class PlaybackUpdator:
     """
     Updater class
     """
@@ -52,7 +52,7 @@ class Updater:
                 socket_io.sleep(1)
 
             # Stop the polling and remove the __Update instance
-            Updater.instance = None
+            PlaybackUpdator.instance = None
 
         @staticmethod
         def update_current_song(auth_token: SpotifyAuthorisationToken, queue: Queue):
@@ -90,15 +90,15 @@ class Updater:
         """
 
         # Check if there is a Updater instance and create it if there is no such one
-        if not Updater.instance:
-            Updater.instance = Updater.__Updater(spotify_user_id)
+        if not PlaybackUpdator.instance:
+            PlaybackUpdator.instance = PlaybackUpdator.__Updater(spotify_user_id)
         else:
             # Check if the user is already in the list
-            if spotify_user_id in Updater.instance.spotify_user_id_list:
+            if spotify_user_id in PlaybackUpdator.instance.spotify_user_id_list:
                 return
 
             # Add the user to the polling list
-            Updater.instance.spotify_user_id_list.append(spotify_user_id)
+            PlaybackUpdator.instance.spotify_user_id_list.append(spotify_user_id)
 
     @staticmethod
     def remove_user(spotify_user_id):
@@ -108,7 +108,7 @@ class Updater:
         :return: None
         """
         try:
-            Updater.instance.remove_user(spotify_user_id)
+            PlaybackUpdator.instance.remove_user(spotify_user_id)
         except AttributeError:
             print("Could not remove the user")
 
@@ -120,3 +120,4 @@ class Updater:
         """
 
         return getattr(self.instance, name)
+

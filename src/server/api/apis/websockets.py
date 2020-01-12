@@ -2,14 +2,15 @@ import functools
 import json
 
 from flask_login import current_user
-from sqlalchemy.orm import session
 
 from server import socket_io, db
 from flask_socketio import Namespace, emit, disconnect
 
-from server.api.apis.updater import Updater
+from server.api.apis.playbackupdator import PlaybackUpdator
 from server.main.modals import SpotifyUser, Queue
 
+
+# ToDo in authenticated_only auch noch prüfen, ob der User playback beobachten darf
 
 def authenticated_only(f):
     """
@@ -59,7 +60,7 @@ class WSPlayback(Namespace):
         if self._detected_errors(msg):
             return
 
-        self.updater = Updater(self.spotify_user_id)
+        self.updater = PlaybackUpdator(self.spotify_user_id)
 
         while self.connected:
 
@@ -137,7 +138,7 @@ class WSPlayback(Namespace):
 class WSQueue(Namespace):
 
     def __init__(self, namespace=None):
-        super().__init__(namespace=None)
+        super().__init__(namespace=namespace)
         self.connected = False
 
     @authenticated_only

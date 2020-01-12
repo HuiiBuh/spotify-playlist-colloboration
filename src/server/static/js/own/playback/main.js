@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     startPlaybackSync();
+    startQueueSync();
     updateDevices(true);
     addListener();
 });

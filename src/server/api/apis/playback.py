@@ -177,3 +177,4 @@ def previous(spotify_user_id):
 
 
 socket_io.on_namespace(WSPlayback('/api/playback'))
+socket_io.on_namespace(WSPlayback('/api/queue'))

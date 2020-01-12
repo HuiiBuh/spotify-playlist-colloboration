@@ -79,12 +79,13 @@
                 <img class="cover-image"
                      src="/static/icons/default_playlist_cover.png"
                      alt>
-                <p class="small-padding-top small-padding-bottom center cover-text small-padding-left small-padding-right">
-                    <a class="underline no-wrap to-long inline-block" style="max-width: 100%" href="#" id="artist"></a>
-                    <a class="small-padding-right no-wrap to-long small-padding-left inline-block">•</a><a
-                        class="underline no-wrap to-long inline-block small-padding-left small-padding-right"
-                        style="max-width: 100%" href="#" id="song"></a>
-                </p>
+                <div class="small-padding-top small-padding-bottom center cover-text small-padding-left small-padding-right">
+                    <a class="underline no-wrap to-long inline-block" style="width: 100%" href="#" id="artist">No
+                        Song</a>
+                    <a class="underline no-wrap to-long inline-block small-padding-left small-padding-right"
+                       style="width: 100%" href="#" id="song">playing</a>
+                </div>
+
             </div>
 
             {# Search field #}
@@ -140,13 +141,13 @@
         <div class="col s9 no-margin">
             {# Progress bar #}
             <div class="row flex-center">
-                <span class="col" id="current-time"></span>
+                <span class="col" id="current-time">00:00</span>
                 <div class="col s8 m9 l10 xl10">
                     <div class="progress">
                         <div class="determinate"></div>
                     </div>
                 </div>
-                <span class="col no-padding-right" id="total-time"></span>
+                <span class="col no-padding-right" id="total-time">00:00</span>
             </div>
 
             {# Left controls #}
@@ -157,13 +158,16 @@
 
                     <i class="material-icons pointer playback-control" id="previous">skip_previous</i>
 
-                    <a class="pointer btn-floating playback-control" id="play"><i class="material-icons">play_arrow</i></a>
+                    <a class="pointer btn-floating playback-control" id="play" style="display: none">
+                        <i class="material-icons">play_arrow</i>
+                    </a>
                     <a class="pointer btn-floating playback-control" id="pause"><i class="material-icons">pause</i></a>
 
                     <i class="material-icons pointer playback-control" id="next">skip_next</i>
 
                     <i class="material-icons pointer playback-control" id="repeat">repeat</i>
-                    <i class="material-icons pointer playback-control" id="repeat-one">repeat_one</i>
+                    <i class="material-icons pointer playback-control" id="repeat-one"
+                       style="display: none">repeat_one</i>
 
                 </div>
 
@@ -198,7 +202,7 @@
         {# Right queue info #}
         <div class="col s3 flex-v-center flex-center no-margin" style="min-height: 100%; background: var(--darker)">
             <p class="no-margin flex-break" style="font-size: 1.5rem; text-align: center;">Remaining time</p>
-            <p class="no-margin">500:40:30</p>
+            <p class="no-margin">00:00:00</p>
         </div>
     </div>
 {% endblock %}

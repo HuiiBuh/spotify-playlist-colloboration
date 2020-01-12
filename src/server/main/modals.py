@@ -92,6 +92,10 @@ class Playlist(db.Model):
 class Queue(db.Model):
     """
     As spotify queue with all the songs in it
+
+    @repeat_all  -| Null Repeat one
+                 -| True Repeat all
+                 -| False Repeat nothing
     """
 
     id = db.Column(db.Integer, primary_key=True)
@@ -100,6 +104,7 @@ class Queue(db.Model):
     songs = db.relationship('Song', backref='Queue', lazy='joined', cascade='all, delete, delete-orphan',
                             passive_deletes=True)
     current_song = db.Column(db.Text, nullable=False, default="{}")
+    devices = db.Column(db.Text, nullable=False, default="{}")
 
     spotify_user_id = db.Column(db.Integer, db.ForeignKey("spotify_user.id"))
 

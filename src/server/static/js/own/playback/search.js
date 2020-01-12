@@ -123,7 +123,7 @@ function addSongToQueue(songID) {
 
 
 /**
- * Toggle the
+ * Toggle the Search div
  * @param event
  */
 function toggleSearchDiv(event) {

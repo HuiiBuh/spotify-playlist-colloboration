@@ -9,12 +9,16 @@ function startPlaybackSync() {
     socket.on("playback", function (msg) {
         updateCurrentlyPlaying(msg)
     });
+
+    socket.on("devices", function (msg) {
+        updateDevicesView(msg)
+    })
 }
 
 
 function updateCurrentlyPlaying(json) {
     if (!json.playing) {
-        M.toast({html: "No song is currently playing. Start spotify and play a song,", classes: "bg-warning"});
+        notPlaying();
         return;
     }
 
@@ -57,9 +61,23 @@ function updateCurrentlyPlaying(json) {
         updateBackground();
     };
 
-    document.getElementsByClassName("cover-image")[0].src = "/static/icons/default_playlist_cover.png";
     document.getElementsByClassName("middle")[0].style.display = "block";
+}
+
+function notPlaying() {
+    M.toast({html: "No song is currently playing. Start spotify and play a song,", classes: "bg-warning"});
+
+    document.getElementsByClassName('cover-image')[0].src = "/static/icons/default_playlist_cover.png";
+
+    document.getElementById("artist").innerText = "No Song";
+    document.getElementById("song").innerText = "Playing";
+
+    document.getElementById("current-time").innerText = "00:00";
+    document.getElementById("total-time").innerText = "00:00";
+
+    document.getElementsByClassName("determinate")[0].style.width = "0";
     updateBackground();
+    toggleDevices(show = true);
 }
 
 function updatePlaybackState(json) {

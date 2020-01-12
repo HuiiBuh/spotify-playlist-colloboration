@@ -215,12 +215,8 @@ input:focus {
 .playback-control {
     margin-left: 10px;
     margin-right: 10px;
-    display: none;
 }
 
-#previous, #next, #shuffle {
-    display: block;
-}
 
 .playback-controls {
     display: inline-flex;

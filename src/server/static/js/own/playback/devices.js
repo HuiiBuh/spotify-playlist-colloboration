@@ -1,9 +1,17 @@
 /**
- * Toggle the devices
- * @param event
+ * Toggle the devices (default if not show or hide)
+ * @param show {boolean} Show/Hide the list
  */
-function toggleDevices(event) {
+function toggleDevices(show = null) {
     let element = document.getElementsByClassName("device-text")[0];
+
+    if (element.classList.contains("show") && show === true) {
+        return;
+    }
+
+    if (!element.classList.contains("show") && show === false) {
+        return;
+    }
 
     //Check if the devices are shown
     if (element.classList.contains("show")) {

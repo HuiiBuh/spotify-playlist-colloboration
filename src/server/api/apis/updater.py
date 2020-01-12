@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 from server import spotify, socket_io, db
 from server.api.api_functions import get_token_by_spotify_user_id
@@ -27,7 +26,10 @@ class Updater:
             socket_io.start_background_task(self.update_queues)
 
         def remove_user(self, spotify_user_id):
-            self.spotify_user_id_list.remove(spotify_user_id)
+            try:
+                self.spotify_user_id_list.remove(spotify_user_id)
+            except ValueError:
+                print("Could not remove the user")
 
         def update_queues(self):
             """
@@ -45,7 +47,6 @@ class Updater:
                         break
 
                     spotify_user = SpotifyUser.query.filter(SpotifyUser.spotify_user_id == spotify_user_id).first()
-
                     self.update_current_song(auth_token, spotify_user.queue)
 
                 socket_io.sleep(1)
@@ -69,6 +70,15 @@ class Updater:
                 return
 
             queue.current_song = json.dumps(current_playback)
+            db.session.commit()
+
+            try:
+                devices = spotify.devices(auth_token)
+            except SpotifyAuthorisationToken as e:
+                print(str(e))
+                return
+
+            queue.devices = json.dumps(devices)
             db.session.commit()
 
     instance = None

@@ -6,7 +6,7 @@ from flask_socketio import Namespace, emit, disconnect
 
 from server import socket_io, db
 from server.api.apis.updater import PlaybackUpdater, QueueUpdater
-from server.main.modals import SpotifyUser, Queue
+from server.main.modals import SpotifyUser, Queue, Song
 
 
 # ToDo in authenticated_only auch noch prüfen, ob der User playback beobachten darf
@@ -147,7 +147,9 @@ class WSQueue(WS):
 
     def __init__(self, namespace=None):
         super().__init__(namespace=namespace)
-        self.song_count: int = 0
+
+        self.song_count: int = -1
+        self.queue_id: int = -1
 
     @authenticated_only
     def on_update_queue(self, msg):
@@ -158,13 +160,18 @@ class WSQueue(WS):
         if self._detected_errors(msg):
             return
 
+        self.queue_id = Queue.query.filter(Queue.spotify_user_db_id == self.spotify_user_db_id).first().id
+
         self.updater = QueueUpdater(self.spotify_user_id)
-        socket_io.start_background_task(self.__sync)
+        self.__sync()
 
     def __sync(self):
+
         while self.connected:
+
             db.session.remove()
             queue: Queue = Queue.query.filter(Queue.spotify_user_db_id == self.spotify_user_db_id).first()
+            song_list = Song.query.filter(Song.queue_id == self.queue_id).order_by(Song.id).all()
 
             # Send a update if the current song changes
             current_song = json.loads(queue.current_song)
@@ -173,16 +180,35 @@ class WSQueue(WS):
                     self.current_track_id = current_song["item"]["id"]
 
                     self.update_current_track()
-                    emit("queue", self.build_queue())
+                    emit("queue", self.build_queue(song_list))
 
-            new_song_count = 10
-            if self.song_count != new_song_count:
-                emit("queue", self.build_queue())
+            print(self.song_count)
+            print(len(song_list))
 
+            if self.song_count != len(song_list):
+                emit("queue", self.build_queue(song_list))
+
+                self.song_count = len(song_list)
             socket_io.sleep(1)
 
     def update_current_track(self):
         queue: Queue = Queue.query.filter(Queue.spotify_user_db_id == self.spotify_user_db_id).first()
 
-    def build_queue(self) -> dict:
-        pass
+    @staticmethod
+    def build_queue(song_list: list) -> dict:
+
+        queue_json = {
+            "played": [],
+            "playing": None,
+            "queue": []
+        }
+
+        for song in song_list:
+            if song.playing is False:
+                queue_json["queue"].append(json.loads(song.song_info))
+            elif song.playing is None:
+                queue_json["played"].append(json.loads(song.song_info))
+            elif song.playing is True:
+                queue_json["playing"] = json.loads(song.song_info)
+
+        return queue_json

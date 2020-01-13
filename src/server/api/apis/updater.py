@@ -131,7 +131,7 @@ class QueueUpdater:
         def update_queues(self):
             # As long as there are users in the list
             while self.spotify_user_id_list:
-                pass
+                socket_io.sleep(1)
 
             # Stop the polling and remove the __Update instance
             QueueUpdater.instance = None

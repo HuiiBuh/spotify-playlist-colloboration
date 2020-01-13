@@ -72,3 +72,30 @@ function updateBackground() {
         backgroundImage.style.backgroundImage = "url(" + imageUrl + ")";
     }
 }
+
+/**
+ * Clean the song json
+ * @param songJSON The song json as in the spotify api
+ * @return {list} [title, artist, album, cover]
+ */
+function cleanSongJSON(songJSON) {
+    let cover = songJSON["album"]["images"][0]["url"];
+
+    let album = {
+        "name": songJSON["album"]["name"],
+        "url": songJSON["album"]["external_urls"]["spotify"]
+    };
+
+    let artist = {
+        "name": songJSON["artists"][0]["name"],
+        "url": songJSON["artists"][0]["external_urls"]["spotify"]
+    };
+
+    let title = {
+        "name": songJSON["name"],
+        "url": songJSON["external_urls"]["spotify"]
+    };
+
+    return [title, artist, album, cover]
+
+}

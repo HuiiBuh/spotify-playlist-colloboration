@@ -31,6 +31,9 @@ def authenticated_only(f):
 class WS(Namespace):
     def __init__(self, namespace=None):
         super().__init__(namespace=namespace)
+        self.current_device: str = "Some very random string..."
+        self.queue_id: int = -1
+        self.song_count: int = -1
         self.connected: bool = False
 
         self.spotify_user_id = "Some very random string that is not a spotify ID."
@@ -56,11 +59,11 @@ class WS(Namespace):
         """
 
         if "spotify_user_id" not in msg:
-            emit({"error": "No spotify_user_id was passed"})
+            emit({"error": "No spotify_user_id was passed"}, broadcast=True)
             return True
 
         if not SpotifyUser.query.filter(SpotifyUser.spotify_user_id == msg["spotify_user_id"]).first():
-            emit({"error": "No spotify user with this id was found"})
+            emit({"error": "No spotify user with this id was found"}, broadcast=True)
             return True
 
         self.spotify_user_id = msg["spotify_user_id"]
@@ -76,7 +79,16 @@ class WS(Namespace):
         :return: None
         """
 
-        self.connected = False
+        self.queue_id: int = -1
+        self.song_count: int = -1
+        self.connected: bool = False
+        self.current_device: dict = {"Some very random string...": "string string"}
+
+        self.spotify_user_id = "Some very random string that is not a spotify ID."
+        self.spotify_user_db_id = "Some very random string that is not a spotify ID."
+        self.current_track_id: str = "Some very random string that is not a spotify ID."
+
+        self.updater = None
         if self.updater:
             self.updater.remove_user(self.spotify_user_id)
 
@@ -87,17 +99,22 @@ class WS(Namespace):
         :return: None
         """
 
-        self.connected = False
+        self.queue_id: int = -1
+        self.song_count: int = -1
+        self.connected: bool = False
+        self.current_device: str = "Some very random string..."
+
+        self.spotify_user_id = "Some very random string that is not a spotify ID."
+        self.spotify_user_db_id = "Some very random string that is not a spotify ID."
+        self.current_track_id: str = "Some very random string that is not a spotify ID."
+
+        self.updater = None
+
         if self.updater:
             self.updater.remove_user(self.spotify_user_id)
 
 
 class WSPlayback(WS):
-    def __init__(self, namespace=None):
-        super().__init__(namespace=namespace)
-
-        self.current_device: str = "Some very random string..."
-        self.updater = None
 
     @authenticated_only
     def on_start_sync(self, msg):
@@ -122,34 +139,28 @@ class WSPlayback(WS):
             current_song = json.loads(queue.current_song)
             if not current_song:
                 if self.current_track_id:
-                    emit('playback', {'song': None, "playing": False})
+                    emit('playback', {'song': None, "playing": False}, broadcast=True)
                     self.current_track_id = ""
             else:
                 if self.current_track_id != current_song["item"]["id"]:
-                    emit('playback', {'song': current_song, "playing": True})
+                    emit('playback', {'song': current_song, "playing": True}, broadcast=True)
                     self.current_track_id = current_song["item"]["id"]
 
             # Send a update if the devices change
             current_devices = json.loads(queue.devices)
-            if not current_devices:
-                if self.current_device:
-                    emit("devices", None)
-                    self.current_device = ""
-            else:
+            if current_devices:
                 if self.current_device != current_devices:
-                    emit("devices", current_devices)
-                    self.current_device = queue.devices
+                    emit("devices", current_devices, broadcast=True)
+                    self.current_device = current_devices
+            else:
+                if self.current_device:
+                    emit("devices", None, broadcast=True)
+                    self.current_device = ""
 
             socket_io.sleep(1)
 
 
 class WSQueue(WS):
-
-    def __init__(self, namespace=None):
-        super().__init__(namespace=namespace)
-
-        self.song_count: int = -1
-        self.queue_id: int = -1
 
     @authenticated_only
     def on_update_queue(self, msg):
@@ -180,13 +191,13 @@ class WSQueue(WS):
                     self.current_track_id = current_song["item"]["id"]
 
                     self.update_current_track()
-                    emit("queue", self.build_queue(song_list))
+                    emit("queue", self.build_queue(song_list), broadcast=True)
 
             print(self.song_count)
             print(len(song_list))
 
             if self.song_count != len(song_list):
-                emit("queue", self.build_queue(song_list))
+                emit("queue", self.build_queue(song_list), broadcast=True)
 
                 self.song_count = len(song_list)
             socket_io.sleep(1)

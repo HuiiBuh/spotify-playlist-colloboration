@@ -186,13 +186,14 @@ input:focus {
     margin: 0;
     overflow-y: auto;
     overflow-x: hidden;
+    padding-bottom: .5em;
 }
 
 #queue > :first-child {
     margin-top: .5rem;
 }
 
-#queue > :last-child {
+#queue > .queue-song:last-of-type {
     margin-bottom: .5rem !important;
 }
 

@@ -23,8 +23,8 @@ function updateQueue(json) {
         let [title, artist, album, cover] = cleanSongJSON(song);
 
         let songDiv = document.createElement("div");
-        songDiv.setAttribute("class", "flex-v-center");
-        songDiv.id = title.name.split("track/")[1];
+        songDiv.setAttribute("class", "flex-v-center queue-song");
+        songDiv.id = title.url.split("track/")[1];
         root.appendChild(songDiv);
 
         let coverImageDiv = document.createElement("div");

@@ -79,7 +79,7 @@ function updateBackground() {
  * @return {list} [title, artist, album, cover]
  */
 function cleanSongJSON(songJSON) {
-    let cover = songJSON["album"]["images"][0]["url"];
+    let cover = songJSON["album"]["images"][1]["url"];
 
     let album = {
         "name": songJSON["album"]["name"],

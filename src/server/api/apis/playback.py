@@ -211,4 +211,4 @@ def add_song_to_queue(spotify_user_id):
 
 
 socket_io.on_namespace(WSPlayback('/api/playback'))
-socket_io.on_namespace(WSQueue('/api/queue'))
+# socket_io.on_namespace(WSQueue('/api/queue'))

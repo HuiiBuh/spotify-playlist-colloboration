@@ -1,8 +1,10 @@
 import functools
 import json
+import threading
+import time
 
 from flask_login import current_user
-from flask_socketio import Namespace, emit, disconnect
+from flask_socketio import Namespace, emit, disconnect, join_room
 
 from server import socket_io, db
 from server.api.apis.updater import PlaybackUpdater, QueueUpdater
@@ -31,22 +33,9 @@ def authenticated_only(f):
 class WS(Namespace):
     def __init__(self, namespace=None):
         super().__init__(namespace=namespace)
-        self.connected: bool = False
-
-        self.spotify_user_id = "Some very random string that is not a spotify ID."
-        self.spotify_user_db_id = "Some very random string that is not a spotify ID."
-        self.current_track_id: str = "Some very random string that is not a spotify ID."
+        self.user_information: list = []
 
         self.updater = None
-
-    @authenticated_only
-    def on_connect(self):
-        """
-        Connect to the websocket
-        :return: None
-        """
-
-        self.connected = True
 
     def _detected_errors(self, msg) -> bool:
         """
@@ -63,9 +52,19 @@ class WS(Namespace):
             emit({"error": "No spotify user with this id was found"})
             return True
 
-        self.spotify_user_id = msg["spotify_user_id"]
-        self.spotify_user_db_id = SpotifyUser.query.filter(
-            SpotifyUser.spotify_user_id == self.spotify_user_id).first().id
+        # Check if user exists
+        for spotify_user in self.user_information:
+            if spotify_user["spotify_id"] == msg["spotify_user_id"]:
+                return False
+
+        self.user_information.append({})
+        self.user_information[-1]["spotify_id"] = msg["spotify_user_id"]
+        self.user_information[-1]["current_song"] = "Lets see what you want to play"
+        self.user_information[-1]["device"] = "Lets see what you want to play"
+        self.user_information[-1]["last_update"] = 0
+        self.user_information[-1]["db_id"] = SpotifyUser.query.filter(
+            SpotifyUser.spotify_user_id == msg["spotify_user_id"]).first().id
+
         return False
 
     @authenticated_only
@@ -76,9 +75,8 @@ class WS(Namespace):
         :return: None
         """
 
-        self.connected = False
-        if self.updater:
-            self.updater.remove_user(self.spotify_user_id)
+        # if self.updater:
+        #     self.updater.remove_user(self.spotify_user_id)
 
     @authenticated_only
     def on_disconnect(self):
@@ -87,17 +85,11 @@ class WS(Namespace):
         :return: None
         """
 
-        self.connected = False
-        if self.updater:
-            self.updater.remove_user(self.spotify_user_id)
+        # if self.updater:
+        #     self.updater.remove_user(self.spotify_user_id)
 
 
 class WSPlayback(WS):
-    def __init__(self, namespace=None):
-        super().__init__(namespace=namespace)
-
-        self.current_device: str = "Some very random string..."
-        self.updater = None
 
     @authenticated_only
     def on_start_sync(self, msg):
@@ -109,38 +101,50 @@ class WSPlayback(WS):
         if self._detected_errors(msg):
             return
 
-        self.updater = PlaybackUpdater(self.spotify_user_id)
+        self.updater = PlaybackUpdater(msg["spotify_user_id"])
+        join_room(msg["spotify_user_id"])
         socket_io.start_background_task(self.__sync())
 
     def __sync(self):
-        while self.connected:
+        while True:
+
+            check_device = False
 
             db.session.remove()
-            queue: Queue = Queue.query.filter(Queue.spotify_user_db_id == self.spotify_user_db_id).first()
+            for spotify_user in self.user_information:
 
-            # Send a update if the current song changes
-            current_song = json.loads(queue.current_song)
-            if not current_song:
-                if self.current_track_id:
-                    emit('playback', {'song': None, "playing": False})
-                    self.current_track_id = ""
-            else:
-                if self.current_track_id != current_song["item"]["id"]:
-                    emit('playback', {'song': current_song, "playing": True})
-                    self.current_track_id = current_song["item"]["id"]
+                queue: Queue = Queue.query.filter(Queue.spotify_user_db_id == spotify_user["db_id"]).first()
 
-            # Send a update if the devices change
-            current_devices = json.loads(queue.devices)
-            if not current_devices:
-                if self.current_device:
-                    emit("devices", None)
-                    self.current_device = ""
-            else:
-                if self.current_device != current_devices:
-                    emit("devices", current_devices)
-                    self.current_device = queue.devices
+                # Send a update if the current song changes
+                current_song = json.loads(queue.current_song)
+                if not current_song:
+                    if spotify_user["current_song"]:
+                        emit('playback', {'song': None, "playing": False}, room=spotify_user["spotify_id"],
+                             broadcast=True)
+                        spotify_user["current_song"] = ""
+                else:
+                    # TODO with or without timeline
+                    # if spotify_user["current_song"] != current_song["item"]["id"]:
+                    print(time.time() - spotify_user["last_update"])
+                    if time.time() - spotify_user["last_update"] > 1:
+                        emit('playback', {'song': current_song, "playing": True}, room=spotify_user["spotify_id"],
+                             broadcast=True)
+                        spotify_user["current_song"] = current_song["item"]["id"]
+                        spotify_user["last_update"] = time.time()
+                        check_device = True
 
-            socket_io.sleep(1)
+                # Send a update if the devices changes
+                current_devices = json.loads(queue.devices)
+                if not current_devices:
+                    if spotify_user["device"]:
+                        emit("devices", None, room=spotify_user["spotify_id"], broadcast=True)
+                        spotify_user["device"] = ""
+                else:
+                    if spotify_user["device"] != current_devices and check_device:
+                        emit("devices", current_devices, room=spotify_user["spotify_id"], broadcast=True)
+                        spotify_user["device"] = queue.devices
+
+            socket_io.sleep(.1)
 
 
 class WSQueue(WS):
@@ -160,6 +164,8 @@ class WSQueue(WS):
         if self._detected_errors(msg):
             return
 
+        join_room(self.spotify_user_id)
+
         self.queue_id = Queue.query.filter(Queue.spotify_user_db_id == self.spotify_user_db_id).first().id
 
         self.updater = QueueUpdater(self.spotify_user_id)
@@ -167,7 +173,7 @@ class WSQueue(WS):
 
     def __sync(self):
 
-        while self.connected:
+        while True:
 
             db.session.remove()
             queue: Queue = Queue.query.filter(Queue.spotify_user_db_id == self.spotify_user_db_id).first()

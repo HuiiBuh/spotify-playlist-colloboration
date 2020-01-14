@@ -21,7 +21,7 @@ def search():
     user_id = request.args.get('spotify-user-id')
 
     if not playlist_id and not user_id:
-        return "You did not give a playlist-id or user-id", 400
+        return "You did not give a playlist-id or spotify-user-id", 400
 
     auth_token = None
     if playlist_id:

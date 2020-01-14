@@ -6,8 +6,14 @@ function startPlaybackSync() {
         socket.emit('start_sync', {"spotify_user_id": spotifyUserID});
     });
 
+    let o = 0;
     socket.on("playback", function (msg) {
+        let n = parseInt((Date.now() / 1000))
+        console.log(n - o)
+        o = n;
+
         updateCurrentlyPlaying(msg)
+
     });
 
     socket.on("devices", function (msg) {
@@ -15,6 +21,7 @@ function startPlaybackSync() {
     })
 }
 
+let currentSong = "Some string";
 
 function updateCurrentlyPlaying(json) {
     if (!json.playing) {
@@ -23,6 +30,10 @@ function updateCurrentlyPlaying(json) {
     }
 
     updatePlaybackState(json["song"]);
+
+    if (currentSong === json["song"]["item"]["id"]) return;
+
+    currentSong = json["song"]["item"]["id"];
 
     let song = json["song"]["item"];
     let cover = "/proxy/" + song["album"]["images"][0]["url"];

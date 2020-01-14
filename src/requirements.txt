@@ -32,7 +32,7 @@ uWSGI
 
 # Websockets
 Flask-SocketIO
-# eventlet
-gevent
-gevent-websocket
+eventlet
+# gevent
+# gevent-websocket
 

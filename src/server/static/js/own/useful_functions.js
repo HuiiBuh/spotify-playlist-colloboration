@@ -6,8 +6,11 @@ function showErrorMessage(self) {
     let toast_message = document.createElement("p");
     toast_message.style.marginTop = "0px";
     toast_message.style.marginBottom = "0px";
-    toast_message.innerText = self.responseText;
-
+    if (self.responseText !== undefined) {
+        toast_message.innerText = self.responseText;
+    } else {
+        toast_message.innerText = self;
+    }
     M.toast({html: toast_message, classes: "bg-warning"})
 }
 

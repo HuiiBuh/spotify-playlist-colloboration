@@ -88,7 +88,7 @@ function updateDevicesView(deviceJSON, first) {
     let root = document.getElementById("devices");
     root.innerText = "";
 
-    if (deviceJSON == null) {
+    if (deviceJSON.devices.length === 0) {
         root.appendChild(noDeviceFound);
 
         if (first) {

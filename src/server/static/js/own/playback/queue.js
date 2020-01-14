@@ -7,6 +7,10 @@ function startQueueSync() {
 
     socket.on("queue", function (msg) {
         updateQueue(msg)
+    });
+
+    socket.on("playback_error", function (msg) {
+        showErrorMessage(msg)
     })
 }
 

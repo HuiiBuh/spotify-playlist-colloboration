@@ -45,11 +45,11 @@ class WS(Namespace):
         """
 
         if "spotify_user_id" not in msg:
-            emit({"error": "No spotify_user_id was passed"})
+            emit({"error": "No spotify_user_id was passed"}, broadcast=True)
             return True
 
         if not SpotifyUser.query.filter(SpotifyUser.spotify_user_id == msg["spotify_user_id"]).first():
-            emit({"error": "No spotify user with this id was found"})
+            emit({"error": "No spotify user with this id was found"}, broadcast=True)
             return True
 
         # Check if user exists
@@ -125,7 +125,6 @@ class WSPlayback(WS):
                 else:
                     # TODO with or without timeline
                     # if spotify_user["current_song"] != current_song["item"]["id"]:
-                    print(time.time() - spotify_user["last_update"])
                     if time.time() - spotify_user["last_update"] > 1:
                         emit('playback', {'song': current_song, "playing": True}, room=spotify_user["spotify_id"],
                              broadcast=True)
@@ -148,12 +147,6 @@ class WSPlayback(WS):
 
 
 class WSQueue(WS):
-
-    def __init__(self, namespace=None):
-        super().__init__(namespace=namespace)
-
-        self.song_count: int = -1
-        self.queue_id: int = -1
 
     @authenticated_only
     def on_update_queue(self, msg):
@@ -186,13 +179,13 @@ class WSQueue(WS):
                     self.current_track_id = current_song["item"]["id"]
 
                     self.update_current_track()
-                    emit("queue", self.build_queue(song_list))
+                    emit("queue", self.build_queue(song_list), broadcast=True)
 
             print(self.song_count)
             print(len(song_list))
 
             if self.song_count != len(song_list):
-                emit("queue", self.build_queue(song_list))
+                emit("queue", self.build_queue(song_list), broadcast=True)
 
                 self.song_count = len(song_list)
             socket_io.sleep(1)

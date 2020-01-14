@@ -34,3 +34,5 @@ uWSGI
 Flask-SocketIO
 # eventlet
 gevent
+gevent-websocket
+

@@ -6,14 +6,8 @@ function startPlaybackSync() {
         socket.emit('start_sync', {"spotify_user_id": spotifyUserID});
     });
 
-    let o = 0;
     socket.on("playback", function (msg) {
-        let n = parseInt((Date.now() / 1000))
-        console.log(n - o)
-        o = n;
-
         updateCurrentlyPlaying(msg)
-
     });
 
     socket.on("devices", function (msg) {

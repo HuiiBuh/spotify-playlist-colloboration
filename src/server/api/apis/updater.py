@@ -4,6 +4,7 @@ from server import spotify, socket_io, db
 from server.api.api_functions import get_token_by_spotify_user_id
 from server.main.modals import SpotifyUser, Queue
 from server.spotify import SpotifyAuthorisationToken
+from server.spotify.spotify import SpotifyError
 
 
 class PlaybackUpdater:
@@ -65,7 +66,7 @@ class PlaybackUpdater:
 
             try:
                 current_playback = spotify.current_playback(auth_token)
-            except SpotifyAuthorisationToken as e:
+            except SpotifyError as e:
                 print(str(e))
                 return
 
@@ -74,7 +75,7 @@ class PlaybackUpdater:
 
             try:
                 devices = spotify.devices(auth_token)
-            except SpotifyAuthorisationToken as e:
+            except SpotifyError as e:
                 print(str(e))
                 return
 

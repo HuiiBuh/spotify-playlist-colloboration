@@ -7,7 +7,7 @@ from flask_login import current_user
 from flask_socketio import Namespace, emit, disconnect, join_room
 
 from server import socket_io, db
-from server.api.apis.updater import PlaybackUpdater, QueueUpdater
+from server.api.apis.updater import PlaybackUpdater
 from server.main.modals import SpotifyUser, Queue, Song
 
 
@@ -67,7 +67,11 @@ class WS(Namespace):
         for spotify_user in self.user_information:
             if spotify_user.spotify_id == msg["spotify_user_id"]:
                 # Update the user ids
-                spotify_user.session_list.append(request.cookies["io"])
+                # ToDo add/remove unknown user
+                try:
+                    spotify_user.session_list.append(request.cookies["io"])
+                except KeyError:
+                    print("Could not add session id")
                 spotify_user.new_user = True
                 return False
 
@@ -102,7 +106,10 @@ class WS(Namespace):
 
         spotify_user: UserInformation
         for spotify_user in self.user_information:
-            spotify_user.session_list.remove(message_id)
+            try:
+                spotify_user.session_list.remove(message_id)
+            except ValueError:
+                print("Could not remove the session id")
             if not spotify_user.session_list:
                 if self.updater:
                     self.updater.remove_user(spotify_user.spotify_id)
@@ -215,7 +222,6 @@ class WSQueue(WS):
         if self._detected_errors(msg):
             return
 
-        self.updater = QueueUpdater(msg["spotify_user_id"])
         join_room(msg["spotify_user_id"])
 
         spotify_user: SpotifyUser = SpotifyUser.query.filter(

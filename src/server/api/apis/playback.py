@@ -6,6 +6,7 @@ from flask_login import login_required
 from server import socket_io, db
 from server import spotify
 from server.api.api_functions import get_token_by_spotify_user_id, return_error
+from server.api.apis.playback_functions import update_spotify_queue
 from server.api.apis.websockets import WSPlayback, WSQueue
 from server.api.routes import mod
 from server.main.modals import Queue, Song, SpotifyUser
@@ -207,7 +208,11 @@ def add_song_to_queue(spotify_user_id):
     db.session.add(song)
     db.session.commit()
 
-    return "Added track to queue"
+    update_message = update_spotify_queue(queue, auth_token=auth_token)
+    if not update_message:
+        return "Added track to queue"
+    # noinspection PyTypeChecker
+    return return_error(update_message)
 
 
 socket_io.on_namespace(WSPlayback('/api/playback'))

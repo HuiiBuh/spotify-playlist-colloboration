@@ -531,9 +531,11 @@ class Spotify:
 
         return {}
 
-    def queue(self, track_id_list: list, auth_token: SpotifyAuthorisationToken, shuffle: bool = None) -> dict:
+    def queue(self, track_id_list: list, auth_token: SpotifyAuthorisationToken, shuffle: bool = None,
+              remove_current: bool = False) -> dict:
         """
         Queue a track
+        :param remove_current: Remove current song
         :param shuffle: The shuffle state
         :param track_id_list: The ids of the tracks
         :param auth_token: The auth token
@@ -549,16 +551,25 @@ class Spotify:
         if shuffle is not None:
             self.shuffle(shuffle, auth_token)
 
-        # Get the current song id and the progress
-        current_song = current["item"]["uri"]
-        progress = current["progress_ms"]
+        if not remove_current:
 
-        body: json = {
-            "uris": [
-                current_song
-            ],
-            "position_ms": progress
-        }
+            # Get the current song id and the progress
+            current_song = current["item"]["uri"]
+            progress = current["progress_ms"]
+
+            body: json = {
+                "uris": [
+                    current_song
+                ],
+                "position_ms": progress
+            }
+        else:
+            body: json = {
+                "uris": [
+
+                ],
+                "position_ms": 0
+            }
 
         # Add the tracks to the queue
         for track_id in track_id_list:

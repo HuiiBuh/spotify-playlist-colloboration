@@ -7,6 +7,7 @@ from flask_login import current_user
 from flask_socketio import Namespace, emit, disconnect, join_room
 
 from server import socket_io, db
+from server.api.apis.playback_functions import update_spotify_queue
 from server.api.apis.updater import PlaybackUpdater
 from server.main.modals import SpotifyUser, Queue, Song
 
@@ -43,6 +44,7 @@ def authenticated_only(f):
 class WS(Namespace):
     def __init__(self, namespace=None):
         super().__init__(namespace=namespace)
+        self.connected = False
         self.user_information: list = []
 
         self.updater = None
@@ -67,11 +69,10 @@ class WS(Namespace):
         for spotify_user in self.user_information:
             if spotify_user.spotify_id == msg["spotify_user_id"]:
                 # Update the user ids
-                # ToDo add/remove unknown user
                 try:
                     spotify_user.session_list.append(request.cookies["io"])
                 except KeyError:
-                    print("Could not add session id")
+                    spotify_user.session_list.append("unknown_user")
                 spotify_user.new_user = True
                 return False
 
@@ -101,8 +102,7 @@ class WS(Namespace):
         try:
             message_id = request.cookies["io"]
         except KeyError:
-            print(request.cookies)
-            return
+            message_id = "unknown_user"
 
         spotify_user: UserInformation
         for spotify_user in self.user_information:
@@ -111,6 +111,7 @@ class WS(Namespace):
             except ValueError:
                 print("Could not remove the session id")
             if not spotify_user.session_list:
+                self.connected = False
                 if self.updater:
                     self.updater.remove_user(spotify_user.spotify_id)
 
@@ -124,8 +125,6 @@ class WSPlayback(WS):
     def __init__(self, namespace: str):
 
         super().__init__(namespace=namespace)
-
-        self.connected = False
 
     @authenticated_only
     def on_start_sync(self, msg):
@@ -186,7 +185,10 @@ class WSPlayback(WS):
         else:
             emit('playback', {'song': current_song, "playing": True}, room=spotify_user.spotify_id,
                  broadcast=True)
-            spotify_user.current_song = current_song["item"]["id"]
+            try:
+                spotify_user.current_song = current_song["item"]["id"]
+            except TypeError:
+                pass
 
     @staticmethod
     def _check_for_device_update(spotify_user: UserInformation, queue: Queue):
@@ -209,8 +211,6 @@ class WSQueue(WS):
 
     def __init__(self, namespace: str):
         super().__init__(namespace=namespace)
-
-        self.connected = False
 
     @authenticated_only
     def on_update_queue(self, msg):
@@ -237,7 +237,7 @@ class WSQueue(WS):
 
     def __sync(self):
 
-        while True:
+        while self.user_information:
 
             spotify_user: UserInformation
             for spotify_user in self.user_information:
@@ -252,7 +252,7 @@ class WSQueue(WS):
                     if spotify_user.current_song != current_song["item"]["id"] or spotify_user.new_user:
                         # spotify_user["current_song"] = current_song["item"]["id"]
 
-                        self.update_current_track(queue.id, current_song)
+                        self.update_current_track(queue, current_song)
                         song_list: list = Song.query.filter(Song.queue_id == queue.id).order_by(Song.id).all()
                         emit("queue", self.build_queue(song_list), broadcast=True, room=spotify_user.spotify_id)
 
@@ -265,7 +265,7 @@ class WSQueue(WS):
             socket_io.sleep(1)
 
     @staticmethod
-    def update_current_track(queue_id: str, current_song: dict) -> None:
+    def update_current_track(queue: Queue, current_song: dict) -> None:
         """
         Update the current track
         :param queue_id: The id of the queue
@@ -275,10 +275,13 @@ class WSQueue(WS):
 
         # Get current song and mark it playing
         current_song: Song = Song.query.filter(
-            Song.spotify_id == current_song["item"]["id"] and Song.queue_id == queue_id and
+            Song.spotify_id == current_song["item"]["id"] and Song.queue_id == queue.id and
             Song.playing is False).first()
         if current_song is None:
-            emit("playback_error", "The currently playing song is not in the queue.")
+            emit("playback_error",
+                 "The currently playing song is not in the queue. "
+                 "You are not allowed to add songs with the spotify app.")
+            update_spotify_queue(queue, remove_current=True)
             return
 
         current_song.playing = True

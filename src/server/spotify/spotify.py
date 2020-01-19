@@ -551,29 +551,31 @@ class Spotify:
         if shuffle is not None:
             self.shuffle(shuffle, auth_token)
 
-        if not remove_current:
+        if remove_current:
 
-            # Get the current song id and the progress
-            current_song = current["item"]["uri"]
-            progress = current["progress_ms"]
-
-            body: json = {
-                "uris": [
-                    current_song
-                ],
-                "position_ms": progress
-            }
-        else:
             body: json = {
                 "uris": [
 
                 ],
                 "position_ms": 0
             }
+        else:
+            # Get the current song id and the progress
+            current_song = current["item"]["uri"]
+            print("current" + str(current["item"]))
+            progress = current["progress_ms"]
+            body: json = {
+                "uris": [
+                    current_song
+                ],
+                "position_ms": progress
+            }
 
         # Add the tracks to the queue
         for track_id in track_id_list:
             body["uris"].append(f"spotify:track:{track_id}")
+
+        print("uris" + str(body["uris"]))
 
         request = requests.put(SpotifyUrls.PLAY, headers=self._get_headers(auth_token), data=json.dumps(body))
 

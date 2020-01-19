@@ -15,17 +15,22 @@ def update_spotify_queue(queue: Queue, auth_token: SpotifyAuthorisationToken = N
     :return: "" if successful and error if not successful
     """
 
-    # Get all songs and create a song_id list
-    song_list = Song.query.filter(Song.queue_id == queue.id and Song.playing is not None).all()
+    # Get all songs that have not been played and create a song_id list
+    song_list = Song.query.filter(Song.queue_id == queue.id and Song.playing is not False).all()
     song_id_list = []
 
     song: Song
     for song in song_list:
         song_id_list.append(song.spotify_id)
 
+    print(song_id_list)
+
+    # Get the auth token
     if not auth_token:
         auth_token = get_token_by_spotify_db_id(queue.spotify_user_db_id)
+
+    # Queue the songs
     try:
-        spotify.queue(track_id_list=song_id_list, auth_token=auth_token, shuffle=False, remove_current=True)
+        spotify.queue(track_id_list=song_id_list, auth_token=auth_token, shuffle=False, remove_current=remove_current)
     except SpotifyError as e:
         return str(e)

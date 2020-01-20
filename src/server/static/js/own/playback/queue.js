@@ -37,9 +37,12 @@ function updateQueue(json) {
         preloadImg.src = cover;
     }
 
+    let queueDuration = 0;
     queue.forEach(song => {
         displayTitle(song, root, "queued");
+        queueDuration += song.duration_ms
     });
+    document.getElementById("queue-duration").innerText = msToHumanReadable(queueDuration, true);
 
     //Scroll the current into view
     document.getElementsByClassName("playing")[0].scrollIntoView();

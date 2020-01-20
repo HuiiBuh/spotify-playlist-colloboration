@@ -20,6 +20,10 @@ function addListener() {
 
     document.getElementById("next").onclick = next;
     document.getElementById("previous").onclick = previous;
+
+    document.getElementById("scroll-current").onclick = function () {
+        document.getElementsByClassName("playing")[0].scrollIntoView();
+    }
 }
 
 

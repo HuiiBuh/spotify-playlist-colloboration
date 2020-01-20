@@ -186,8 +186,9 @@ async function sleep(ms) {
 /**
  * Convert the ms in a hh:mm:ss string
  * @param ms the ms
+ * @param showUnit Show the hours
  */
-function msToHumanReadable(ms) {
+function msToHumanReadable(ms, showUnit = false) {
     //The human readable duration
     let hDuration = "";
 
@@ -198,9 +199,13 @@ function msToHumanReadable(ms) {
 
     //Pad leading 0s if the hour is not 0
     if (hours !== "0") {
-        hDuration += pad(hours, 2) + ":"
+        hDuration += pad(hours, 2) + ":";
     }
 
     hDuration += pad(minutes, 2) + ":" + pad(seconds, 2);
+
+    hDuration += showUnit && hours !== "0" ? " hours" : "";
+    hDuration += showUnit && hours === "0" ? " minutes" : "";
+
     return hDuration
 }

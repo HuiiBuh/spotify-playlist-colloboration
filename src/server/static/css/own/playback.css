@@ -8,7 +8,7 @@ body {
 }
 
 :root {
-    --light: rgba(255, 255, 255, .5);
+    --light: rgba(255, 255, 255, .4);
     --dark: rgba(0, 0, 0, .4);
     --darker: rgba(0, 0, 0, .5);
     --very-dark: rgba(0, 0, 0, .6);
@@ -371,7 +371,18 @@ img {
     color: black;
 }
 
-
 .queued * {
     color: white;
+}
+
+#scroll-current {
+    position: absolute;
+    top: -56px;
+    right: 0;
+    border-radius: 0;
+    background: var(--search-background-color);
+}
+
+#scroll-current > i {
+    color: var(--search-text-color);
 }

@@ -551,7 +551,7 @@ class Spotify:
         if shuffle is not None:
             self.shuffle(shuffle, auth_token)
 
-        if remove_current:
+        if remove_current or not current["item"]:
 
             body: json = {
                 "uris": [

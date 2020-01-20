@@ -44,7 +44,8 @@ function updateBackground() {
 
     function imgLoaded(event) {
         img.removeEventListener("load", imgLoaded);
-        updateVariables(colorThief.getColor(event.target), event.target.src);
+        const color = colorThief.getColor(event.target);
+        updateVariables(color, event.target.src);
     }
 
     /**

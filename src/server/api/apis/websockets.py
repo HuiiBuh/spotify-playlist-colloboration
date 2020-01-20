@@ -266,7 +266,7 @@ class WSQueue(WS):
                 current_song = json.loads(queue.current_song)
 
                 if current_song:
-                    if webapp_user.current_song != current_song["item"]["id"]:
+                    if current_song["item"] and webapp_user.current_song != current_song["item"]["id"]:
                         self.update_current_track(queue, current_song)
 
                         webapp_user.current_song = current_song["item"]["id"]

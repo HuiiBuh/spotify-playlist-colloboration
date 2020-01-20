@@ -3,28 +3,32 @@
  * @param self the http request
  */
 function showErrorMessage(self) {
-    let toast_message = document.createElement("p");
-    toast_message.style.marginTop = "0px";
-    toast_message.style.marginBottom = "0px";
-    if (self.responseText !== undefined) {
-        toast_message.innerText = self.responseText;
-    } else {
-        toast_message.innerText = self;
-    }
-    M.toast({html: toast_message, classes: "bg-warning"})
+    let toastContainer = document.createElement("div");
+    toastContainer.setAttribute("class", "bg-warning actual-toast");
+
+    let toastMessage = document.createElement("p");
+    toastMessage.setAttribute("class", "no-margin-top no-margin-bottom");
+    toastMessage.innerText = (self.responseText === undefined) ? self : self.responseText;
+
+    toastContainer.appendChild(toastMessage);
+    M.toast({html: toastContainer})
 }
 
 /**
  * Show a success message from a xhttp request
- * @param self {XMLHttpRequest}
+ * @param self
  */
 function showSuccessMessage(self) {
-    let toast_message = document.createElement("p");
-    toast_message.style.marginTop = "0px";
-    toast_message.style.marginBottom = "0px";
-    toast_message.innerText = self.responseText;
 
-    M.toast({html: toast_message, classes: "bg-success"})
+    let toastContainer = document.createElement("div");
+    toastContainer.setAttribute("class", "bg-success actual-toast");
+
+    let toastMessage = document.createElement("p");
+    toastMessage.setAttribute("class", "no-margin-top no-margin-bottom");
+    toastMessage.innerText = (self.responseText === undefined) ? self : self.responseText;
+
+    toastContainer.appendChild(toastMessage);
+    M.toast({html: toastContainer})
 }
 
 /**

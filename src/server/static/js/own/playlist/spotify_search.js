@@ -48,11 +48,8 @@ function addToAddPlaylist(song) {
     return function (evt) {
 
         if (maxSongDuration !== 0 && song.duration >= (maxSongDuration * 1000)) {
-            M.toast({
-                html: "<span>The duration of the song is to long.</span> <div class='flex-break'></div>" +
-                    "<span> Only songs shorter than <b>" + maxSongDuration + "</b> seconds can be added</span>"
-                , classes: "bg-warning"
-            });
+            showErrorMessage(`The duration of the song is to long. Only songs shorter that ` +
+                `** ${maxSongDuration} ** seconds can be added`);
             return
         }
 

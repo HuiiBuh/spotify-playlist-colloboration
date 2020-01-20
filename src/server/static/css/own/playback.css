@@ -167,10 +167,10 @@ input:focus {
 }
 
 .playback-group {
-    z-index: 5;
-    position: fixed;
-    bottom: 0;
     width: 100vw;
+    position: absolute;
+    bottom: 0;
+    z-index: 5;
     background: var(--dark);
 }
 
@@ -264,8 +264,8 @@ input:focus {
 }
 
 ::-webkit-scrollbar {
-    height: auto;
     width: 5px;
+    height: 12px;
     background: #f1f1f1;
 }
 
@@ -385,4 +385,14 @@ img {
 
 #scroll-current > i {
     color: var(--search-text-color);
+}
+
+body, .playback-group {
+    min-width: 800px;
+}
+
+@media only screen and (max-width: 800px) {
+    .playback-group {
+        height: 101px !important;
+    }
 }

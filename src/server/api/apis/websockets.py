@@ -258,7 +258,7 @@ class WSQueue(WS):
 
                 if current_song:
                     if spotify_user.current_song != current_song["item"]["id"]:
-                        self.update_current_track(queue, current_song, spotify_user.current_song)
+                        self.update_current_track(queue, current_song)
 
                         spotify_user.current_song = current_song["item"]["id"]
 
@@ -273,7 +273,7 @@ class WSQueue(WS):
             socket_io.sleep(1)
 
     @staticmethod
-    def update_current_track(queue: Queue, current_song: dict, old_song_id: str) -> None:
+    def update_current_track(queue: Queue, current_song: dict) -> None:
         """
         Update the current track
         :param queue: The  queue
@@ -282,33 +282,30 @@ class WSQueue(WS):
         """
 
         # Get current song and mark it playing
-        current_song: Song = Song.query.filter(
-            Song.spotify_id == current_song["item"]["id"] and Song.queue_id == queue.id and
-            Song.playing is False).order_by(Song.id).first()
-        if current_song is None:
+        new_current_song: Song = Song.query.filter(
+            Song.spotify_id == current_song["item"]["id"],
+            Song.queue_id == queue.id).order_by(Song.id.desc()).first()
+
+        if new_current_song is None:
             emit("playback_error",
                  "The currently playing song is not in the queue. "
                  "You are not allowed to add songs with the spotify app.")
-            update_spotify_queue(queue, remove_current=True)
+            update_spotify_queue(queue_id=queue.id, spotify_user_db_id=queue.spotify_user_db_id, remove_current=True)
             return
-        update_spotify_queue(queue)
 
-        current_song.playing = True
-
-        # update former current song
-        old_current_song: Song = Song.query.filter(
-            Song.spotify_id == old_song_id and Song.queue_id == queue.id and
-            Song.playing is True).first()
+        new_current_song.playing = True
 
         # Get all played songs and mark them played
         played_songs: list = Song.query.filter(
-            Song.queue_id == current_song.queue_id and Song.id <= old_current_song.id).all()
+            Song.queue_id == new_current_song.queue_id, Song.id < new_current_song.id).all()
 
         for song in played_songs:
             song.playing = None
 
         # Update DB
         db.session.commit()
+        db.session.remove()
+        update_spotify_queue(queue_id=queue.id, spotify_user_db_id=queue.spotify_user_db_id)
 
     @staticmethod
     def build_queue(song_list: list) -> dict:
@@ -325,7 +322,6 @@ class WSQueue(WS):
         }
 
         for song in song_list:
-            print(song.playing)
             if song.playing is False:
                 queue_json["queue"].append(json.loads(song.song_info))
             elif song.playing is None:

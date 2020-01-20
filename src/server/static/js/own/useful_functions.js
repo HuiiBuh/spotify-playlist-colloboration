@@ -7,6 +7,7 @@ function showErrorMessage(self) {
     toastContainer.setAttribute("class", "bg-warning actual-toast");
 
     let toastMessage = document.createElement("p");
+    toastMessage.style.margin = "auto";
     toastMessage.setAttribute("class", "no-margin-top no-margin-bottom");
     toastMessage.innerText = (self.responseText === undefined) ? self : self.responseText;
 
@@ -24,6 +25,7 @@ function showSuccessMessage(self) {
     toastContainer.setAttribute("class", "bg-success actual-toast");
 
     let toastMessage = document.createElement("p");
+    toastMessage.style.margin = "auto";
     toastMessage.setAttribute("class", "no-margin-top no-margin-bottom");
     toastMessage.innerText = (self.responseText === undefined) ? self : self.responseText;
 

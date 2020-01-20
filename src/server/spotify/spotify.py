@@ -562,7 +562,6 @@ class Spotify:
         else:
             # Get the current song id and the progress
             current_song = current["item"]["uri"]
-            print("current" + str(current["item"]))
             progress = current["progress_ms"]
             body: json = {
                 "uris": [
@@ -574,8 +573,6 @@ class Spotify:
         # Add the tracks to the queue
         for track_id in track_id_list:
             body["uris"].append(f"spotify:track:{track_id}")
-
-        print("uris" + str(body["uris"]))
 
         request = requests.put(SpotifyUrls.PLAY, headers=self._get_headers(auth_token), data=json.dumps(body))
 

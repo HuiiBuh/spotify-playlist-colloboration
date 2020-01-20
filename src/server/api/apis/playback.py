@@ -201,14 +201,14 @@ def add_song_to_queue(spotify_user_id):
     if not queue:
         return "The queue does not exist", 404
 
-    if Song.query.filter(Song.spotify_id == track_id and Song.queue_id == queue.id and Song.playing is not None).all():
+    if Song.query.filter(Song.spotify_id == track_id, Song.queue_id == queue.id, Song.playing != None).all():
         return "The song is already in the queue", 403
 
     song = Song(spotify_id=track_id, song_info=song_info, queue_id=queue.id)
     db.session.add(song)
     db.session.commit()
 
-    update_message = update_spotify_queue(queue, auth_token=auth_token)
+    update_message = update_spotify_queue(queue_id=queue.id, auth_token=auth_token)
     if not update_message:
         return "Added track to queue"
     # noinspection PyTypeChecker

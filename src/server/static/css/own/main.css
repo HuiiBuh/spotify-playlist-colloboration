@@ -149,6 +149,7 @@ input::-webkit-inner-spin-button {
 }
 
 .actual-toast {
+    text-align: center;
     pointer-events: auto;
     position: static;
     margin-bottom: 0;
@@ -294,4 +295,16 @@ img {
     left: 0;
     bottom: 0;
     right: 0;
+}
+
+.played * {
+    color: lightgrey;
+}
+
+.playing * {
+    color: #0f9d58;
+}
+
+.queued * {
+    color: white;
 }

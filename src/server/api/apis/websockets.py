@@ -304,8 +304,8 @@ class WSQueue(WS):
 
         # Update DB
         db.session.commit()
-        db.session.remove()
         update_spotify_queue(queue_id=queue.id, spotify_user_db_id=queue.spotify_user_db_id)
+        db.session.remove()
 
     @staticmethod
     def build_queue(song_list: list) -> dict:

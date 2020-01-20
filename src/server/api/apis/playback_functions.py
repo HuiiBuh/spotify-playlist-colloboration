@@ -1,4 +1,4 @@
-from server import spotify
+from server import spotify, db
 from server.api.api_functions import get_token_by_spotify_db_id
 from server.main.modals import Song
 from server.spotify import SpotifyAuthorisationToken
@@ -19,8 +19,9 @@ def update_spotify_queue(queue_id: str = "",
     """
 
     # Get all songs that have not been played and create a song_id list
-    song_list = Song.query.filter(Song.queue_id == queue_id, Song.playing != False).all()
+    song_list = Song.query.filter(Song.queue_id == queue_id, Song.playing == False).all()
     song_id_list = []
+    db.session.remove()
 
     song: Song
     for song in song_list:

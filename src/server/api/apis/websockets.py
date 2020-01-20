@@ -50,34 +50,38 @@ class WS(Namespace):
 
         self.updater = None
 
-    def _detected_errors(self, msg) -> bool:
+    def _prepare_data(self, msg) -> bool:
         """
         Detect any errors in the msg
         :param msg: The sent message
         :return: SpotifyUser
         """
 
+        # Check if the spotify id is present
         if "spotify_user_id" not in msg:
             emit({"error": "No spotify_user_id was passed"}, broadcast=True)
             return True
 
+        # Check if the spotify user exists
         if not SpotifyUser.query.filter(SpotifyUser.spotify_user_id == msg["spotify_user_id"]).first():
             emit({"error": "No spotify user with this id was found"}, broadcast=True)
             return True
 
         # Check if user exists
-        spotify_user: UserInformation
-        for spotify_user in self.user_information:
-            if spotify_user.spotify_id == msg["spotify_user_id"]:
+        webapp_user: UserInformation
+        for webapp_user in self.user_information:
+            if webapp_user.spotify_id == msg["spotify_user_id"]:
                 # Update the user ids
                 try:
-                    spotify_user.session_list.append(request.cookies["io"])
+                    webapp_user.session_list.append(request.cookies["io"])
                 except KeyError:
-                    spotify_user.session_list.append("unknown_user")
-                spotify_user.new_user = True
+                    webapp_user.session_list.append("unknown_user")
+                webapp_user.new_user = True
                 return False
-
-        user_information = UserInformation(msg["spotify_user_id"], request.cookies["io"])
+        try:
+            user_information = UserInformation(msg["spotify_user_id"], request.cookies["io"])
+        except KeyError:
+            user_information = UserInformation(msg["spotify_user_id"], "unknown_user")
         self.user_information.append(user_information)
 
         return False
@@ -105,16 +109,18 @@ class WS(Namespace):
         except KeyError:
             message_id = "unknown_user"
 
-        spotify_user: UserInformation
-        for spotify_user in self.user_information:
-            try:
-                spotify_user.session_list.remove(message_id)
-            except ValueError:
-                print("Could not remove the session id")
-            if not spotify_user.session_list:
-                self.connected = False
+        webapp_user: UserInformation
+        for webapp_user in self.user_information:
+            if message_id in webapp_user.session_list:
+                webapp_user.session_list.remove(message_id)
+
+            # Check if there is still a user in the webapp otherwise remove the spotify user
+            if not webapp_user.session_list:
                 if self.updater:
-                    self.updater.remove_user(spotify_user.spotify_id)
+                    self.updater.remove_user(webapp_user.spotify_id)
+
+        if not self.user_information:
+            self.connected = False
 
     @abstractmethod
     def __sync(self):
@@ -134,7 +140,7 @@ class WSPlayback(WS):
         :return: None
         """
 
-        if self._detected_errors(msg):
+        if self._prepare_data(msg):
             return
 
         self.updater = PlaybackUpdater(msg["spotify_user_id"])
@@ -156,7 +162,7 @@ class WSPlayback(WS):
         :return: None
         """
 
-        while True:
+        while self.connected:
             db.session.remove()
 
             spotify_user: UserInformation
@@ -221,14 +227,17 @@ class WSQueue(WS):
         :return: None
         """
 
-        if self._detected_errors(msg):
+        if self._prepare_data(msg):
             return
 
         join_room(msg["spotify_user_id"])
 
         spotify_user: SpotifyUser = SpotifyUser.query.filter(
             SpotifyUser.spotify_user_id == msg["spotify_user_id"]).first()
+
         queue: Queue = Queue.query.filter(Queue.spotify_user_db_id == spotify_user.id).first()
+
+        # Get all songs in a queue and send the queue to the new user
         song_list = Song.query.filter(Song.queue_id == queue.id).order_by(Song.id).all()
         emit("queue", self.build_queue(song_list))
 
@@ -239,36 +248,36 @@ class WSQueue(WS):
 
     def __sync(self):
 
-        while self.user_information:
+        while self.connected:
 
-            spotify_user: UserInformation
-            for spotify_user in self.user_information:
+            webapp_user: UserInformation
+            for webapp_user in self.user_information:
 
                 db.session.remove()
-                queue: Queue = Queue.query.filter(Queue.spotify_user_db_id == spotify_user.db_id).first()
+                queue: Queue = Queue.query.filter(Queue.spotify_user_db_id == webapp_user.db_id).first()
                 song_list: list = Song.query.filter(Song.queue_id == queue.id).order_by(Song.id).all()
 
-                if spotify_user.new_user:
-                    emit("queue", self.build_queue(song_list), broadcast=True, room=spotify_user.spotify_id)
-                    spotify_user.new_user = False
+                if webapp_user.new_user:
+                    emit("queue", self.build_queue(song_list), broadcast=True, room=webapp_user.spotify_id)
+                    webapp_user.new_user = False
 
                 # Send a update if the current song changes
                 # todo ref to song
                 current_song = json.loads(queue.current_song)
 
                 if current_song:
-                    if spotify_user.current_song != current_song["item"]["id"]:
+                    if webapp_user.current_song != current_song["item"]["id"]:
                         self.update_current_track(queue, current_song)
 
-                        spotify_user.current_song = current_song["item"]["id"]
+                        webapp_user.current_song = current_song["item"]["id"]
 
                         song_list: list = Song.query.filter(Song.queue_id == queue.id).order_by(Song.id).all()
-                        emit("queue", self.build_queue(song_list), broadcast=True, room=spotify_user.spotify_id)
+                        emit("queue", self.build_queue(song_list), broadcast=True, room=webapp_user.spotify_id)
 
-                if spotify_user.song_count != len(song_list):
-                    emit("queue", self.build_queue(song_list), broadcast=True, room=spotify_user.spotify_id)
+                if webapp_user.song_count != len(song_list):
+                    emit("queue", self.build_queue(song_list), broadcast=True, room=webapp_user.spotify_id)
 
-                    spotify_user.song_count = len(song_list)
+                    webapp_user.song_count = len(song_list)
 
             socket_io.sleep(1)
 

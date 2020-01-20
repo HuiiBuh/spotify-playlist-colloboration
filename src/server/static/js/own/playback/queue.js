@@ -27,12 +27,22 @@ function updateQueue(json) {
         displayTitle(song, root, "played");
     });
 
-    if (playing !== null){
+    if (playing !== null) {
         displayTitle(playing, root, "playing");
     }
+
+    if (queue.length > 0) {
+        const cover = "/proxy/" + queue[0]["album"]["images"][0]["url"];
+        const preloadImg = document.getElementById("preloader");
+        preloadImg.src = cover;
+    }
+
     queue.forEach(song => {
         displayTitle(song, root, "queued");
     });
+
+    //Scroll the current into view
+    document.getElementsByClassName("playing")[0].scrollIntoView();
 }
 
 
@@ -40,7 +50,7 @@ function displayTitle(song, root, mode) {
     let [title, artist, album, cover] = cleanSongJSON(song);
 
     let songDiv = document.createElement("div");
-    songDiv.setAttribute("class", `flex-v-center queue-song ${mode}`);
+    songDiv.setAttribute("class", `flex-v-center queue-song ${mode} small-padding-top small-padding-bottom`);
     songDiv.id = title.url.split("track/")[1];
     root.appendChild(songDiv);
 
@@ -78,6 +88,6 @@ function displayTitle(song, root, mode) {
     artistDiv.appendChild(artistA);
 
     let divider = document.createElement("div");
-    divider.setAttribute("class", "divider small-margin-bottom small-margin-top");
+    divider.setAttribute("class", "divider");
     root.appendChild(divider)
 }

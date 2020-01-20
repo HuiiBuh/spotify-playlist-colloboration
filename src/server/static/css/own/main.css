@@ -296,15 +296,3 @@ img {
     bottom: 0;
     right: 0;
 }
-
-.played * {
-    color: lightgrey;
-}
-
-.playing * {
-    color: #0f9d58;
-}
-
-.queued * {
-    color: white;
-}

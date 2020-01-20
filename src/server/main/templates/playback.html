@@ -27,6 +27,7 @@
 {% block no_box %}
     {# Background image#}
     <div class="background-blur-image"></div>
+    <img id="preloader" style="display: none"></img>
 
     {# Top Row #}
     <div class="row flex no-margin"
@@ -81,9 +82,14 @@
                      src="/static/icons/default_playlist_cover.png"
                      alt>
                 <div class="small-padding-top small-padding-bottom center cover-text small-padding-left small-padding-right">
-                    <a class="underline no-wrap to-long inline-block" style="width: 100%" href="#" id="artist">No Song</a>
-                    <a class="underline no-wrap to-long inline-block small-padding-left small-padding-right"
-                       style="width: 100%" href="#" id="song">Playing</a>
+                    <span style="width: 100%">
+                        <a class="underline no-wrap to-long inline-block" href="#" target="_blank"
+                           id="artist">No Song</a>
+                    </span>
+                    <span style="width: 100%">
+                        <a class="underline no-wrap to-long inline-block small-padding-left small-padding-right"
+                           target="_blank" href="#" id="song">Playing</a>
+                    </span>
                 </div>
 
             </div>
@@ -107,7 +113,7 @@
         </div>
 
         {# Right side (queue) #}
-        <div class="col s3 min-height-hundred no-margin" id="queue">
+        <div class="col s3 min-height-hundred no-margin no-padding-left no-padding-right" id="queue">
 
 
         </div>

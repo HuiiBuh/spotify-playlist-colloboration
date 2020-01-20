@@ -15,7 +15,7 @@ function startPlaybackSync() {
     })
 }
 
-let currentSong = "Some string";
+let currentSong = "some string";
 
 function updateCurrentlyPlaying(json) {
     if (!json.playing) {
@@ -25,9 +25,11 @@ function updateCurrentlyPlaying(json) {
 
     updatePlaybackState(json["song"]);
 
-    if (currentSong === json["song"]["item"]["id"]) return;
-
-    currentSong = json["song"]["item"]["id"];
+    // Dont update anything else than the playback if the song is the same one
+    if (currentSong === json.song.item.id) {
+        return;
+    }
+    currentSong = json.song.item.id;
 
     let song = json["song"]["item"];
     let cover = "/proxy/" + song["album"]["images"][0]["url"];
@@ -50,12 +52,10 @@ function updateCurrentlyPlaying(json) {
     let titleA = document.getElementById("song");
     titleA.innerText = title.name;
     titleA.setAttribute("href", title.url);
-    titleA.setAttribute("target", "_blank");
 
     let artistA = document.getElementById("artist");
     artistA.innerText = artist.name;
     artistA.setAttribute("href", artist.url);
-    artistA.setAttribute("target", "_blank");
 
     let temp = document.createElement("img");
     temp.src = cover;
@@ -70,7 +70,7 @@ function updateCurrentlyPlaying(json) {
 }
 
 function notPlaying() {
-    M.toast({html: "No song is currently playing. Start spotify and play a song,", classes: "bg-warning"});
+    showErrorMessage("No song is currently playing. Start spotify and play a song.");
 
     document.getElementsByClassName('cover-image')[0].src = "/static/icons/default_playlist_cover.png";
 
@@ -82,7 +82,7 @@ function notPlaying() {
 
     document.getElementsByClassName("determinate")[0].style.width = "0";
     updateBackground();
-    toggleDevices(show = true);
+    toggleDevices(true);
 }
 
 function updatePlaybackState(json) {
@@ -90,7 +90,7 @@ function updatePlaybackState(json) {
     // off, track, context
     let repeat = json["repeat_state"];
     let shuffle = json["shuffle_state"];
-    let progress = parseInt(json["progress_ms"] / json["item"]["duration_ms"] * 100);
+    let progress = parseInt(json["progress_ms"]) / parseInt(json["item"]["duration_ms"]) * 100;
     let playing = json["is_playing"];
 
 
@@ -113,7 +113,6 @@ function updatePlaybackState(json) {
         document.getElementById("repeat").style.display = "block";
         document.getElementById("repeat").style.color = "darkgray";
         document.getElementById("repeat-one").style.display = "none";
-
     } else if (repeat === "track") {
         document.getElementById("repeat-one").style.display = "block";
         document.getElementById("repeat").style.display = "none";

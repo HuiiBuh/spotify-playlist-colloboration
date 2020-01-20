@@ -8,8 +8,10 @@ body {
 }
 
 :root {
+    --light: rgba(255, 255, 255, .5);
     --dark: rgba(0, 0, 0, .4);
     --darker: rgba(0, 0, 0, .5);
+    --very-dark: rgba(0, 0, 0, .6);
     --search-text-color: black;
     --search-background-color: rgb(204, 204, 204);
     --selection-color: gray;
@@ -189,14 +191,6 @@ input:focus {
     padding-bottom: .5em;
 }
 
-#queue > :first-child {
-    margin-top: .5rem;
-}
-
-#queue > .queue-song:last-of-type {
-    margin-bottom: .5rem !important;
-}
-
 #queue > .divider:last-of-type {
     display: none;
 }
@@ -359,4 +353,25 @@ a {
 
 img {
     border-radius: 0;
+}
+
+.playing {
+    background: var(--very-dark);
+}
+
+.playing * {
+    color: #21af54;
+}
+
+.played {
+    background: var(--light);
+}
+
+.played * {
+    color: black;
+}
+
+
+.queued * {
+    color: white;
 }

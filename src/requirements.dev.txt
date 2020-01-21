@@ -34,3 +34,5 @@ uWSGI
 Flask-SocketIO
 eventlet
 
+
+flask-cors

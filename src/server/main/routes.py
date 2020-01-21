@@ -53,7 +53,8 @@ def playback(spotify_user_id):
         return render_template("resource_not_found.html", title="Resource not found", resource="Spotify User")
 
     # ToDo make secure
-    return render_template("playback.html", title="Playback", spotify_user_id=spotify_user_id)
+    return render_template("angular/index.html", title="Playback", spotify_user_id="spotify_user_id")
+    # return render_template("playback.html", title="Playback", spotify_user_id=spotify_user_id)
 
 
 @mod.route("/login", methods=["GET", "POST"])

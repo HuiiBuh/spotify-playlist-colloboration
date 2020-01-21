@@ -13,6 +13,13 @@ from server.spotify import Spotify, SpotifyAppInfo
 # create flask app
 app = Flask(__name__)
 
+try:
+    from flask_cors import CORS
+
+    CORS(app)
+except:
+    pass
+
 # configure the app from the object
 app.config.from_object(Config)
 

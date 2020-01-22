@@ -20,6 +20,4 @@ export class SearchComponent implements OnInit {
       this.isOpen = isOpen;
     })
   }
-
-
 }

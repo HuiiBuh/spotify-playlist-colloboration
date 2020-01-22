@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {EventManager} from "@angular/platform-browser";
+import {PlaybackApiService} from "../playback-api.service";
 
 @Component({
   selector: 'app-progress',
@@ -15,15 +16,32 @@ export class ProgressComponent implements OnInit {
 
 
   constructor(
-    private eventManager: EventManager
+    private eventManager: EventManager,
+    private playbackApi: PlaybackApiService
   ) {
   }
 
   ngOnInit() {
+    this.playbackApi.device.subscribe(apiData => {
+      this.updateDevices(apiData)
+    });
+
+    this.playbackApi.playback.subscribe(apiData => {
+      this.updatePlayback(apiData)
+    })
   }
 
+  updatePlayback(apiData) {
+    console.log(apiData)
+  }
+
+  updateDevices(apiData) {
+    console.log(apiData)
+  }
+
+
   /**
-   * Toggle the device menue
+   * Toggle the device menu
    */
   toggleDeviceMenu() {
 

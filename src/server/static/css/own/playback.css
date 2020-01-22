@@ -286,6 +286,7 @@ input:focus {
 }
 
 .device-text {
+    /*margin-left: -140px;*/
     display: inline-block;
     text-align: center;
     visibility: hidden;
@@ -387,12 +388,13 @@ img {
     color: var(--search-text-color);
 }
 
-body, .playback-group {
-    min-width: 800px;
-}
 
 @media only screen and (max-width: 800px) {
     .playback-group {
         height: 101px !important;
+    }
+
+    body, .playback-group {
+        min-width: 800px;
     }
 }

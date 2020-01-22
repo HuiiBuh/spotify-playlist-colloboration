@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {SearchComponent} from "../search/search.component";
+import {Component, OnInit} from '@angular/core';
+import {SearchService} from "../search/search.service";
 
 @Component({
   selector: 'app-header',
@@ -8,16 +8,15 @@ import {SearchComponent} from "../search/search.component";
 })
 export class HeaderComponent implements OnInit {
 
-  @Input()
-  search: SearchComponent;
+  constructor(
+    private searchService: SearchService) {
 
-  constructor() {
   }
 
   ngOnInit() {
   }
 
-  showSearch() {
-
+  toggleSearch() {
+    this.searchService.toggle();
   }
 }

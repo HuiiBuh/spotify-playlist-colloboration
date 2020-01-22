@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO
+from flask_sqlalchemy import SQLAlchemy
 
 import server.admin
 import server.api
@@ -12,20 +12,16 @@ from server.spotify import Spotify, SpotifyAppInfo
 
 # create flask app
 app = Flask(__name__)
+# configure the app from the object
+app.config.from_object(Config)
 
 try:
     from flask_cors import CORS
 
     CORS(app)
+    socket_io = SocketIO(app, cors_allowed_origins="*")
 except:
-    pass
-
-# configure the app from the object
-app.config.from_object(Config)
-
-socket_io = SocketIO(app)
-# TODO
-# socket_io.manage_session = False
+    socket_io = SocketIO(app)
 
 # add the login manager
 login_manager = LoginManager()

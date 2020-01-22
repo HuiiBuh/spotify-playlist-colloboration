@@ -8,7 +8,7 @@ export class PlaybackApiService {
 
   // Our socket connection
   private socket;
-  private url = "localhost:5000/api/playback";
+  private url = "http://localhost:5000/api/playback";
 
   @Output() device: EventEmitter<any> = new EventEmitter<any>();
   @Output() playback: EventEmitter<any> = new EventEmitter<any>();
@@ -26,7 +26,7 @@ export class PlaybackApiService {
     });
 
     this.socket.on("devices", (msg) => {
-      this.device.emit(msg);
+      this.device.emit(msg.devices);
     });
   }
 }

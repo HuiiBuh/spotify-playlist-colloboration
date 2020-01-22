@@ -9,21 +9,23 @@ import {PlaybackApiService} from "../playback-api.service";
 })
 export class ProgressComponent implements OnInit {
 
-  private marginLeft = "-140px";
+  marginLeft = "-140px";
+  deviceClass: string;
+  devices: [] = [];
 
   private removeEventListener: Function;
-  private deviceClass: string;
 
 
   constructor(
     private eventManager: EventManager,
     private playbackApi: PlaybackApiService
   ) {
+    this.playbackApi.connect()
   }
 
   ngOnInit() {
     this.playbackApi.device.subscribe(apiData => {
-      this.updateDevices(apiData)
+      this.devices = apiData;
     });
 
     this.playbackApi.playback.subscribe(apiData => {
@@ -32,10 +34,6 @@ export class ProgressComponent implements OnInit {
   }
 
   updatePlayback(apiData) {
-    console.log(apiData)
-  }
-
-  updateDevices(apiData) {
     console.log(apiData)
   }
 
@@ -71,4 +69,7 @@ export class ProgressComponent implements OnInit {
   }
 
 
+  changeFocus(deviceID: string) {
+
+  }
 }

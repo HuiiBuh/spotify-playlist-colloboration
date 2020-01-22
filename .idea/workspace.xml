@@ -2,9 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c7b4bf2-8064-4892-ac59-be76df2807ef" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/spotify-playlist-colloboration.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spotify-playlist-colloboration.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/static/css/own/playback.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/static/css/own/playback.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/playback/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/header/header.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/header/header.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/header/header.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/header/header.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/header/header.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/header/header.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/header/header.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/main/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/main/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/main/templates/playback.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/main/templates/playback.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,21 +69,16 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="nodejs.protractor.protractor_package" value="$PROJECT_DIR$/playback/node_modules/protractor" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.4632184" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/playback/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/server/static/pwa" />
-      <recent name="$PROJECT_DIR$/src/server/keys" />
-      <recent name="$PROJECT_DIR$/src/server" />
-      <recent name="$PROJECT_DIR$/src/server/main" />
-      <recent name="$PROJECT_DIR$/src/server/spotify" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/docker" />
       <recent name="$PROJECT_DIR$/src/server/admin" />
@@ -81,8 +86,27 @@
       <recent name="$PROJECT_DIR$/src/server/api" />
       <recent name="$PROJECT_DIR$/src/server/spotify" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/playback/src/app/components" />
+      <recent name="$PROJECT_DIR$/playback/src/app" />
+      <recent name="$PROJECT_DIR$/playback/src/app/desktop" />
+      <recent name="$PROJECT_DIR$/src/server/static/pwa" />
+      <recent name="$PROJECT_DIR$/src/server/keys" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python.wsgi">
+  <component name="RunManager" selected="npm.Angular CLI Server">
+    <configuration name="E2E Tests (playback)" type="JavaScriptTestRunnerProtractor">
+      <config-file value="$PROJECT_DIR$/playback/e2e/protractor.conf.js" />
+      <node-interpreter value="project" />
+      <protractor-package value="$PROJECT_DIR$/playback/node_modules/protractor" />
+      <protractor-options value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Angular Application" type="JavascriptDebugType" uri="http://localhost:4200">
+      <method v="2" />
+    </configuration>
     <configuration name="create_default_user" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="spotify-playlist-colloboration" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -97,28 +121,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/create_default_user.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="create_user" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="spotify-playlist-colloboration" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/create_user.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -193,13 +195,31 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="build.sh" type="ShConfigurationType" temporary="true">
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/playback/src/build.sh" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$/playback/src" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Angular CLI Server" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/playback/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.wsgi" />
+        <item itemvalue="Shell Script.build.sh" />
         <item itemvalue="Python.create_default_user" />
         <item itemvalue="Python.edit_database" />
         <item itemvalue="Python.spotify" />
-        <item itemvalue="Python.create_user" />
       </list>
     </recent_temporary>
   </component>
@@ -271,7 +291,12 @@
       <workItem from="1579513757798" duration="12929000" />
       <workItem from="1579535358416" duration="3115000" />
       <workItem from="1579544814926" duration="11942000" />
-      <workItem from="1579560958853" duration="2298000" />
+      <workItem from="1579560958853" duration="2332000" />
+      <workItem from="1579606400281" duration="70000" />
+      <workItem from="1579606495933" duration="1964000" />
+      <workItem from="1579623536711" duration="915000" />
+      <workItem from="1579685078387" duration="2000" />
+      <workItem from="1579685105744" duration="3910000" />
     </task>
     <servers />
   </component>
@@ -313,26 +338,30 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1263" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1579559923403" />
-    <state width="1878" height="293" key="GridCell.Tab.0.bottom" timestamp="1579560841620">
+    <state width="1878" height="329" key="GridCell.Tab.0.bottom" timestamp="1579688518486">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1878" height="329" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688518486" />
     <state width="1878" height="743" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="293" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579560841620" />
-    <state width="1878" height="293" key="GridCell.Tab.0.center" timestamp="1579560841620">
+    <state width="1878" height="254" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579624452182" />
+    <state width="1878" height="329" key="GridCell.Tab.0.center" timestamp="1579688518485">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1878" height="329" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688518485" />
     <state width="1878" height="743" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="293" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579560841620" />
-    <state width="1878" height="293" key="GridCell.Tab.0.left" timestamp="1579560841619">
+    <state width="1878" height="254" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579624452182" />
+    <state width="1878" height="329" key="GridCell.Tab.0.left" timestamp="1579688518485">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1878" height="329" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688518485" />
     <state width="1878" height="743" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="293" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579560841619" />
-    <state width="1878" height="293" key="GridCell.Tab.0.right" timestamp="1579560841620">
+    <state width="1878" height="254" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579624452181" />
+    <state width="1878" height="329" key="GridCell.Tab.0.right" timestamp="1579688518486">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state width="1878" height="329" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688518486" />
     <state width="1878" height="743" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="293" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579560841620" />
+    <state width="1878" height="254" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579624452182" />
     <state width="1878" height="293" key="GridCell.Tab.1.bottom" timestamp="1579560841621">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -353,6 +382,10 @@
     </state>
     <state width="1878" height="743" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
     <state width="1878" height="293" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579560841621" />
+    <state x="659" y="244" width="591" height="549" key="RollbackChangesDialog" timestamp="1579623607414">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="659" y="244" width="591" height="549" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579623607414" />
     <state x="446" y="105" width="1024" height="842" key="SettingsEditor" timestamp="1579546756718">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -366,19 +399,21 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="960" height="520" key="XDebugger.FullValuePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1578772270108" />
-    <state x="645" y="357" key="com.intellij.ide.util.TipDialog" timestamp="1579560963090">
+    <state x="645" y="357" key="com.intellij.ide.util.TipDialog" timestamp="1579685116999">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="645" y="357" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579685116999" />
     <state x="2565" y="371" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578988002224" />
-    <state x="645" y="357" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579560963090" />
+    <state x="645" y="357" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579623565846" />
     <state x="2668" y="457" width="424" height="165" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1579017057235">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2668" y="457" width="424" height="165" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579017057235" />
     <state x="748" y="440" width="414" height="158" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1578823919439" />
-    <state x="635" y="261" width="649" height="526" key="find.popup" timestamp="1579562247749">
+    <state x="635" y="261" width="649" height="526" key="find.popup" timestamp="1579686602855">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="635" y="261" width="649" height="526" key="find.popup/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579686602855" />
     <state x="2555" y="271" width="649" height="547" key="find.popup/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579016495695" />
     <state x="635" y="261" width="649" height="526" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579562247749" />
     <state x="2291" y="121" width="1157" height="796" key="new project wizard" timestamp="1578907674526">
@@ -389,12 +424,12 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="619" y="237" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1578775078154" />
-    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup" timestamp="1579561144461">
+    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup" timestamp="1579688165718">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579013999560" />
+    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688165718" />
     <state x="2544" y="173" width="672" height="702" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579016817880" />
-    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579561144461" />
+    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579624367718" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -409,7 +444,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$create_user.coverage" NAME="create_user Coverage Results" MODIFIED="1570628319057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$wsgi.coverage" NAME="wsgi Coverage Results" MODIFIED="1579560964938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$wsgi.coverage" NAME="wsgi Coverage Results" MODIFIED="1579685124305" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$spotify.coverage" NAME="spotify Coverage Results" MODIFIED="1570657001813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
     <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$create_default_user.coverage" NAME="create_default_user Coverage Results" MODIFIED="1575044703299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$edit_database.coverage" NAME="edit_database Coverage Results" MODIFIED="1573578192280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />

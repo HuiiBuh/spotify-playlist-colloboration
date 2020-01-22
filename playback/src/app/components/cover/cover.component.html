@@ -1,0 +1,37 @@
+<!--Cover-->
+<div style="margin: auto;">
+  <div class="middle">
+    <div class="preloader-wrapper big active">
+      <div class="spinner-layer spinner-blue-only">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div>
+        <div class="gap-patch">
+          <div class="circle"></div>
+        </div>
+        <div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <img class="cover-image"
+       src="http://localhost:5000/static/icons/default_playlist_cover.png"
+       alt>
+  <div class="small-padding-top small-padding-bottom center cover-text small-padding-left small-padding-right">
+                    <span style="width: 100%" class=" inline-block">
+                        <a class="underline no-wrap to-long inline-block" href="#" target="_blank"
+                           id="artist" style="max-width: 100%;">No Song</a>
+                    </span>
+    <span style="width: 100%" class=" inline-block">
+                        <a class="underline no-wrap to-long inline-block small-padding-left small-padding-right"
+                           target="_blank" href="#" style="max-width: 100%;" id="song">Playing</a>
+                    </span>
+  </div>
+
+</div>
+
+<!--Search-->
+<app-search *ngIf="desktop" class="search-div"></app-search>
+

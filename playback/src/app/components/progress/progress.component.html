@@ -1,0 +1,70 @@
+<div class="col s9 no-margin">
+
+  <div class="row flex-center">
+    <span class="col" id="current-time">00:00</span>
+    <div class="col s8 m9 l10 xl10">
+      <div class="progress">
+        <div class="determinate"></div>
+      </div>
+    </div>
+    <span class="col no-padding-right" id="total-time">00:00</span>
+  </div>
+
+
+  <div class="row flex-v-center">
+    <div class="playback-controls">
+
+      <i class="material-icons pointer playback-control" id="shuffle">shuffle</i>
+
+      <i class="material-icons pointer playback-control" id="previous">skip_previous</i>
+
+      <a class="pointer btn-floating playback-control" id="play" style="display: none">
+        <i class="material-icons">play_arrow</i>
+      </a>
+      <a class="pointer btn-floating playback-control" id="pause"><i class="material-icons">pause</i></a>
+
+      <i class="material-icons pointer playback-control" id="next">skip_next</i>
+
+      <i class="material-icons pointer playback-control" id="repeat">repeat</i>
+      <i class="material-icons pointer playback-control" id="repeat-one"
+         style="display: none">repeat_one</i>
+
+    </div>
+
+
+    <div class="right-controls">
+
+
+      <i class="material-icons pointer" id="devices-button">devices_other</i>
+
+
+      <div class="device-text">
+                        <span style="background-color: var(--darker); display: inline-block">
+                            <h6 class="no-wrap device-padding">Connect to a device</h6>
+                            <div style="text-align: center; padding-left: 50px; padding-right: 50px">
+                                <img src="http://localhost:5000/static/icons/devices.png"
+                                     class="small-padding-top small-padding-bottom"
+                                     style="width: 180px;" alt="">
+                            </div>
+
+                            <div id="devices">
+                                <div class="device-padding small-margin-bottom">
+                                    <p class="no-margin">Play and control the Spotify playback on all your devices.</p>
+                                    <p class="no-margin">Start Spotify on another device, start playing.</p>
+                                    <a class="btn btn-flat" href="https://www.spotify.com/de/connect/">Lean more</a>
+                                </div>
+                            </div>
+                        </span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="col s3 flex-v-center flex-center no-margin" style="min-height: 100%; background: var(--darker)">
+  <a id="scroll-current" class="btn-floating btn-large tooltipped" data-position="left"
+     data-tooltip="Scroll to current track"><i class="material-icons">playlist_play</i></a>
+
+  <p class="no-margin flex-break" style="font-size: 1.5rem; text-align: center;">Remaining time</p>
+  <p class="no-margin" id="queue-duration">00:00:00</p>
+</div>

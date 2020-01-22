@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {SearchComponent} from "../search/search.component";
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+  search: SearchComponent;
+
+  constructor() {
+  }
 
   ngOnInit() {
   }
 
+  showSearch() {
+
+  }
 }

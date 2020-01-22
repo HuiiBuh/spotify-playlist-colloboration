@@ -1,13 +1,13 @@
 <div class="col s9 no-margin">
 
   <div class="row flex-center">
-    <span class="col" id="current-time">00:00</span>
+    <span class="col">{{playbackData.currentH}}</span>
     <div class="col s8 m9 l10 xl10">
       <div class="progress">
-        <div class="determinate"></div>
+        <div class="determinate" [ngStyle]="{'width': playbackData.currentPercent + '%'}"></div>
       </div>
     </div>
-    <span class="col no-padding-right" id="total-time">00:00</span>
+    <span class="col no-padding-right" id="total-time">{{playbackData.durationH}}</span>
   </div>
 
 
@@ -21,7 +21,7 @@
       <a class="pointer btn-floating playback-control" id="play" style="display: none">
         <i class="material-icons">play_arrow</i>
       </a>
-      <a class="pointer btn-floating playback-control" id="pause"><i class="material-icons">pause</i></a>
+      <a class="pointer btn-floating playback-control" id="pause"><i class="material-icons">{{playbackData.playingIcon}}</i></a>
 
       <i class="material-icons pointer playback-control" id="next">skip_next</i>
 
@@ -55,7 +55,7 @@
                     <a class="btn btn-flat" href="https://www.spotify.com/de/connect/">Lean more</a>
                 </div>
 
-              <div *ngFor="let device of devices" (click)="changeFocus(device.id)"
+              <div *ngFor="let device of devices" (click)="changeSpotifyFocus(device.id)"
                    class="flex-v-center device-padding pointer listening-option"
                    id="{{device.id}}">
                 <i class="material-icons small">{{device.type | lowercase}}</i>

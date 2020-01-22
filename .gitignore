@@ -13,3 +13,4 @@ stale_outputs_checked
 src/environment_own.sh
 docker/.env
 playback/node_modules/*
+src/server/main/templates/angular/dist/

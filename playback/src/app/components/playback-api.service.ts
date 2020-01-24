@@ -1,5 +1,4 @@
 import {EventEmitter, Injectable, Output} from '@angular/core';
-import * as io from 'socket.io-client';
 import {URLS} from "../URLS";
 
 @Injectable({
@@ -16,17 +15,18 @@ export class PlaybackApiService {
 
 
   connect() {
-    this.socket = io.connect(this.url);
-
-    this.socket.on("connect", () => {
-      this.socket.emit('start_sync', {"spotify_user_id": "nhaderer"});
+    let socket = io.connect(this.url);
+    socket.on('connect', function () {
+      socket.emit('start_sync', {"spotify_user_id": "nhaderer"});
     });
 
-    this.socket.on("playback", (msg) => {
+    socket.on("playback", (msg) => {
+      console.log(msg);
       this.playback.emit(msg);
     });
 
-    this.socket.on("devices", (msg) => {
+    socket.on("devices", (msg) => {
+      console.log(msg);
       this.device.emit(msg.devices);
     });
   }

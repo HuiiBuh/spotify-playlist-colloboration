@@ -74,14 +74,23 @@ export class ProgressComponent implements OnInit {
   }
 
   handleHideEvent(self) {
-    return function () {
-      self.toggleDeviceMenu();
+    return function (event) {
+      if (!document.getElementsByClassName("device-text")[0].contains(event.target)) {
+        self.toggleDeviceMenu();
+      }
     }
   }
 
 
   changeSpotifyFocus(deviceID: string) {
 
+  }
+
+  addActiveClass(active: string) {
+    if (active === "active") {
+      return "active-green"
+    }
+    return ""
   }
 }
 

@@ -1,5 +1,6 @@
 import {EventEmitter, Injectable, Output} from '@angular/core';
 import * as io from 'socket.io-client';
+import {URLS} from "../URLS";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class PlaybackApiService {
 
   // Our socket connection
   private socket;
-  private url = "http://localhost:5000/api/playback";
+  private url = URLS.api.playbackWS;
 
   @Output() device: EventEmitter<any> = new EventEmitter<any>();
   @Output() playback: EventEmitter<any> = new EventEmitter<any>();

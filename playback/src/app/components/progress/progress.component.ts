@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {EventManager} from "@angular/platform-browser";
 import {PlaybackApiService} from "../playback-api.service";
 import {Progress} from "./progress.class"
+import {URLS} from "../../URLS";
 
 @Component({
   selector: 'app-progress',
@@ -17,6 +18,7 @@ export class ProgressComponent implements OnInit {
   playbackData = new Progress(1, 0, false);
 
   private removeEventListener: Function;
+  deviceImage: string = URLS.deviceImage;
 
 
   constructor(

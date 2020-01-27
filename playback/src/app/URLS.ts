@@ -28,6 +28,7 @@ export class URLS {
   static placeholderImage = `${BaseURL.url}/static/icons/default_playlist_cover.png`;
   static deviceImage = `${BaseURL.url}/static/icons/devices.png`;
   static search = `${BaseURL.url}/api/spotify/search?spotify-user-id=${spotifyUserID}&q=`;
+  static addSongToQueue = `${BaseURL.url}/api/${spotifyUserID}/player/queue?track-id=`;
 
   static api: API = new API();
 }

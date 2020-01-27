@@ -17,7 +17,7 @@ export class Api {
     return this.http.get<object>(URLS.search + search);
   }
 
-  hallo(): void {
-    return null;
+  addSongToQueue(songID: string): Observable<string> {
+    return this.http.post<string>(URLS.addSongToQueue + songID, null);
   }
 }

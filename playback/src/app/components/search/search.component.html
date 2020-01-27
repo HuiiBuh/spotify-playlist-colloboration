@@ -1,4 +1,4 @@
-<div class="small-padding" id="search" style="overflow: hidden">
+<div class="small-padding" id="search">
 
   <div style="height: 100px">
     <h5 class="no-margin-bottom no-wrap to-long no-margin-top">Search for the songs</h5>
@@ -11,19 +11,27 @@
 
   <div class="search-preview">
     <!--    The song search-->
-    <div class="flex-v-center">
-      <div class="col s2 xl1 center flex-v-center no-padding"><img
-        src="https://i.scdn.co/image/3f505feb301e37af5d6e23bc6782bbf6cb575183" alt="cover"></div>
-      <div class="col s8 xl10 to-long">
-        <div class="s12 to-long"><a class="pointer underline no-wrap"
-                                    href="https://open.spotify.com/track/0GQ5bFTVFFKpwNPc7KwQnB" hover-on-touch=""
-                                    target="_blank">You Gon’ Learn (feat. Royce Da 5'9" &amp; White Gold)</a></div>
-        <div class="s12 to-long flex"><a class="pointer underline no-wrap to-long no-shrink"
-                                         href="https://open.spotify.com/artist/7dGJo4pcD2V6oG8kP0tJRR" hover-on-touch=""
-                                         target="_blank">Eminem</a></div>
+    <div *ngFor="let song of songList; let i = index;">
+      <div class="flex-v-center">
+        <div class="col s2 xl1 center flex-v-center no-padding">
+          <img src="{{song.cover}}" alt="cover">
+        </div>
+        <div class="col s8 xl10 to-long">
+          <div class="s12 to-long">
+            <a class="pointer underline no-wrap"
+               href="{{song.title.url}}"
+               target="_blank">{{song.title.name}}</a></div>
+          <div class="s12 to-long flex">
+            <a class="pointer underline no-wrap to-long no-shrink"
+               href="{{song.artist.url}}"
+               target="_blank">{{song.artist.name}}</a></div>
+        </div>
+        <div class="col s2 xl1 flex-v-center flex-center no-padding">
+          <i class="material-icons pointer" (click)="addSongToQueue(song.id)">playlist_add</i>
+        </div>
       </div>
-      <div class="col s2 xl1 flex-v-center flex-center no-padding"><i class="material-icons pointer">playlist_add</i>
-      </div>
+
+      <div *ngIf="songList.length !== (i + 1)" class="divider small-margin-bottom small-margin-top"></div>
     </div>
   </div>
 </div>

@@ -2,7 +2,7 @@ import {Component, HostBinding, OnInit} from '@angular/core';
 import {SearchService} from './search.service';
 import {EventManager} from '@angular/platform-browser';
 import {Api} from '../api.service';
-import {SongList} from '../song';
+import {Song, SongList} from '../song';
 
 @Component({
   selector: 'app-search',
@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit {
   private removeEventListener: () => void;
   private searchTimeout: number;
 
-  searchSongList: SongList = new SongList();
+  songList: [Song];
 
 
   constructor(
@@ -63,12 +63,18 @@ export class SearchComponent implements OnInit {
 
     this.searchTimeout = setTimeout((): void => {
       this.api.search(value).subscribe(searchJSON => {
-        this.searchSongList.jsonToSongList(searchJSON);
-        
-        console.log(this.searchSongList.songList);
+        this.songList = new SongList().jsonToSongList(searchJSON);
       });
     }, 200);
 
 
+  }
+
+  addSongToQueue(songID: string): void {
+    this.api.addSongToQueue(songID).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log(error.error);
+    });
   }
 }

@@ -32,4 +32,5 @@ export class URLS {
   static proxy = `${BaseURL.url}/proxy/`;
 
   static api: API = new API();
+  static deviceChange = `${BaseURL.url}/api/${spotifyUserID}/player`;
 }

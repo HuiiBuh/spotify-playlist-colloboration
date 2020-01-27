@@ -3,6 +3,7 @@ import {EventManager} from '@angular/platform-browser';
 import {PlaybackApiService} from '../playback-api.service';
 import {Progress} from './progress.class';
 import {URLS} from '../../URLS';
+import {Api} from "../api.service";
 
 @Component({
   selector: 'app-progress',
@@ -15,7 +16,8 @@ export class ProgressComponent implements OnInit {
   marginLeft = '-140px';
   deviceClass: string;
 
-  devices: [] = [];
+  // @ts-ignore
+  devices: [object] = [];
   playbackData: Progress = new Progress(1, 0, false);
 
   private removeEventListener: () => void;
@@ -24,6 +26,7 @@ export class ProgressComponent implements OnInit {
 
   constructor(
     private eventManager: EventManager,
+    private api: Api,
     private playbackApi: PlaybackApiService
   ) {
   }
@@ -76,7 +79,7 @@ export class ProgressComponent implements OnInit {
   handleHideEvent(self: this): (event: MouseEvent) => void {
     return (event: MouseEvent): void => {
       // @ts-ignore
-      if (!document.getElementsByClassName('device-text')[0].contains(event.currentTarget)) {
+      if (!document.getElementsByClassName('device-text')[0].contains(event.target)) {
         self.toggleDeviceMenu();
       }
     };
@@ -84,11 +87,14 @@ export class ProgressComponent implements OnInit {
 
 
   changeSpotifyFocus(deviceID: string): void {
-
+    this.api.changeActiveDevice(deviceID).subscribe(() => {
+    }, error => {
+      console.log(error);
+    });
   }
 
   addActiveClass(active: string): string {
-    if (active === 'active') {
+    if (active) {
       return 'active-green';
     }
     return '';

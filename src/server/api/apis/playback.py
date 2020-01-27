@@ -60,7 +60,7 @@ def devices(spotify_user_id):
 
 
 @mod.route("<spotify_user_id>/player", methods=["PUT", "GET"])
-@login_required
+#TODO @login_required
 def player(spotify_user_id):
     """
     Returns the player information from spotify

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {URLS} from '../URLS';
 import {Observable} from 'rxjs';
 
@@ -7,6 +7,11 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class Api {
+
+  // tslint:disable-next-line:typedef
+  httpOptions = {
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
+  };
 
   constructor(
     private http: HttpClient
@@ -19,5 +24,10 @@ export class Api {
 
   addSongToQueue(songID: string): Observable<string> {
     return this.http.post<string>(URLS.addSongToQueue + songID, null);
+  }
+
+  changeActiveDevice(deviceID: string): Observable<string> {
+    const body = JSON.stringify({device_id: deviceID});
+    return this.http.put<string>(URLS.deviceChange, body, this.httpOptions);
   }
 }

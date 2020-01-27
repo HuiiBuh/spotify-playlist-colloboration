@@ -15,7 +15,7 @@ export class PlaybackApiService {
   @Output() playback: EventEmitter<any> = new EventEmitter<any>();
 
 
-  connect(): void {
+  constructor() {
     this.socket = io.connect(this.url);
     this.socket.on('connect', () => {
       this.socket.emit('start_sync', {spotify_user_id: spotifyUserID});

@@ -1,5 +1,5 @@
 <div style="height: 100%;" id="queue">
-  <div *ngFor="let song of queueSongs">
+  <div *ngFor="let song of queueSongs; let i = index">
     <div class="flex-v-center queue-song {{song.queueStatus}} small-padding-top small-padding-bottom"
          id="{{song.id}}">
       <div class="col s4 l3 xl2 center flex-v-center no-padding-right small-padding-left">
@@ -17,7 +17,7 @@
              href="{{song.artist.url}}">{{song.artist.name}}</a></div>
       </div>
     </div>
-    <div class="divider"></div>
+    <div *ngIf="queueSongs.length !== (i + 1)" class="divider"></div>
   </div>
 
 </div>

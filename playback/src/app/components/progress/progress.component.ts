@@ -26,7 +26,6 @@ export class ProgressComponent implements OnInit {
     private eventManager: EventManager,
     private playbackApi: PlaybackApiService
   ) {
-    this.playbackApi.connect();
   }
 
   ngOnInit(): void {

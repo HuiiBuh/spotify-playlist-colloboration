@@ -29,6 +29,7 @@ export class URLS {
   static deviceImage = `${BaseURL.url}/static/icons/devices.png`;
   static search = `${BaseURL.url}/api/spotify/search?spotify-user-id=${spotifyUserID}&q=`;
   static addSongToQueue = `${BaseURL.url}/api/${spotifyUserID}/player/queue?track-id=`;
+  static proxy = `${BaseURL.url}/proxy/`;
 
   static api: API = new API();
 }

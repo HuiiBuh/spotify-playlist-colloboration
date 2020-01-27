@@ -1,25 +1,33 @@
+// tslint:disable:typedef
+const spotifyUserID = 'nhaderer';
+
+
 class BaseURL {
-  private static _chrome = `http://0.0.0.0:5000`;
+  private static chrome = `http://0.0.0.0:5000`;
   private static firefox = `http://localhost:5000`;
 
-  static get url() {
-    if (navigator.userAgent.includes("Chrome")) {
-      return BaseURL._chrome
-    }
-    return BaseURL.firefox
+  static get url(): string {
+    return BaseURL.firefox;
+
+    // if (navigator.userAgent.includes("Chrome")) {
+    //   return BaseURL.chrome
+    // }
+    // return BaseURL.firefox
   }
 
 }
 
 class API {
-  playbackWS = `${BaseURL.url}/api/playback`;
-  queueWS = `${BaseURL.url}/api/queue`;
+  public playbackWS = `${BaseURL.url}/api/playback`;
+  public queueWS = `${BaseURL.url}/api/queue`;
 }
 
 
 export class URLS {
+
   static placeholderImage = `${BaseURL.url}/static/icons/default_playlist_cover.png`;
   static deviceImage = `${BaseURL.url}/static/icons/devices.png`;
+  static search = `${BaseURL.url}/api/spotify/search?spotify-user-id=${spotifyUserID}&q=`;
 
   static api: API = new API();
 }

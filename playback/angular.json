@@ -31,7 +31,6 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "libraries/socket.io.js"
             ]
           },
           "configurations": {

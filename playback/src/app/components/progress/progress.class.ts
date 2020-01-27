@@ -8,7 +8,7 @@ export class Progress {
   constructor(duration: number, current: number, playing: boolean) {
     this._duration = duration;
     this._current = current;
-    this._playing = playing
+    this._playing = playing;
   }
 
   _msToHuman(ms: number): string {

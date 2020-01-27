@@ -63,7 +63,7 @@ export class SearchComponent implements OnInit {
 
     this.searchTimeout = setTimeout((): void => {
       this.api.search(value).subscribe(searchJSON => {
-        this.songList = new SongList().jsonToSongList(searchJSON);
+        this.songList = new SongList(searchJSON).songList;
       });
     }, 200);
 

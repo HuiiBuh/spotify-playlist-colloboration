@@ -2,11 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c7b4bf2-8064-4892-ac59-be76df2807ef" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playback/src/app/components/progress/progress.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/progress/progress.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/playback/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/URLS.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/URLS.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/components/playback-api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/playback-api.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/components/progress/progress.class.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/progress/progress.class.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/playback/src/app/components/progress/progress.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/progress/progress.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playback/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/components/queue/queue-api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/queue-api.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/components/queue/queue.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/queue/queue.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/components/queue/queue.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/queue/queue.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/components/search/search.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/search/search.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/src/app/components/song.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playback/src/app/components/song.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playback/tslint.json" beforeDir="false" afterPath="$PROJECT_DIR$/playback/tslint.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/api/apis/general.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/api/apis/general.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/api/apis/playback.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/api/apis/playback.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,14 +71,18 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs.protractor.protractor_package" value="$PROJECT_DIR$/playback/node_modules/protractor" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.4632184" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Python" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/playback/node_modules/typescript/lib" />
+    <property name="typescript.add.unambiguous.imports.on.the.fly" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -80,10 +94,10 @@
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/playback/src/app/components" />
+      <recent name="$PROJECT_DIR$/playback/src/app/components/queue" />
       <recent name="$PROJECT_DIR$/playback/src/app" />
       <recent name="$PROJECT_DIR$/playback/src/app/desktop" />
       <recent name="$PROJECT_DIR$/src/server/static/pwa" />
-      <recent name="$PROJECT_DIR$/src/server/keys" />
     </key>
   </component>
   <component name="RunManager" selected="JavaScript Debug.Angular Application">
@@ -290,6 +304,8 @@
       <workItem from="1579685078387" duration="2000" />
       <workItem from="1579685105744" duration="3910000" />
       <workItem from="1579711469773" duration="5194000" />
+      <workItem from="1580147116965" duration="1254000" />
+      <workItem from="1580148383541" duration="11903000" />
     </task>
     <servers />
   </component>
@@ -335,79 +351,79 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="696" y="277" width="524" height="497" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1577986497665" />
-    <state width="1263" height="466" key="DebuggerActiveHint" timestamp="1579559923403">
+    <state width="1263" height="466" key="DebuggerActiveHint" timestamp="1580159398084">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1263" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1579559923403" />
-    <state width="1878" height="325" key="GridCell.Tab.0.bottom" timestamp="1579716943224">
+    <state width="1263" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1580159398084" />
+    <state width="1878" height="261" key="GridCell.Tab.0.bottom" timestamp="1580160392948">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="329" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688518486" />
     <state width="1878" height="743" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="325" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579716943224" />
-    <state width="1878" height="325" key="GridCell.Tab.0.center" timestamp="1579716943224">
+    <state width="1878" height="261" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392948" />
+    <state width="1878" height="261" key="GridCell.Tab.0.center" timestamp="1580160392947">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="329" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688518485" />
     <state width="1878" height="743" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="325" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579716943224" />
-    <state width="1878" height="325" key="GridCell.Tab.0.left" timestamp="1579716943223">
+    <state width="1878" height="261" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392947" />
+    <state width="1878" height="261" key="GridCell.Tab.0.left" timestamp="1580160392947">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="329" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688518485" />
     <state width="1878" height="743" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="325" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579716943223" />
-    <state width="1878" height="325" key="GridCell.Tab.0.right" timestamp="1579716943224">
+    <state width="1878" height="261" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392947" />
+    <state width="1878" height="261" key="GridCell.Tab.0.right" timestamp="1580160392947">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="329" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688518486" />
     <state width="1878" height="743" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="325" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579716943224" />
-    <state width="1878" height="166" key="GridCell.Tab.1.bottom" timestamp="1579717589093">
+    <state width="1878" height="261" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392947" />
+    <state width="1878" height="261" key="GridCell.Tab.1.bottom" timestamp="1580160392949">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="743" key="GridCell.Tab.1.bottom/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="166" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579717589093" />
-    <state width="1878" height="166" key="GridCell.Tab.1.center" timestamp="1579717589093">
+    <state width="1878" height="261" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392949" />
+    <state width="1878" height="261" key="GridCell.Tab.1.center" timestamp="1580160392948">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="743" key="GridCell.Tab.1.center/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="166" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579717589093" />
-    <state width="1878" height="166" key="GridCell.Tab.1.left" timestamp="1579717589093">
+    <state width="1878" height="261" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392948" />
+    <state width="1878" height="261" key="GridCell.Tab.1.left" timestamp="1580160392948">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="743" key="GridCell.Tab.1.left/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="166" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579717589093" />
-    <state width="1878" height="166" key="GridCell.Tab.1.right" timestamp="1579717589093">
+    <state width="1878" height="261" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392948" />
+    <state width="1878" height="261" key="GridCell.Tab.1.right" timestamp="1580160392948">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1878" height="743" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579018067535" />
-    <state width="1878" height="166" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579717589093" />
-    <state width="1878" height="325" key="GridCell.Tab.2.bottom" timestamp="1579716925463">
+    <state width="1878" height="261" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392948" />
+    <state width="1878" height="261" key="GridCell.Tab.2.bottom" timestamp="1580160392950">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="325" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579716925463" />
-    <state width="1878" height="325" key="GridCell.Tab.2.center" timestamp="1579716925462">
+    <state width="1878" height="261" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392950" />
+    <state width="1878" height="261" key="GridCell.Tab.2.center" timestamp="1580160392949">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="325" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579716925462" />
-    <state width="1878" height="325" key="GridCell.Tab.2.left" timestamp="1579716925462">
+    <state width="1878" height="261" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392949" />
+    <state width="1878" height="261" key="GridCell.Tab.2.left" timestamp="1580160392949">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="325" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579716925462" />
-    <state width="1878" height="325" key="GridCell.Tab.2.right" timestamp="1579716925463">
+    <state width="1878" height="261" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392949" />
+    <state width="1878" height="261" key="GridCell.Tab.2.right" timestamp="1580160392949">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1878" height="325" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579716925463" />
+    <state width="1878" height="261" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1580160392949" />
     <state x="659" y="244" width="591" height="549" key="RollbackChangesDialog" timestamp="1579623607414">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="659" y="244" width="591" height="549" key="RollbackChangesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579623607414" />
-    <state x="446" y="105" width="1024" height="842" key="SettingsEditor" timestamp="1579546756718">
+    <state x="446" y="105" width="1394" height="842" key="SettingsEditor" timestamp="1580149188416">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="2512" y="110" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579016860922" />
-    <state x="446" y="105" width="1024" height="842" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1579546756717" />
+    <state x="446" y="105" width="1394" height="842" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1580149188416" />
     <state width="498" height="445" key="SwitcherDM" timestamp="1577981517753">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -416,23 +432,23 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="960" height="520" key="XDebugger.FullValuePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1578772270108" />
-    <state x="645" y="357" key="com.intellij.ide.util.TipDialog" timestamp="1579711471221">
+    <state x="645" y="357" key="com.intellij.ide.util.TipDialog" timestamp="1580148383441">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="645" y="357" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579685116999" />
     <state x="2565" y="371" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1578988002224" />
-    <state x="645" y="357" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579711471221" />
+    <state x="645" y="357" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1580148383441" />
     <state x="2668" y="457" width="424" height="165" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1579017057235">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2668" y="457" width="424" height="165" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579017057235" />
     <state x="748" y="440" width="414" height="158" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1578823919439" />
-    <state x="635" y="261" width="649" height="526" key="find.popup" timestamp="1579716024288">
+    <state x="635" y="261" width="649" height="526" key="find.popup" timestamp="1580158085558">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="635" y="261" width="649" height="526" key="find.popup/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579686602855" />
     <state x="2555" y="271" width="649" height="547" key="find.popup/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579016495695" />
-    <state x="635" y="261" width="649" height="526" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579716024288" />
+    <state x="635" y="261" width="649" height="526" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1580158085558" />
     <state x="2291" y="121" width="1157" height="796" key="new project wizard" timestamp="1578907674526">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -441,21 +457,27 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="619" y="237" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1578775078154" />
-    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup" timestamp="1579717216377">
+    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup" timestamp="1580148111632">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="624" y="167" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1080@0.0.1920.1040" timestamp="1579688165718" />
     <state x="2544" y="173" width="672" height="702" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1080@1920.0.1920.1080" timestamp="1579016817880" />
-    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1579717216377" />
+    <state x="624" y="167" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1580148111632" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/playback/src/app/components/progress/progress.component.ts</url>
-          <line>34</line>
+          <url>file://$PROJECT_DIR$/playback/src/app/components/queue-api.service.ts</url>
+          <line>26</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="11" />
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/playback/src/app/components/queue/queue.component.html</url>
+          <line>11</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="36" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -469,7 +491,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$create_user.coverage" NAME="create_user Coverage Results" MODIFIED="1570628319057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$wsgi.coverage" NAME="wsgi Coverage Results" MODIFIED="1579712108973" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$wsgi.coverage" NAME="wsgi Coverage Results" MODIFIED="1580154390979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$spotify.coverage" NAME="spotify Coverage Results" MODIFIED="1570657001813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
     <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$create_default_user.coverage" NAME="create_default_user Coverage Results" MODIFIED="1575044703299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/spotify_playlist_colloboration$edit_database.coverage" NAME="edit_database Coverage Results" MODIFIED="1573578192280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />

@@ -14,3 +14,4 @@ src/environment_own.sh
 docker/.env
 playback/node_modules/*
 src/server/main/templates/angular/dist/
+node_modules/*

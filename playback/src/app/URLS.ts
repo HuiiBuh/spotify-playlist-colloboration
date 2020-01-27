@@ -1,5 +1,5 @@
 // tslint:disable:typedef
-const spotifyUserID = 'nhaderer';
+export const spotifyUserID = 'nhaderer';
 
 
 class BaseURL {

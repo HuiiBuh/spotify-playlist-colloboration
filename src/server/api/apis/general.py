@@ -9,7 +9,8 @@ from server.spotify.spotify import SpotifyError
 
 
 @mod.route("/spotify/search", methods=["GET"])
-@login_required
+# @login_required
+# TODO
 def search():
     """
     Search for songs and artists

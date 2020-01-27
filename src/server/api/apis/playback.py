@@ -178,7 +178,7 @@ def previous(spotify_user_id):
 
 
 @mod.route("<spotify_user_id>/player/queue", methods=["POST"])
-@login_required
+# TODO @login_required
 def add_song_to_queue(spotify_user_id):
     """
     Add a track to the queue

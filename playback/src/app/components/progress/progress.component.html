@@ -18,12 +18,11 @@
 
       <i class="material-icons pointer playback-control" id="previous">skip_previous</i>
 
-      <a class="pointer btn-floating playback-control" id="play" style="display: none">
-        <i class="material-icons">play_arrow</i>
+      <a class="pointer btn-floating playback-control" (click)="togglePlaying()">
+        <i class="material-icons">{{playbackData.playingIcon}}</i>
       </a>
-      <a class="pointer btn-floating playback-control" id="pause"><i class="material-icons">{{playbackData.playingIcon}}</i></a>
 
-      <i class="material-icons pointer playback-control" id="next">skip_next</i>
+      <i class="material-icons pointer playback-control" id="next" (click)="nextSong()">skip_next</i>
 
       <i class="material-icons pointer playback-control" id="repeat">repeat</i>
       <i class="material-icons pointer playback-control" id="repeat-one"
@@ -75,7 +74,7 @@
 
 <div class="col s3 flex-v-center flex-center no-margin" style="min-height: 100%; background: var(--darker)">
   <a id="scroll-current" class="btn-floating btn-large tooltipped" data-position="left"
-     data-tooltip="Scroll to current track"><i class="material-icons">playlist_play</i></a>
+     data-tooltip="Scroll to current track"><i class="material-icons" (click)="scrollToCurrent()">playlist_play</i></a>
 
   <p class="no-margin flex-break" style="font-size: 1.5rem; text-align: center;">Remaining time</p>
   <p class="no-margin" id="queue-duration">00:00:00</p>

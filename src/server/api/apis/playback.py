@@ -90,7 +90,7 @@ def player(spotify_user_id):
 
 
 @mod.route("<spotify_user_id>/player/pause ", methods=["PUT"])
-@login_required
+# TODO @login_required
 def pause(spotify_user_id):
     """
     Pauses the spotify playback
@@ -116,7 +116,7 @@ def pause(spotify_user_id):
 
 
 @mod.route("<spotify_user_id>/player/play ", methods=["PUT"])
-@login_required
+# TODO @login_required
 def play(spotify_user_id):
     """
     Continues the spotify playback
@@ -142,7 +142,7 @@ def play(spotify_user_id):
 
 
 @mod.route("<spotify_user_id>/player/next ", methods=["POST"])
-@login_required
+# TODO @login_required
 def next(spotify_user_id):
     """
     Go to the next track

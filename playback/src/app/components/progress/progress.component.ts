@@ -3,7 +3,7 @@ import {EventManager} from '@angular/platform-browser';
 import {PlaybackApiService} from '../playback-api.service';
 import {Progress} from './progress.class';
 import {URLS} from '../../URLS';
-import {Api} from "../api.service";
+import {Api} from '../api.service';
 
 @Component({
   selector: 'app-progress',
@@ -39,8 +39,13 @@ export class ProgressComponent implements OnInit {
     this.playbackApi.playback.subscribe(apiData => {
       if (apiData.playing) {
         this.playbackData.playing = apiData.song.is_playing;
-        this.playbackData.duration = apiData.song.item.duration_ms;
-        this.playbackData.current = apiData.song.progress_ms;
+        if (this.playbackData.playing) {
+          this.playbackData.duration = apiData.song.item.duration_ms;
+          this.playbackData.current = apiData.song.progress_ms;
+        } else {
+          this.playbackData.duration = 1;
+          this.playbackData.current = 0;
+        }
         return;
       }
 
@@ -76,6 +81,10 @@ export class ProgressComponent implements OnInit {
     }
   }
 
+  /**
+   * Hide the Device menu if you click next to it
+   * @param self The object instance
+   */
   handleHideEvent(self: this): (event: MouseEvent) => void {
     return (event: MouseEvent): void => {
       // @ts-ignore
@@ -86,6 +95,10 @@ export class ProgressComponent implements OnInit {
   }
 
 
+  /**
+   * Change the playback to another device
+   * @param deviceID The id of the device the playback gets assigned to
+   */
   changeSpotifyFocus(deviceID: string): void {
     this.api.changeActiveDevice(deviceID).subscribe(() => {
     }, error => {
@@ -93,11 +106,46 @@ export class ProgressComponent implements OnInit {
     });
   }
 
+  /**
+   * Return the active class for the right device
+   * @param active Is the device active
+   */
   addActiveClass(active: string): string {
     if (active) {
       return 'active-green';
     }
     return '';
+  }
+
+  /**
+   * Scroll to the current song in the queue
+   */
+  scrollToCurrent(): void {
+    document.getElementsByClassName('playing')[0].scrollIntoView();
+  }
+
+  /**
+   * Toggle the current playback
+   */
+  togglePlaying(): void {
+    if (this.playbackData.playing) {
+      this.api.pause().subscribe(() => {
+      }, error => {
+        console.log(error);
+      });
+      return;
+    }
+    this.api.play();
+  }
+
+  /**
+   * Play the next song
+   */
+  nextSong(): void {
+    this.api.next().subscribe(() => {
+    }, error => {
+      console.log(error);
+    });
   }
 }
 

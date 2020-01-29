@@ -19,15 +19,27 @@ export class Api {
   }
 
   search(search: string): Observable<object> {
-    return this.http.get<object>(URLS.search + search);
+    return this.http.get<object>(URLS.api.search + search);
   }
 
-  addSongToQueue(songID: string): Observable<string> {
-    return this.http.post<string>(URLS.addSongToQueue + songID, null);
+  pause(): Observable<object> {
+    return this.http.put<object>(URLS.api.pause, null);
   }
 
-  changeActiveDevice(deviceID: string): Observable<string> {
+  play(): Observable<object> {
+    return this.http.put<object>(URLS.api.play, null);
+  }
+
+  next(): Observable<object> {
+    return this.http.post<object>(URLS.api.next, null);
+  }
+
+  addSongToQueue(songID: string): Observable<object> {
+    return this.http.post<object>(URLS.api.addSongToQueue + songID, null);
+  }
+
+  changeActiveDevice(deviceID: string): Observable<object> {
     const body = JSON.stringify({device_id: deviceID});
-    return this.http.put<string>(URLS.deviceChange, body, this.httpOptions);
+    return this.http.put<object>(URLS.api.deviceChange, body, this.httpOptions);
   }
 }
